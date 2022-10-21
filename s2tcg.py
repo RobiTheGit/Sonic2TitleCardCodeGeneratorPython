@@ -38,10 +38,14 @@ print(proper)
 code = []
 for char in ntext:
     code.append(char)
-for char in code:
-    try:
-        print(letters[char])
-    except KeyError:
-        print('make sure you use lowercase and not uppercase')
-print(code, f'\n Spacing cannot be determined at the moment, so it is replaced with $posi, for now to start I reccomend the first letter at {minpos} and fix everything manually')
+if len(char) <= 16:
+    for char in code:
+        try:
+            print(letters[char])
+        except KeyError:
+            char = char.lower()
+            print(letters[char])
+    print(f'\n Spacing cannot be determined at the moment, so it is replaced with $posi, for now to start I reccomend the first letter at {minpos} and fix everything manually')
+else:
+    print('You can only have a maximum of 16 characters in sonic 2 title cards')
 #print(example)
