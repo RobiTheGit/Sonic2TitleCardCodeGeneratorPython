@@ -1,5 +1,5 @@
 import re
-
+#letters are innacurate
 letters = {
 'a':'dc.w 5, $85E8, $82F4, $posi	; A',
 'b':'dc.w 5, $85DE, $82EF, $posi	; B',
