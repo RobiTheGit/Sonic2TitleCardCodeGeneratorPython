@@ -1,5 +1,4 @@
 import re
-#some letters may need to have changes to not cause issues
 
 width = {
 'a':'05',
