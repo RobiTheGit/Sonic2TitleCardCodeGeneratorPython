@@ -101,7 +101,7 @@ if len(char) <= 15:
                 INDEX2P = '2C0'
                 print(f'\tdc.w $00{width[char]}, $8{INDEX}, $8{INDEX2P}, ${XPOS} ; {char.upper()}' )
             
-    print(f'\n Fix spacing manually!')
+    print(f'\n Fix spacing manually! 2 player vs not supported!')
     print(f'titleLetters	"{text.upper()}"')
     print(charlist)
 else:
