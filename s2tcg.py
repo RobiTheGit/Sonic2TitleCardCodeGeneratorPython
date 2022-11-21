@@ -14,7 +14,7 @@ import re
 #	dc.w $0005, $85F2, $82F9, $0070 ; Y
 #Letter Format
 #dc.w $VERTOFF+WIDTH, $PRI+INDEX, $PRI+INDEX2P, $XPOS ; LETTER
-
+#combined letters are posible, but this is for standard use cases
 width = {
 'a':'05',
 'b':'05',
