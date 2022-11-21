@@ -39,18 +39,50 @@ index1p = {
 6:'5F2',
 7:'5F6',
 8:'5FA',
-9:'5FE',
-10:'602',
-11:'606',
-12:'60A',
-13:'60E',
-14:'612',
-15:'616'
+9:'5FC',
+10:'NA',
+11:'NA',
+12:'NA',
+13:'NA',
+14:'NA',
+15:'NA'
+}
+index2p = {
+1:'2EF',
+2:'2F1',
+3:'2F3',
+4:'2F5',
+5:'2F7',
+6:'2F9',
+7:'2FB',
+8:'2FD',
+9:'2FE',
+10:'NA',
+11:'NA',
+12:'NA',
+13:'NA',
+14:'NA',
+15:'NA'
 }
 pos = -1
-XPOSLIST = ['FFA4','FFB4','FFC4','FFD4','FFE4','FFF4','0000','0010','0020','0030','0040','0050','0060','0070','0080']
-minpos = '$FFB1'
-maxpos = '$70' 
+XPOSLIST = {
+0:'FFA4',
+1:'FFB4',
+2:'FFC4',
+3:'FFD4',
+4:'FFE4',
+5:'FFF4',
+6:'0000',
+7:'0010',
+8:'0020',
+9:'0030',
+10:'0040',
+11:'0050',
+12:'0060',
+13:'0070',
+14:'0080'
+}
+
 text = str(input('Level Name > '))
 ntext = text.replace(" ", "")
 hexi = hex(len(ntext))
@@ -62,19 +94,21 @@ charlistcode = []
 for char in ntext:
     code.append(char.lower())
 print(code)
+pos = -1
+print('In Obj34_MapUnc_147BA Put')
 if len(char) <= 15:
     for char in code:
         pos += 1
         char = char.lower()
-        XPOS = XPOSLIST[pos]
+        XPOS = XPOSLIST.get(pos)
         if char in charlist:
-            code2 = code.index(char)
-            print(charlistcode[code2],f'${XPOS} ; {char.upper()}')
+            x = code.index(char) 
+            print(charlistcode[x],f'${XPOS} ; {char.upper()}')
         else:
             if char != 'z' and char != 'o' and char != 'n' and char != 'e':
                 letter += 1 
                 INDEX = index1p.get(letter)
-                INDEX2P = '2EF'
+                INDEX2P = index2p.get(letter)
                 indexcode = (f'\tdc.w $00{width[char]}, $8{INDEX}, $8{INDEX2P}, ${XPOS} ; {char.upper()}')
                 indexcode2 = (f'\tdc.w $00{width[char]}, $8{INDEX}, $8{INDEX2P},')
                 charlistcode.append(indexcode2)
@@ -100,9 +134,13 @@ if len(char) <= 15:
                 INDEX2P = '2C0'
                 print(f'\tdc.w $00{width[char]}, $8{INDEX}, $8{INDEX2P}, ${XPOS} ; {char.upper()}' )
             
-    print(f'\n Fix spacing manually! 2 player vs not supported!')
+    print(f'\n Fix spacing manually!')
+    print('In Off_TitleCardLetters')
     print(f'titleLetters	"{text.upper()}"')
     print(charlist)
+    print(charlistcode)
+    if len(charlistcode) > 8:
+        print('You can only have 8 unique indexes excluding Z,O,N, and E, this code will not work')
 else:
     print('You can only have a maximum of $E characters in sonic 2 title cards')
 #print(example)
