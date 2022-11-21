@@ -154,8 +154,8 @@ if len(char) <= 15:
     print(f'titleLetters	"{text.upper()}"')
     print(charlist)
     print(charlistcode)
-    if len(charlistcode) > 8:
-        print('You can only have 8 unique indexes excluding Z,O,N, and E, this code will not work')
+    if len(charlistcode) > 9:
+        print('You can only have $8 unique indexes excluding Z,O,N, and E, this code will not work')
 else:
     print('You can only have a maximum of $E characters in sonic 2 title cards')
 
