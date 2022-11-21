@@ -1,4 +1,19 @@
 import re
+#Since Jade Valley Doesn't Work, I will provide you the code for it
+#TC_ZONE:		dc.w $A
+#	dc.w $0005, $85DE, $82EF, $FFD0 ; J
+#	dc.w $0005, $85E2, $82F1, $FFE0 ; A
+#	dc.w $0005, $85E6, $82F3, $FFF0 ; D
+#	dc.w $0005, $8580, $82C0, $0000 ; E
+#	
+#	dc.w $0005, $85EA, $82F5, $0020 ; V
+#	dc.w $0005, $85E2, $82F1, $0030 ; A
+#	dc.w $0005, $85EE, $82F7, $0040 ; L
+#	dc.w $0005, $85EE, $82F7, $0050 ; L
+#	dc.w $0005, $8580, $82C0, $0060 ; E
+#	dc.w $0005, $85F2, $82F9, $0070 ; Y
+#Letter Format
+#dc.w $VERTOFF+WIDTH, $PRI+INDEX, $PRI+INDEX2P, $XPOS ; LETTER
 
 width = {
 'a':'05',
@@ -93,7 +108,7 @@ charlist = []
 charlistcode = []
 for char in ntext:
     code.append(char.lower())
-print(code)
+#print(code)
 pos = -1
 print('In Obj34_MapUnc_147BA Put')
 if len(char) <= 15:
@@ -143,4 +158,4 @@ if len(char) <= 15:
         print('You can only have 8 unique indexes excluding Z,O,N, and E, this code will not work')
 else:
     print('You can only have a maximum of $E characters in sonic 2 title cards')
-#print(example)
+
