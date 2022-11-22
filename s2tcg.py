@@ -100,6 +100,7 @@ XPOSLIST = {
 text = str(input('Level Name > '))
 ntext = text.replace(" ", "")
 hexi = hex(len(ntext))
+print('In Obj34_MapUnc_147BA Put')
 proper = hexi.replace("0x", "TC_Zone    dc.w $")
 print(proper)
 code = []
@@ -109,7 +110,6 @@ for char in text:
     code.append(char.lower())
   
 pos = -(len(code))
-print('In Obj34_MapUnc_147BA Put')
 if len(char) <= 15:
     for char in code:
         pos += 1
@@ -120,6 +120,8 @@ if len(char) <= 15:
             print(charlistcode[x],f'${XPOS} ; {char.upper()}')
         else:
             if char != 'z' and char != 'o' and char != 'n' and char != 'e' and char != ' ':
+ 
+                    
                 letter += 1 
                 INDEX = index1p.get(letter)
                 INDEX2P = index2p.get(letter)
@@ -128,6 +130,8 @@ if len(char) <= 15:
                 charlistcode.append(indexcode2)
                 print(indexcode)
                 charlist.append(char)
+                if char == 'i':
+                   print('offsets need fixing after this coming letter\n') 
             elif char == 'z':
                 INDEX = '58C'
                 INDEX2P = '2C6'
@@ -150,7 +154,6 @@ if len(char) <= 15:
             elif char == ' ':
                 print('')
             
-    print(f'\n Fix spacing manually!')
     print('In Off_TitleCardLetters')
     print(f'titleLetters	"{text.upper()}"')
     if debug == True:
@@ -160,4 +163,5 @@ if len(char) <= 15:
         print('You can only have $8 unique indexes excluding Z,O,N, and E, this code will not work')
 else:
     print('You can only have a maximum of $E characters in sonic 2 title cards')
+print(f'\n Fix spacing manually!')
 
