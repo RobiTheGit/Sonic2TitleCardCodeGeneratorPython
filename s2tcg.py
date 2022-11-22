@@ -14,7 +14,7 @@ import re
 #	dc.w $0005, $85F2, $82F9, $0070 ; Y
 #Letter Format
 #dc.w $VERTOFF+WIDTH, $PRI+INDEX, $PRI+INDEX2P, $XPOS ; LETTER
-#combined letters are posible, but this is for standard use cases
+debug = True
 width = {
 'a':'05',
 'b':'05',
@@ -79,23 +79,22 @@ index2p = {
 14:'NA',
 15:'NA'
 }
-pos = -1
 XPOSLIST = {
-0:'FFA4',
-1:'FFB4',
-2:'FFC4',
-3:'FFD4',
-4:'FFE4',
-5:'FFF4',
-6:'0000',
-7:'0010',
-8:'0020',
-9:'0030',
-10:'0040',
-11:'0050',
-12:'0060',
-13:'0070',
-14:'0080'
+-14:'FFA4',
+-13:'FFB4',
+-12:'FFC4',
+-11:'FFD4',
+-10:'FFE4',
+-9:'FFF4',
+-8:'0000',
+-7:'0010',
+-6:'0020',
+-5:'0030',
+-4:'0040',
+-3:'0050',
+-2:'0060',
+-1:'0070',
+0:'0080'
 }
 
 text = str(input('Level Name > '))
@@ -106,10 +105,10 @@ print(proper)
 code = []
 charlist = []
 charlistcode = []
-for char in ntext:
+for char in text:
     code.append(char.lower())
-#print(code)
-pos = -1
+  
+pos = -(len(code))
 print('In Obj34_MapUnc_147BA Put')
 if len(char) <= 15:
     for char in code:
@@ -120,7 +119,7 @@ if len(char) <= 15:
             x = code.index(char) 
             print(charlistcode[x],f'${XPOS} ; {char.upper()}')
         else:
-            if char != 'z' and char != 'o' and char != 'n' and char != 'e':
+            if char != 'z' and char != 'o' and char != 'n' and char != 'e' and char != ' ':
                 letter += 1 
                 INDEX = index1p.get(letter)
                 INDEX2P = index2p.get(letter)
@@ -148,12 +147,15 @@ if len(char) <= 15:
                 INDEX = '580'
                 INDEX2P = '2C0'
                 print(f'\tdc.w $00{width[char]}, $8{INDEX}, $8{INDEX2P}, ${XPOS} ; {char.upper()}' )
+            elif char == ' ':
+                print('')
             
     print(f'\n Fix spacing manually!')
     print('In Off_TitleCardLetters')
     print(f'titleLetters	"{text.upper()}"')
-    print(charlist)
-    print(charlistcode)
+    if debug == True:
+        print(charlist)
+        print(charlistcode)
     if len(charlistcode) > 9:
         print('You can only have $8 unique indexes excluding Z,O,N, and E, this code will not work')
 else:
