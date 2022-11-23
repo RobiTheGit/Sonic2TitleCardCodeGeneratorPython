@@ -14,6 +14,7 @@ import re
 #	dc.w $0005, $85F2, $82F9, $0070 ; Y
 #Letter Format
 #dc.w $VERTOFF+WIDTH, $PRI+INDEX, $PRI+INDEX2P, $XPOS ; LETTER
+#s2.asm will handle lowercase letters just fine
 debug = True
 width = {
 'a':'05',
@@ -45,23 +46,6 @@ width = {
 }
 letter = 0
 
-index1p = {
-1:'5DE',
-2:'5E2',
-3:'5E6',
-4:'5EA',
-5:'5EE',
-6:'5F2',
-7:'5F6',
-8:'5FA',
-9:'5FC',
-10:'NA',
-11:'NA',
-12:'NA',
-13:'NA',
-14:'NA',
-15:'NA'
-}
 index2p = {
 1:'2EF',
 2:'2F1',
@@ -96,7 +80,8 @@ XPOSLIST = {
 -1:'0070',
 0:'0080'
 }
-
+current = 1500
+increment = 2
 text = str(input('Level Name > '))
 ntext = text.replace(" ", "")
 hexi = hex(len(ntext))
@@ -108,49 +93,63 @@ charlist = []
 charlistcode = []
 for char in text:
     code.append(char.lower())
-  
+    
+    
+afterI = False  
 pos = -(len(code))
 if len(char) <= 15:
     for char in code:
         pos += 1
         char = char.lower()
         XPOS = XPOSLIST.get(pos)
+        if letter >= 1:
+            increment = 4
+        if afterI == True:
+            increment = 2
+            if afterIcount == 0:
+              #  afterI = False
+                increment = 4  
+            else:
+                afterIcount -= 1   
         if char in charlist:
             x = code.index(char) 
             print(charlistcode[x],f'${XPOS} ; {char.upper()}')
         else:
-            if char != 'z' and char != 'o' and char != 'n' and char != 'e' and char != ' ':
- 
-                    
+            if char != 'z' and char != 'o' and char != 'n' and char != 'e' and char != ' ':  
                 letter += 1 
-                INDEX = index1p.get(letter)
+                result = int(current)+int(increment)
+                result2 = hex(result)
+                INDEX = result2.replace("0x", "")
                 INDEX2P = index2p.get(letter)
                 indexcode = (f'\tdc.w $00{width[char]}, $8{INDEX}, $8{INDEX2P}, ${XPOS} ; {char.upper()}')
                 indexcode2 = (f'\tdc.w $00{width[char]}, $8{INDEX}, $8{INDEX2P},')
                 charlistcode.append(indexcode2)
                 print(indexcode)
                 charlist.append(char)
+                current = result
                 if char == 'i':
-                   print('offsets need fixing after this coming letter\n') 
+                   afterI = True 
+                   afterIcount = 2                   
             elif char == 'z':
+                letter += 1 
                 INDEX = '58C'
                 INDEX2P = '2C6'
                 print(f'\tdc.w $00{width[char]}, $8{INDEX}, $8{INDEX2P}, ${XPOS} ; {char.upper()}' ) 
-            
             elif char == 'o':
+                letter += 1            
                 INDEX = '588'
                 INDEX2P = '2C4'
-                print(f'\tdc.w $00{width[char]}, $8{INDEX}, $8{INDEX2P}, ${XPOS} ; {char.upper()}' )
-             
+                print(f'\tdc.w $00{width[char]}, $8{INDEX}, $8{INDEX2P}, ${XPOS} ; {char.upper()}' )            
             elif char == 'n':
+                letter += 1             
                 INDEX = '584'
                 INDEX2P = '2C2'
-                print(f'\tdc.w $00{width[char]}, $8{INDEX}, $8{INDEX2P}, ${XPOS} ; {char.upper()}' )
-                        
+                print(f'\tdc.w $00{width[char]}, $8{INDEX}, $8{INDEX2P}, ${XPOS} ; {char.upper()}' )                      
             elif char == 'e':
+                letter += 1             
                 INDEX = '580'
                 INDEX2P = '2C0'
-                print(f'\tdc.w $00{width[char]}, $8{INDEX}, $8{INDEX2P}, ${XPOS} ; {char.upper()}' )
+                print(f'\tdc.w $00{width[char]}, $8{INDEX}, $8{INDEX2P}, ${XPOS} ; {char.upper()}' )                
             elif char == ' ':
                 print('')
             
