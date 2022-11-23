@@ -3,4 +3,4 @@
  
  For Some Reason, specificly usng JADE VALLEY doesn't work, everything else seems to work, just not both words together, jade valley
 
-Anything after "I" need their offsets corrected if there are two letters after the I
+Anything after "I" need their offsets corrected if there are two letters or more after the I
