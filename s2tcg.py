@@ -1,4 +1,5 @@
 import re
+f = open('titlecard.txt', 'x')
 #Since Jade Valley Doesn't Work, I will provide you the code for it
 #TC_ZONE:		dc.w $A
 #	dc.w $0005, $85DE, $82EF, $FFD0 ; J
@@ -71,7 +72,9 @@ def gen():
     ntext = text.replace(" ", "")
     hexi = hex(len(ntext))
     print('In Obj34_MapUnc_147BA Put')
+    f.write(f'In Obj34_MapUnc_147BA Put\n')
     proper = hexi.replace("0x", "TC_Zone    dc.w $")
+    f.write(f'{proper} \n')
     print(proper)
     code = []
     charlist = []
@@ -98,6 +101,7 @@ def gen():
             if char in charlist:
                 x = code.index(char) 
                 print(charlistcode[x],f'${XPOS} ; {char.upper()}')
+                f.write(f'{charlistcode[x]},${XPOS} ; {char.upper()} \n')
             else:
                 if char != 'z' and char != 'o' and char != 'n' and char != 'e' and char != ' ':  
                     letter += 1 
@@ -111,6 +115,7 @@ def gen():
                     indexcode2 = (f'\tdc.w $00{width[char]}, $8{INDEX}, $8{INDEX2P},')
                     charlistcode.append(indexcode2)    
                     print(indexcode)
+                    f.write(f'{indexcode} \n')
                     charlist.append(char)
                     current = result
                     twopcurrent = twopresult
@@ -121,27 +126,34 @@ def gen():
                     letter += 1 
                     INDEX = '58C'
                     INDEX2P = '2C6'
-                    print(f'\tdc.w $00{width[char]}, $8{INDEX}, $8{INDEX2P}, ${XPOS} ; {char.upper()}' ) 
+                    print(f'\tdc.w $00{width[char]}, $8{INDEX}, $8{INDEX2P}, ${XPOS} ; {char.upper()}' )
+                    f.write(f'\tdc.w $00{width[char]}, $8{INDEX}, $8{INDEX2P}, ${XPOS} ; {char.upper()} \n' ) 
                 elif char == 'o':
                     letter += 1            
                     INDEX = '588'
                     INDEX2P = '2C4'
-                    print(f'\tdc.w $00{width[char]}, $8{INDEX}, $8{INDEX2P}, ${XPOS} ; {char.upper()}' )            
+                    print(f'\tdc.w $00{width[char]}, $8{INDEX}, $8{INDEX2P}, ${XPOS} ; {char.upper()}' )
+                    f.write(f'\tdc.w $00{width[char]}, $8{INDEX}, $8{INDEX2P}, ${XPOS} ; {char.upper()} \n' )            
                 elif char == 'n':
                     letter += 1             
                     INDEX = '584'
                     INDEX2P = '2C2'
-                    print(f'\tdc.w $00{width[char]}, $8{INDEX}, $8{INDEX2P}, ${XPOS} ; {char.upper()}' )                          
+                    print(f'\tdc.w $00{width[char]}, $8{INDEX}, $8{INDEX2P}, ${XPOS} ; {char.upper()}' ) 
+                    f.write(f'\tdc.w $00{width[char]}, $8{INDEX}, $8{INDEX2P}, ${XPOS} ; {char.upper()} \n' )                         
                 elif char == 'e':
                     letter += 1             
                     INDEX = '580'
                     INDEX2P = '2C0'
-                    print(f'\tdc.w $00{width[char]}, $8{INDEX}, $8{INDEX2P}, ${XPOS} ; {char.upper()}' )                
+                    print(f'\tdc.w $00{width[char]}, $8{INDEX}, $8{INDEX2P}, ${XPOS} ; {char.upper()}' ) 
+                    f.write(f'\tdc.w $00{width[char]}, $8{INDEX}, $8{INDEX2P}, ${XPOS} ; {char.upper()} \n' )               
                 elif char == ' ':
                     print('')
+                    f.write('\n')
             
         print('In Off_TitleCardLetters')
+        f.write(f'In Off_TitleCardLetters\n')
         print(f'titleLetters	"{text.upper()}"')
+        f.write(f'titleLetters	"{text.upper()}"')        
         if debug == True:
             print(charlist)
             print(charlistcode)
@@ -149,5 +161,5 @@ def gen():
             print('You can only have $8 unique indexes excluding Z,O,N, and E, this code will not work')
         else:
             print('You can only have a maximum of $E characters in sonic 2 title cards')
-            print(f'\n Fix spacing manually! Also, Sonic 2 can handle lowercase $A-$F.')
+            print(f'\n Fix spacing manually! Also, Sonic 2 can handle lowercase $A-$F. The code can also be found in titlecard.txt, make sure to delete it before making a new one')
 gen()
