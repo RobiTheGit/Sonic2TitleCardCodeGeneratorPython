@@ -1,23 +1,18 @@
 import re
-f = open('titlecard.txt', 'x')
-#Since Jade Valley Doesn't Work, I will provide you the code for it
-#TC_ZONE:		dc.w $A
-#	dc.w $0005, $85DE, $82EF, $FFD0 ; J
-#	dc.w $0005, $85E2, $82F1, $FFE0 ; A
-#	dc.w $0005, $85E6, $82F3, $FFF0 ; D
-#	dc.w $0005, $8580, $82C0, $0000 ; E
-#	
-#	dc.w $0005, $85EA, $82F5, $0020 ; V
-#	dc.w $0005, $85E2, $82F1, $0030 ; A
-#	dc.w $0005, $85EE, $82F7, $0040 ; L
-#	dc.w $0005, $85EE, $82F7, $0050 ; L
-#	dc.w $0005, $8580, $82C0, $0060 ; E
-#	dc.w $0005, $85F2, $82F9, $0070 ; Y
+export = False #set this to True if you want to export the code to a file
+if export == True:
+    f = open('titlecard.txt', 'x')
 #Letter Format
+
 #dc.w $VERTOFF+WIDTH, $PRI+INDEX, $PRI+INDEX2P, $XPOS ; LETTER
+
 #s2.asm will handle lowercase letters just fine
+
 def gen(): 
-    debug = True
+    global export
+    if export == True:
+        global f
+    debug = False
     width = {
 'a':'05',
 'b':'05',
@@ -63,6 +58,7 @@ def gen():
 -1:'0070',
 0:'0080'
 }   
+
     letter = 0
     current = 1500
     twopcurrent = 749
@@ -72,9 +68,11 @@ def gen():
     ntext = text.replace(" ", "")
     hexi = hex(len(ntext))
     print('In Obj34_MapUnc_147BA Put')
-    f.write(f'In Obj34_MapUnc_147BA Put\n')
+    if export == True:
+        f.write(f'In Obj34_MapUnc_147BA Put\n')
     proper = hexi.replace("0x", "TC_Zone    dc.w $")
-    f.write(f'{proper} \n')
+    if export == True:    
+        f.write(f'{proper} \n')
     print(proper)
     code = []
     charlist = []
@@ -101,21 +99,23 @@ def gen():
             if char in charlist:
                 x = code.index(char) 
                 print(charlistcode[x],f'${XPOS} ; {char.upper()}')
-                f.write(f'{charlistcode[x]},${XPOS} ; {char.upper()} \n')
+                if export == True:
+                    f.write(f'{charlistcode[x]},${XPOS} ; {char.upper()} \n')
             else:
                 if char != 'z' and char != 'o' and char != 'n' and char != 'e' and char != ' ':  
                     letter += 1 
                     result = int(current)+int(increment)
                     result2 = hex(result)
-                    INDEX = result2.replace("0x", "")
+                    INDEX = result2.replace("0x", "").upper()
                     twopresult = int(twopcurrent)+int(twopinc)
                     twopres2 = hex(twopresult) 
-                    INDEX2P = twopres2.replace("0x", "")
+                    INDEX2P = twopres2.replace("0x", "").upper()
                     indexcode = (f'\tdc.w $00{width[char]}, $8{INDEX}, $8{INDEX2P}, ${XPOS} ; {char.upper()}')
                     indexcode2 = (f'\tdc.w $00{width[char]}, $8{INDEX}, $8{INDEX2P},')
                     charlistcode.append(indexcode2)    
                     print(indexcode)
-                    f.write(f'{indexcode} \n')
+                    if export == True:
+                        f.write(f'{indexcode} \n')
                     charlist.append(char)
                     current = result
                     twopcurrent = twopresult
@@ -127,39 +127,53 @@ def gen():
                     INDEX = '58C'
                     INDEX2P = '2C6'
                     print(f'\tdc.w $00{width[char]}, $8{INDEX}, $8{INDEX2P}, ${XPOS} ; {char.upper()}' )
-                    f.write(f'\tdc.w $00{width[char]}, $8{INDEX}, $8{INDEX2P}, ${XPOS} ; {char.upper()} \n' ) 
+                    if export == True:
+                        f.write(f'\tdc.w $00{width[char]}, $8{INDEX}, $8{INDEX2P}, ${XPOS} ; {char.upper()} \n' ) 
                 elif char == 'o':
                     letter += 1            
                     INDEX = '588'
                     INDEX2P = '2C4'
                     print(f'\tdc.w $00{width[char]}, $8{INDEX}, $8{INDEX2P}, ${XPOS} ; {char.upper()}' )
-                    f.write(f'\tdc.w $00{width[char]}, $8{INDEX}, $8{INDEX2P}, ${XPOS} ; {char.upper()} \n' )            
+                    if export == True:
+                        f.write(f'\tdc.w $00{width[char]}, $8{INDEX}, $8{INDEX2P}, ${XPOS} ; {char.upper()} \n' )            
                 elif char == 'n':
                     letter += 1             
                     INDEX = '584'
                     INDEX2P = '2C2'
-                    print(f'\tdc.w $00{width[char]}, $8{INDEX}, $8{INDEX2P}, ${XPOS} ; {char.upper()}' ) 
-                    f.write(f'\tdc.w $00{width[char]}, $8{INDEX}, $8{INDEX2P}, ${XPOS} ; {char.upper()} \n' )                         
+                    print(f'\tdc.w $00{width[char]}, $8{INDEX}, $8{INDEX2P}, ${XPOS} ; {char.upper()}' )
+                    if export == True: 
+                         f.write(f'\tdc.w $00{width[char]}, $8{INDEX}, $8{INDEX2P}, ${XPOS} ; {char.upper()} \n' )                         
                 elif char == 'e':
                     letter += 1             
                     INDEX = '580'
                     INDEX2P = '2C0'
-                    print(f'\tdc.w $00{width[char]}, $8{INDEX}, $8{INDEX2P}, ${XPOS} ; {char.upper()}' ) 
-                    f.write(f'\tdc.w $00{width[char]}, $8{INDEX}, $8{INDEX2P}, ${XPOS} ; {char.upper()} \n' )               
+                    print(f'\tdc.w $00{width[char]}, $8{INDEX}, $8{INDEX2P}, ${XPOS} ; {char.upper()}' )
+                    if export == True:
+                        f.write(f'\tdc.w $00{width[char]}, $8{INDEX}, $8{INDEX2P}, ${XPOS} ; {char.upper()} \n' )               
                 elif char == ' ':
                     print('')
-                    f.write('\n')
+                    if export == True:
+                        f.write('\n')
             
         print('In Off_TitleCardLetters')
-        f.write(f'In Off_TitleCardLetters\n')
+        if export == True:
+            f.write(f'In Off_TitleCardLetters\n')
         print(f'titleLetters	"{text.upper()}"')
-        f.write(f'titleLetters	"{text.upper()}"')        
+        if export == True:
+            f.write(f'titleLetters	"{text.upper()}"')        
         if debug == True:
             print(charlist)
             print(charlistcode)
         if len(charlistcode) > 9:
             print('You can only have $8 unique indexes excluding Z,O,N, and E, this code will not work')
-        else:
+            if export == True:
+                f.write('You can only have $8 unique indexes excluding Z,O,N, and E, this code will not work')
+        if len(code) > 15:
             print('You can only have a maximum of $E characters in sonic 2 title cards')
-            print(f'\n Fix spacing manually! Also, Sonic 2 can handle lowercase $A-$F. The code can also be found in titlecard.txt, make sure to delete it before making a new one')
+            if export == True:
+                f.write('You can only have a maximum of $E characters in sonic 2 title cards')
+            
+        print(f'\n Fix spacing manually!')
+        if export == True:
+            f.write(f'\n Fix spacing manually! The code can also be found in titlecard.txt, make sure to delete it before making a new one')
 gen()
