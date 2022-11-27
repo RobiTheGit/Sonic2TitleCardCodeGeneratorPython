@@ -58,7 +58,7 @@ def gen():
 -1:'0070',
 0:'0080'
 }   
-
+    
     letter = 0
     current = 1500
     twopcurrent = 749
@@ -97,7 +97,7 @@ def gen():
                 else:
                     afterIcount -= 1   
             if char in charlist:
-                x = code.index(char) 
+                x = charlist.index(char) 
                 print(charlistcode[x],f'${XPOS} ; {char.upper()}')
                 if export == True:
                     f.write(f'{charlistcode[x]},${XPOS} ; {char.upper()} \n')
