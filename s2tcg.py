@@ -41,23 +41,7 @@ def gen():
 'y':'05',
 'z':'05'
 }
-    XPOSLIST = {
--14:'FFA4',
--13:'FFB4',
--12:'FFC4',
--11:'FFD4',
--10:'FFE4',
--9:'FFF4',
--8:'0000',
--7:'0010',
--6:'0020',
--5:'0030',
--4:'0040',
--3:'0050',
--2:'0060',
--1:'0070',
-0:'0080'
-}  #replace with calculating positions
+
     pos_br = 65520
     pos_inc = 16 #$10, after M or W, 24/$18, after I, 8/$8
     cur_pos = 65428 #starts with the starting position
@@ -154,7 +138,7 @@ def gen():
                     if char == 'i':
                        afterI = True 
                        afterIcount = 2
-                    if char == 'm':
+                    if char == 'm' or char == 'w':
                        afterM = True 
                        afterMcount = 2                   
                 elif char == 'z':
