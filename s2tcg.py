@@ -189,9 +189,9 @@ def gen():
             if export == True:
                 f.write('You can only have $8 unique indexes excluding Z,O,N, and E, this code will not work')
         if len(code) > 15:
-            print('You can only have a maximum of $E characters in sonic 2 title cards')
+            print('You can only have a maximum of $E characters in sonic 2 title cards, this code will not work')
             if export == True:
-                f.write('You can only have a maximum of $E characters in sonic 2 title cards')
+                f.write('You can only have a maximum of $E characters in sonic 2 title cards, this code will not work')
             
         print(f'\n Fix spacing manually!')
         if export == True:
