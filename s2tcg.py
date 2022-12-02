@@ -41,17 +41,18 @@ def gen():
 'y':'05',
 'z':'05'
 }
-
-    pos_br = 65520
+#position variables
+    pos_br = 65520 #position before setting position to $0
     pos_inc = 16 #$10, after M or W, 24/$18, after I, 8/$8
     cur_pos = 65428 #starts with the starting position
     after0 = False
-    
+#index variables    
     letter = 0
     current = 1500
     twopcurrent = 749
     increment = 2
     twopinc = 2
+#Text Variables
     text = str(input('Level Name > '))
     ntext = text.replace(" ", "")
     hexi = hex(len(ntext))
@@ -74,7 +75,8 @@ def gen():
     charlist = []
     charlistcode = []
     for char in text:
-        code.append(char.lower())   
+        code.append(char.lower())
+#Positioning code   
         afterI = False 
         afterM = False 
         pos = -(len(code))
@@ -111,7 +113,7 @@ def gen():
                 cur_pos = 0
                 XPOS = '0000'
                 after0 = True            
-                                        
+#Indexes Code                                        
             if char in charlist:
                 x = charlist.index(char) 
                 print(charlistcode[x],f'${XPOS} ; {char.upper()}')
@@ -174,7 +176,7 @@ def gen():
                     cur_pos += 16                   
                     if export == True:
                         f.write('\n')
-            
+#Misc Code            
         print('In Off_TitleCardLetters')
         if export == True:
             f.write(f'In Off_TitleCardLetters\n')
