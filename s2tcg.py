@@ -1,13 +1,10 @@
 import re
+import sys
 export = False #set this to True if you want to export the code to a file
 if export == True:
     f = open('titlecard.txt', 'x')
 #Letter Format
-
 #dc.w $VERTOFF+WIDTH, $PRI+INDEX, $PRI+INDEX2P, $XPOS ; LETTER
-
-#s2.asm will handle lowercase letters just fine
-
 def gen(): 
     global export
     if export == True:
@@ -26,7 +23,8 @@ def gen():
     twopinc = 2
 #Text Variables
     text = str(input('Level Name > '))
-    ntext = text.replace(" ", "")
+    btext = re.sub(r"[^a-zA-Z,' ']", "", text)
+    ntext = btext.replace(" ", "")
     hexi = hex(len(ntext)).upper()
     if len(text) >= 10:
         cur_pos = 65428
@@ -37,7 +35,7 @@ def gen():
         cur_pos = 28 
         after0 = True        
     print('In Obj34_MapUnc_147BA Put')
-    proper = hexi.replace("0x", "TC_Zone    dc.w $")
+    proper = hexi.replace("0X", "TC_Zone    dc.w $")
     if export == True:
         f.write(f'In Obj34_MapUnc_147BA Put\n')
         f.write(f'{proper} \n')
@@ -45,8 +43,10 @@ def gen():
     code = []
     charlist = []
     charlistcode = []
-    for char in text:
+    for char in btext:
         code.append(char.lower())
+    if len(code) == 0:
+        sys.exit(0)
 #Positioning code   
         afterI = False 
         afterM = False 
@@ -156,13 +156,14 @@ def gen():
                         f.write('\n')
                 else:
                      pass
-#Misc Code            
+#Misc Code  
+        titleletters = re.sub(r"[^a-zA-Z,' ']", "", text).upper()          
         print('In Off_TitleCardLetters')
-        print(f'titleLetters	"{text.upper()}" make sure you have no special characters here though.')
+        print(f'titleLetters	"{titleletters}" make sure you have no special characters here though.')
         if debug == True:
             print(charlist)
             print(charlistcode)         
-        if len(charlistcode) > 9:
+        if len(charlistcode) > 8:
             print('You can only have $8 unique indexes excluding Z,O,N, and E, this code will not work')
         if len(code) > 15:
             print('You can only have a maximum of $E characters in sonic 2 title cards, this code will not work')
@@ -171,13 +172,14 @@ def gen():
 #Exporting Code For The Things Above           
         if export == True:
             f.write(f'In Off_TitleCardLetters\n')
-            f.write(f'titleLetters	"{text.upper()}"make sure you have no special characters here though.')
+            f.write(f'titleLetters	"{titleletters}"make sure you have no special characters here though.')
             print(f'\n Fix spacing manually! The code can also be found in titlecard.txt, make sure to delete it before making a new one')
             f.write(f'\n Fix spacing manually! Rename this file or delete it, or turn off export before running s2tcg.py again')
             if len(code) > 15:
                 f.write('You can only have a maximum of $E characters in sonic 2 title cards, this code will not work') 
-            if len(charlistcode) > 9:     
+            if len(charlistcode) > 8:     
                   f.write('You can only have $8 unique indexes excluding Z,O,N, and E, this code will not work')
             if debug == True:
                 f.write(f'{charlist}\n{charlistcode}')
+    sys.exit(0)
 gen()
