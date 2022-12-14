@@ -98,7 +98,7 @@ def gen():
                 if export == True:
                     f.write(f'{charlistcode[x]},${XPOS} ; {char.upper()} \n')
             else:
-                if char != 'z' and char != 'o' and char != 'n' and char != 'e' and char != ' ' and char.isalpha():  
+                if char != 'z' and char != 'o' and char != 'n' and char != 'e' and char != ' ' and char.isalpha():  # This may seem redundant, but this is a safeguard for if the regex code doesn't work, though I know it does.
                     letter += 1 
                     result = int(current)+int(increment)
                     result2 = hex(result)
@@ -157,7 +157,7 @@ def gen():
                 else:
                      pass
 #Misc Code  
-        titleletters = re.sub(r"[^a-zA-Z,' ']", "", text).upper()          
+        titleletters = re.sub(r"[^a-zA-Z,' ']", "", text).upper() #This removes special characters (except maybe for ^) from the text          
         print('In Off_TitleCardLetters')
         print(f'titleLetters	"{titleletters}" make sure you have no special characters here though.')
         if debug == True:
