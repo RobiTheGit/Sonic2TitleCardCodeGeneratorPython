@@ -1,30 +1,39 @@
 import re
 import sys
-export = False #set this to True if you want to export the code to a file
-if export == True:
-    f = open('titlecard.txt', 'x')
-#Letter Format
-#dc.w $VERTOFF+WIDTH, $PRI+INDEX, $PRI+INDEX2P, $XPOS ; LETTER
+argv = False
+if argv == True:
+    from sys import argv
+    script, text = argv
+else:
+    text = str(input('Level Name > '))
+'''    
+Letter Format
+dc.w $VERTOFF+WIDTH, $PRI+INDEX, $PRI+INDEX2P, $XPOS ; LETTER
+example: dc.w $0005, $85DE, $82ED, $FFD0; FIRST LETTER INDEX WHEN NOT (Z, O, N, E)
+'''
 def gen(): 
-    global export
-    if export == True:
-        global f
+    global text
     debug = False
-#position variables
+'''
+Position Variables 
+''' 
     pos_br = 65520 #position before setting position to $0
     pos_inc = 16 #$10, after M or W, 24/$18, after I, 8/$8
     cur_pos = 65428 #starts with the starting position
     after0 = False
-#index variables    
+'''
+Index Variables 
+''' 
     letter = 0
     current = 1500
     twopcurrent = 749
     increment = 2
     twopinc = 2
-#Text Variables
+'''
+Text Variables 
+''' 
     afterI = False 
     afterM = False
-    text = str(input('Level Name > '))
     btext = re.sub(r"[^a-zA-Z,' ']", "", text)
     ntext = btext.replace(" ", "")
     hexi = hex(len(ntext)).upper()
@@ -38,9 +47,6 @@ def gen():
         after0 = True        
     print('In Obj34_MapUnc_147BA Put')
     proper = hexi.replace("0X", "TC_Zone    dc.w $")
-    if export == True:
-        f.write(f'In Obj34_MapUnc_147BA Put\n')
-        f.write(f'{proper} \n')
     print(proper)
     code = []
     charlist = []
@@ -49,7 +55,9 @@ def gen():
         code.append(char.lower())
     if len(code) == 0:
         sys.exit(0)
-#Positioning code    
+'''
+Positioning code 
+'''   
         pos = -(len(code))
     if len(char) <= 15:
         for char in code:
@@ -84,19 +92,21 @@ def gen():
                 cur_pos = 0
                 XPOS = '0000'
                 after0 = True            
-#Width Setting Code
+'''
+Width Code
+'''
             if char == 'm' or char == 'w':
                 width = '09'
             elif char == 'i':
                 width = '01'
             else:
                 width = '05'
-#Mappings Generation Code                                        
+'''
+Mappings Generation Code
+'''                                        
             if char in charlist:
                 x = charlist.index(char) 
                 print(charlistcode[x],f'${XPOS} ; {char.upper()}')
-                if export == True:
-                    f.write(f'{charlistcode[x]},${XPOS} ; {char.upper()} \n')
             else:
                 if char != 'z' and char != 'o' and char != 'n' and char != 'e' and char != ' ' and char.isalpha():  
                     letter += 1 
@@ -110,8 +120,6 @@ def gen():
                     indexcode2 = (f'\tdc.w $00{width}, $8{INDEX}, $8{INDEX2P},')
                     charlistcode.append(indexcode2)    
                     print(indexcode)
-                    if export == True:
-                        f.write(f'{indexcode} \n')
                     charlist.append(char)
                     current = result
                     twopcurrent = twopresult
@@ -126,37 +134,29 @@ def gen():
                     INDEX = '58C'
                     INDEX2P = '2C6'
                     print(f'\tdc.w $00{width}, $8{INDEX}, $8{INDEX2P}, ${XPOS} ; {char.upper()}' )
-                    if export == True:
-                        f.write(f'\tdc.w $00{width}, $8{INDEX}, $8{INDEX2P}, ${XPOS} ; {char.upper()} \n' ) 
                 elif char == 'o':
                     letter += 1            
                     INDEX = '588'
                     INDEX2P = '2C4'
-                    print(f'\tdc.w $00{width}, $8{INDEX}, $8{INDEX2P}, ${XPOS} ; {char.upper()}' )
-                    if export == True:
-                        f.write(f'\tdc.w $00{width}, $8{INDEX}, $8{INDEX2P}, ${XPOS} ; {char.upper()} \n' )            
+                    print(f'\tdc.w $00{width}, $8{INDEX}, $8{INDEX2P}, ${XPOS} ; {char.upper()}' )          
                 elif char == 'n':
                     letter += 1             
                     INDEX = '584'
                     INDEX2P = '2C2'
-                    print(f'\tdc.w $00{width}, $8{INDEX}, $8{INDEX2P}, ${XPOS} ; {char.upper()}' )
-                    if export == True: 
-                         f.write(f'\tdc.w $00{width}, $8{INDEX}, $8{INDEX2P}, ${XPOS} ; {char.upper()} \n' )                         
+                    print(f'\tdc.w $00{width}, $8{INDEX}, $8{INDEX2P}, ${XPOS} ; {char.upper()}' )                       
                 elif char == 'e':
                     letter += 1             
                     INDEX = '580'
                     INDEX2P = '2C0'
-                    print(f'\tdc.w $00{width}, $8{INDEX}, $8{INDEX2P}, ${XPOS} ; {char.upper()}' )
-                    if export == True:
-                        f.write(f'\tdc.w $00{width}, $8{INDEX}, $8{INDEX2P}, ${XPOS} ; {char.upper()} \n' )               
+                    print(f'\tdc.w $00{width}, $8{INDEX}, $8{INDEX2P}, ${XPOS} ; {char.upper()}' )              
                 elif char == ' ':
                     print('')
                     cur_pos += 16                   
-                    if export == True:
-                        f.write('\n')
                 else:
                      pass
-#Misc Code  
+'''
+Misc. Code
+'''  
         titleletters = re.sub(r"[^a-zA-Z,' ']", "", text).upper()          
         print('In Off_TitleCardLetters')
         print(f'titleLetters	"{titleletters}" make sure you have no special characters here though.')
@@ -167,19 +167,6 @@ def gen():
             print('You can only have $8 unique indexes excluding Z,O,N, and E, this code will not work')
         if len(code) > 15:
             print('You can only have a maximum of $E characters in sonic 2 title cards, this code will not work')
-        if export == False:
-            print(f'\n Fix spacing manually!') 
-#Exporting Code For The Things Above           
-        if export == True:
-            f.write(f'In Off_TitleCardLetters\n')
-            f.write(f'titleLetters	"{titleletters}"make sure you have no special characters here though.')
-            print(f'\n Fix spacing manually! The code can also be found in titlecard.txt, make sure to delete it before making a new one')
-            f.write(f'\n Fix spacing manually! Rename this file or delete it, or turn off export before running s2tcg.py again')
-            if len(code) > 15:
-                f.write('You can only have a maximum of $E characters in sonic 2 title cards, this code will not work') 
-            if len(charlistcode) > 8:     
-                  f.write('You can only have $8 unique indexes excluding Z,O,N, and E, this code will not work')
-            if debug == True:
-                f.write(f'{charlist}\n{charlistcode}')
+        print(f'\n Fix spacing manually!') 
     sys.exit(0)
 gen()
