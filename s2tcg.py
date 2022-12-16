@@ -14,24 +14,15 @@ example: dc.w $0005, $85DE, $82ED, $FFD0; FIRST LETTER INDEX WHEN NOT (Z, O, N, 
 def gen(): 
     global text
     debug = False
-'''
-Position Variables 
-''' 
     pos_br = 65520 #position before setting position to $0
     pos_inc = 16 #$10, after M or W, 24/$18, after I, 8/$8
     cur_pos = 65428 #starts with the starting position
     after0 = False
-'''
-Index Variables 
-''' 
     letter = 0
     current = 1500
     twopcurrent = 749
     increment = 2
     twopinc = 2
-'''
-Text Variables 
-''' 
     afterI = False 
     afterM = False
     btext = re.sub(r"[^a-zA-Z,' ']", "", text)
@@ -55,9 +46,6 @@ Text Variables
         code.append(char.lower())
     if len(code) == 0:
         sys.exit(0)
-'''
-Positioning code 
-'''   
         pos = -(len(code))
     if len(char) <= 15:
         for char in code:
@@ -92,18 +80,12 @@ Positioning code
                 cur_pos = 0
                 XPOS = '0000'
                 after0 = True            
-'''
-Width Code
-'''
             if char == 'm' or char == 'w':
                 width = '09'
             elif char == 'i':
                 width = '01'
             else:
-                width = '05'
-'''
-Mappings Generation Code
-'''                                        
+                width = '05'                                      
             if char in charlist:
                 x = charlist.index(char) 
                 print(charlistcode[x],f'${XPOS} ; {char.upper()}')
@@ -154,9 +136,6 @@ Mappings Generation Code
                     cur_pos += 16                   
                 else:
                      pass
-'''
-Misc. Code
-'''  
         titleletters = re.sub(r"[^a-zA-Z,' ']", "", text).upper()          
         print('In Off_TitleCardLetters')
         print(f'titleLetters	"{titleletters}" make sure you have no special characters here though.')
