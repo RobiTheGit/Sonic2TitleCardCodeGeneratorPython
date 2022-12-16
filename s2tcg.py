@@ -22,6 +22,8 @@ def gen():
     increment = 2
     twopinc = 2
 #Text Variables
+    afterI = False 
+    afterM = False
     text = str(input('Level Name > '))
     btext = re.sub(r"[^a-zA-Z,' ']", "", text)
     ntext = btext.replace(" ", "")
@@ -47,9 +49,7 @@ def gen():
         code.append(char.lower())
     if len(code) == 0:
         sys.exit(0)
-#Positioning code   
-        afterI = False 
-        afterM = False 
+#Positioning code    
         pos = -(len(code))
     if len(char) <= 15:
         for char in code:
@@ -98,7 +98,7 @@ def gen():
                 if export == True:
                     f.write(f'{charlistcode[x]},${XPOS} ; {char.upper()} \n')
             else:
-                if char != 'z' and char != 'o' and char != 'n' and char != 'e' and char != ' ' and char.isalpha():  # This may seem redundant, but this is a safeguard for if the regex code doesn't work, though I know it does.
+                if char != 'z' and char != 'o' and char != 'n' and char != 'e' and char != ' ' and char.isalpha():  
                     letter += 1 
                     result = int(current)+int(increment)
                     result2 = hex(result)
@@ -157,7 +157,7 @@ def gen():
                 else:
                      pass
 #Misc Code  
-        titleletters = re.sub(r"[^a-zA-Z,' ']", "", text).upper() #This removes special characters (except maybe for ^) from the text          
+        titleletters = re.sub(r"[^a-zA-Z,' ']", "", text).upper()          
         print('In Off_TitleCardLetters')
         print(f'titleLetters	"{titleletters}" make sure you have no special characters here though.')
         if debug == True:
