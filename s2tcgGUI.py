@@ -3,7 +3,7 @@ from tkinter import *
 import re
 import sys
 global text
-
+text = ''
 def gen(): 
     global text
     global char
@@ -45,7 +45,7 @@ def gen():
         
     if len(code) == 0:
         pass
-        pos = -(len(code))
+    pos = -(len(code))
     if len(char) <= 15:
         for char in code:
             if letter >= 1:
@@ -131,14 +131,10 @@ def gen():
                     INDEX2P = '2C0'
                     output.insert(END,f'\tdc.w $00{width}, $8{INDEX}, $8{INDEX2P}, ${XPOS} ; {char.upper()} \n' )               
                 elif char == ' ':
-                    print('')
                     cur_pos += 16                   
                     output.insert(END,'\n')
                 else:
                      pass
-        titleletters = re.sub(r"[^a-zA-Z,' ']", "", text).upper()          
-        output.insert(END,f'In Off_TitleCardLetters\n')
-        output.insert(END,f'titleLetters	"{titleletters}" make sure you have no special characters here though.')
         output.insert(END,f'\n Fix spacing manually!')
         if len(code) > 15:
             output.insert(END,'You can only have a maximum of $E characters in sonic 2 title cards, this code will not work') 
@@ -163,6 +159,12 @@ class App(tk.Frame):
         global output
         super().__init__(master)
         self.pack()
+        B2 = tk.Button(text = 'Titlecard Letters', command = self.open_popup)
+        B2.pack()        
+        photo = PhotoImage(file ="icon.png")
+        root.iconphoto(False, photo)        
+        Title = tk.Label(text="Sonic 2 Titlecard Code Generator Python")
+        Title.pack()
         self.entrythingy = tk.Entry()
         # Create the application variable.
         self.contents = tk.StringVar()
@@ -171,7 +173,7 @@ class App(tk.Frame):
         # Tell the entry widget to watch this variable.
         self.entrythingy["textvariable"] = self.contents 
         self.entrythingy.pack()
-        B = tk.Button(text = 'Generate', command = self.getstr, relief = tk.RAISED)
+        B = tk.Button(text = 'Generate', command = self.getstr, relief = tk.RAISED, anchor = W)
         B.pack()
         greeting = tk.Label(text="""
         
@@ -191,11 +193,22 @@ class App(tk.Frame):
         global text
         text = self.contents.get()
         run()
+    def open_popup(self):
+        global text
+        titleletters = re.sub(r"[^a-zA-Z,' ']", "", text).upper()
+        top= Toplevel()
+        top.geometry("700x200")
+        top.title("GITHUB Off_TitleCardLetters")
+        Label(top, text= f'In Off_TitleCardLetters, for the zone title card you want to modify,\n where it says \ntitleLetters	"ZONENAME"\n type in the zone\'s name where I use the placeholder ZONENAME., currently your titlecard would have\n').pack()
+        pep = Text(top, state = 'normal')
+        pep.insert(END, f'titleLetters	"{titleletters}"',)
+        pep.configure(state = 'disabled')
+        pep.pack()
+        
 # create the application
-root = tk.Tk()
+root = tk.Tk(className="S2TCG")
 myapp = App(root)
 myapp.master.title("S2TCG")
-myapp.master.maxsize(1000, 400)
 myapp.mainloop()
 
 
