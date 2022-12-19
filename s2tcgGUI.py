@@ -136,7 +136,7 @@ def gen():
                 else:
                      pass
         output.insert(END,f'\n Fix spacing manually!')
-        if len(code) > 15:
+        if len(code) > 16:
             output.insert(END,'You can only have a maximum of $E characters in sonic 2 title cards, this code will not work') 
         if len(charlistcode) > 8:     
             output.insert(END,'You can only have $8 unique indexes excluding Z,O,N, and E, this code will not work')
