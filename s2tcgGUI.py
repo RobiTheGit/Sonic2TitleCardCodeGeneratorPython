@@ -158,12 +158,10 @@ class App(tk.Frame):
         global text
         global output
         super().__init__(master)
-        self.pack()
-        B2 = tk.Button(text = 'Titlecard Letters', command = self.open_popup)
-        B2.pack()        
+        self.pack()        
         photo = PhotoImage(file ="icon.png")
         root.iconphoto(False, photo)        
-        Title = tk.Label(text="Sonic 2 Titlecard Code Generator Python")
+        Title = tk.Label(text="SONIC 2 TITLECARD CODE GENERATOR PYTHON", font = ('gaslight', 18))
         Title.pack()
         self.entrythingy = tk.Entry()
         # Create the application variable.
@@ -173,17 +171,13 @@ class App(tk.Frame):
         # Tell the entry widget to watch this variable.
         self.entrythingy["textvariable"] = self.contents 
         self.entrythingy.pack()
-        B = tk.Button(text = 'Generate', command = self.getstr, relief = tk.RAISED, anchor = W)
+        B = tk.Button(text = 'GENARATE', command = self.getstr, relief = tk.RAISED, anchor = W, font = ('gaslight', 18))
         B.pack()
+        B2 = tk.Button(text = 'TITLECARD LETTERS', command = self.open_popup, font = ('gaslight', 18))
+        B2.pack()
         greeting = tk.Label(text="""
         
-                          
-        
-       
-        
-        
-        
-        
+          
         
 """)
         greeting.pack()
@@ -197,9 +191,9 @@ class App(tk.Frame):
         global text
         titleletters = re.sub(r"[^a-zA-Z,' ']", "", text).upper()
         top= Toplevel()
-        top.geometry("700x200")
+        top.geometry("1100x600")
         top.title("GITHUB Off_TitleCardLetters")
-        Label(top, text= f'In Off_TitleCardLetters, for the zone title card you want to modify,\n where it says \ntitleLetters	"ZONENAME"\n type in the zone\'s name where I use the placeholder ZONENAME., currently your titlecard would have\n').pack()
+        Label(top, text= f'IN OFF_TITLECARDLETTERS, FOR THE ZONE TITLE CARD YOU WANT TO MODIFY,\n WHERE IT SAYS \nTITLELETTERS	"ZONENAME"\n TYPE IN THE ZONE\'S NAME WHERE I USE THE PLACEHOLDER "ZONENAME", \nCURRENTLY YOUR TITLELETTERS WOULD HAVE\n', font = ('gaslight', 18)).pack()
         pep = Text(top, state = 'normal')
         pep.insert(END, f'titleLetters	"{titleletters}"',)
         pep.configure(state = 'disabled')
