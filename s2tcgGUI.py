@@ -39,7 +39,8 @@ def gen():
     charlist = []
     charlistcode = []
     afterI = False 
-    afterM = False     
+    afterM = False
+    afterS = False      
     for char in btext:
         code.append(char.lower())
         
@@ -53,7 +54,7 @@ def gen():
             if afterI == True:
                 increment = 2
                 twopinc = 1
-                pos_inc = 8
+                pos_inc = 4
                 if afterIcount == 0:
                     increment = 4
                     twopinc = 2
@@ -66,7 +67,12 @@ def gen():
                     pos_inc = 16
                 else:
                     afterMcount -= 1 
-                    
+            if afterS == True:
+                pos_inc = 18                    
+                if afterScount == 0:
+                    pos_inc = 16
+                else:
+                    afterScount -= 1                    
             if cur_pos <= pos_br:
                 cur_pos += pos_inc
                 char = char.lower()
@@ -75,6 +81,10 @@ def gen():
                     XPOS = xpos_b.replace("0x", "").upper()
                 else:
                     XPOS = xpos_b.replace("0x", "00").upper()
+            elif cur_pos >= pos_br:
+                cur_pos = 0
+                XPOS = '0000'
+                after0 = True 
             else:
                 cur_pos = 0
                 XPOS = '0000'
@@ -88,6 +98,15 @@ def gen():
             if char in charlist:
                 x = charlist.index(char) 
                 output.insert(END,f'{charlistcode[x]},${XPOS} ; {char.upper()} \n')
+                if char == 'i':
+                   afterI = True 
+                   afterIcount = 1
+                if char == 'm' or char == 'w':
+                   afterM = True 
+                   afterMcount = 1
+                if char == 's':
+                    afterS = True 
+                    afterScount = 1 
             else:
                 if char != 'z' and char != 'o' and char != 'n' and char != 'e' and char != ' ' and char.isalpha():  
                     letter += 1 
@@ -98,7 +117,7 @@ def gen():
                     twopres2 = hex(twopresult) 
                     INDEX2P = twopres2.replace("0x", "").upper()
                     indexcode = (f'\tdc.w $00{width}, $8{INDEX}, $8{INDEX2P}, ${XPOS} ; {char.upper()}')
-                    indexcode2 = (f'\tdc.w $00{width}, $8{INDEX}, $8{INDEX2P},')
+                    indexcode2 = (f'\tdc.w $00{width}, $8{INDEX}, $8{INDEX2P} ')
                     charlistcode.append(indexcode2)    
                     output.insert(END,f'{indexcode} \n')
                     charlist.append(char)
@@ -109,29 +128,32 @@ def gen():
                        afterIcount = 2
                     if char == 'm' or char == 'w':
                        afterM = True 
-                       afterMcount = 2                   
+                       afterMcount = 2
+                    if char == 's':
+                        afterS = True 
+                        afterScount = 1                 
                 elif char == 'z':
-                    letter += 1 
+          #          letter += 1 
                     INDEX = '58C'
                     INDEX2P = '2C6'
                     output.insert(END,f'\tdc.w $00{width}, $8{INDEX}, $8{INDEX2P}, ${XPOS} ; {char.upper()} \n' ) 
                 elif char == 'o':
-                    letter += 1            
+         #           letter += 1            
                     INDEX = '588'
                     INDEX2P = '2C4'
                     output.insert(END,f'\tdc.w $00{width}, $8{INDEX}, $8{INDEX2P}, ${XPOS} ; {char.upper()} \n' )            
                 elif char == 'n':
-                    letter += 1             
+        #            letter += 1             
                     INDEX = '584'
                     INDEX2P = '2C2'
                     output.insert(END,f'\tdc.w $00{width}, $8{INDEX}, $8{INDEX2P}, ${XPOS} ; {char.upper()} \n' )                         
                 elif char == 'e':
-                    letter += 1             
+       #             letter += 1             
                     INDEX = '580'
                     INDEX2P = '2C0'
                     output.insert(END,f'\tdc.w $00{width}, $8{INDEX}, $8{INDEX2P}, ${XPOS} ; {char.upper()} \n' )               
                 elif char == ' ':
-                    cur_pos += 16                   
+                    cur_pos += 2                   
                     output.insert(END,'\n')
                 else:
                      pass

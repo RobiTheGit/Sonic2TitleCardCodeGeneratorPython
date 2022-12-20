@@ -67,7 +67,12 @@ def gen():
                     pos_inc = 16
                 else:
                     afterMcount -= 1 
-                    
+            if afterS == True:
+                pos_inc = 10                    
+                if afterScount == 0:
+                    pos_inc = 16
+                else:
+                    afterScount -= 1                    
             if cur_pos <= pos_br:
                 cur_pos += pos_inc
                 char = char.lower()
@@ -76,6 +81,10 @@ def gen():
                     XPOS = xpos_b.replace("0x", "").upper()
                 else:
                     XPOS = xpos_b.replace("0x", "00").upper()
+            elif cur_pos >= pos_br:
+                cur_pos = 0
+                XPOS = '0000'
+                after0 = True            
             else:
                 cur_pos = 0
                 XPOS = '0000'
@@ -99,41 +108,44 @@ def gen():
                     twopres2 = hex(twopresult) 
                     INDEX2P = twopres2.replace("0x", "").upper()
                     indexcode = (f'\tdc.w $00{width}, $8{INDEX}, $8{INDEX2P}, ${XPOS} ; {char.upper()}')
-                    indexcode2 = (f'\tdc.w $00{width}, $8{INDEX}, $8{INDEX2P},')
+                    indexcode2 = (f'\tdc.w $00{width}, $8{INDEX}, $8{INDEX2P} ')
                     charlistcode.append(indexcode2)    
                     print(indexcode)
                     charlist.append(char)
                     current = result
                     twopcurrent = twopresult
-                    if char == 'i':
+                    if char == 'i' or char == 'l':
                        afterI = True 
                        afterIcount = 2
                     if char == 'm' or char == 'w':
                        afterM = True 
-                       afterMcount = 2                   
+                       afterMcount = 2 
+                    if char == 's':
+                        afterS = True 
+                        afterScount = 1                                          
                 elif char == 'z':
-                    letter += 1 
+      #              letter += 1 
                     INDEX = '58C'
                     INDEX2P = '2C6'
                     print(f'\tdc.w $00{width}, $8{INDEX}, $8{INDEX2P}, ${XPOS} ; {char.upper()}' )
                 elif char == 'o':
-                    letter += 1            
+       #             letter += 1            
                     INDEX = '588'
                     INDEX2P = '2C4'
                     print(f'\tdc.w $00{width}, $8{INDEX}, $8{INDEX2P}, ${XPOS} ; {char.upper()}' )          
                 elif char == 'n':
-                    letter += 1             
+        #            letter += 1             
                     INDEX = '584'
                     INDEX2P = '2C2'
                     print(f'\tdc.w $00{width}, $8{INDEX}, $8{INDEX2P}, ${XPOS} ; {char.upper()}' )                       
                 elif char == 'e':
-                    letter += 1             
+         #           letter += 1             
                     INDEX = '580'
                     INDEX2P = '2C0'
                     print(f'\tdc.w $00{width}, $8{INDEX}, $8{INDEX2P}, ${XPOS} ; {char.upper()}' )              
                 elif char == ' ':
                     print('')
-                    cur_pos += 16                   
+                    cur_pos += 2                 
                 else:
                      pass
         titleletters = re.sub(r"[^a-zA-Z,' ']", "", text).upper()          
