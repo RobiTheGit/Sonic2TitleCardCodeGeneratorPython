@@ -114,7 +114,7 @@ def gen():
                     charlist.append(char)
                     current = result
                     twopcurrent = twopresult
-                    if char == 'i' or char == 'l':
+                    if char == 'i':
                        afterI = True 
                        afterIcount = 2
                     if char == 'm' or char == 'w':

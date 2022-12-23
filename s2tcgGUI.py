@@ -193,7 +193,7 @@ class App(tk.Frame):
         # Tell the entry widget to watch this variable.
         self.entrythingy["textvariable"] = self.contents 
         self.entrythingy.pack()
-        B = tk.Button(text = 'GENARATE', command = self.getstr, relief = tk.RAISED, anchor = W, font = ('gaslight', 18))
+        B = tk.Button(text = 'GENERATE', command = self.getstr, relief = tk.RAISED, anchor = W, font = ('gaslight', 18))
         B.pack()
         B2 = tk.Button(text = 'TITLECARD LETTERS', command = self.open_popup, font = ('gaslight', 18))
         B2.pack()
@@ -215,7 +215,7 @@ class App(tk.Frame):
         top= Toplevel()
         top.geometry("1100x600")
         top.title("GITHUB Off_TitleCardLetters")
-        Label(top, text= f'IN OFF_TITLECARDLETTERS, FOR THE ZONE TITLE CARD YOU WANT TO MODIFY,\n WHERE IT SAYS \nTITLELETTERS	"ZONENAME"\n TYPE IN THE ZONE\'S NAME WHERE I USE THE PLACEHOLDER "ZONENAME", \nCURRENTLY YOUR TITLELETTERS WOULD HAVE\n', font = ('gaslight', 18)).pack()
+        Label(top, text= f'in off_titlecardletters, for the zone title card you want to modify,\n where it says \ntitleletters    "zonename"\n type in the zone\'s name where i use the placeholder "zonename", \ncurrently your titleletters would have\n', font = ('gaslight', 24)).pack()
         pep = Text(top, state = 'normal')
         pep.insert(END, f'titleLetters	"{titleletters}"',)
         pep.configure(state = 'disabled')
