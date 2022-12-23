@@ -124,22 +124,18 @@ def gen():
                         afterS = True 
                         afterScount = 1                                          
                 elif char == 'z':
-      #              letter += 1 
                     INDEX = '58C'
                     INDEX2P = '2C6'
                     print(f'\tdc.w $00{width}, $8{INDEX}, $8{INDEX2P}, ${XPOS} ; {char.upper()}' )
                 elif char == 'o':
-       #             letter += 1            
                     INDEX = '588'
                     INDEX2P = '2C4'
                     print(f'\tdc.w $00{width}, $8{INDEX}, $8{INDEX2P}, ${XPOS} ; {char.upper()}' )          
                 elif char == 'n':
-        #            letter += 1             
                     INDEX = '584'
                     INDEX2P = '2C2'
                     print(f'\tdc.w $00{width}, $8{INDEX}, $8{INDEX2P}, ${XPOS} ; {char.upper()}' )                       
                 elif char == 'e':
-         #           letter += 1             
                     INDEX = '580'
                     INDEX2P = '2C0'
                     print(f'\tdc.w $00{width}, $8{INDEX}, $8{INDEX2P}, ${XPOS} ; {char.upper()}' )              

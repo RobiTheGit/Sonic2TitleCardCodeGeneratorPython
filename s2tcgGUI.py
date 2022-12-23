@@ -133,22 +133,18 @@ def gen():
                         afterS = True 
                         afterScount = 1                 
                 elif char == 'z':
-          #          letter += 1 
                     INDEX = '58C'
                     INDEX2P = '2C6'
                     output.insert(END,f'\tdc.w $00{width}, $8{INDEX}, $8{INDEX2P}, ${XPOS} ; {char.upper()} \n' ) 
                 elif char == 'o':
-         #           letter += 1            
                     INDEX = '588'
                     INDEX2P = '2C4'
                     output.insert(END,f'\tdc.w $00{width}, $8{INDEX}, $8{INDEX2P}, ${XPOS} ; {char.upper()} \n' )            
                 elif char == 'n':
-        #            letter += 1             
                     INDEX = '584'
                     INDEX2P = '2C2'
                     output.insert(END,f'\tdc.w $00{width}, $8{INDEX}, $8{INDEX2P}, ${XPOS} ; {char.upper()} \n' )                         
                 elif char == 'e':
-       #             letter += 1             
                     INDEX = '580'
                     INDEX2P = '2C0'
                     output.insert(END,f'\tdc.w $00{width}, $8{INDEX}, $8{INDEX2P}, ${XPOS} ; {char.upper()} \n' )               
@@ -186,11 +182,8 @@ class App(tk.Frame):
         Title = tk.Label(text="SONIC 2 TITLECARD CODE GENERATOR PYTHON", font = ('gaslight', 18))
         Title.pack()
         self.entrythingy = tk.Entry()
-        # Create the application variable.
         self.contents = tk.StringVar()
-        # Set it to some value.
         self.contents.set("")
-        # Tell the entry widget to watch this variable.
         self.entrythingy["textvariable"] = self.contents 
         self.entrythingy.pack()
         B = tk.Button(text = 'GENERATE', command = self.getstr, relief = tk.RAISED, anchor = W, font = ('gaslight', 18))
@@ -226,5 +219,3 @@ root = tk.Tk(className="S2TCG")
 myapp = App(root)
 myapp.master.title("S2TCG")
 myapp.mainloop()
-
-
