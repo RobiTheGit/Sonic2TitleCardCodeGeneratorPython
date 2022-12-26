@@ -46,7 +46,7 @@ def gen():
         code.append(char.lower())
     if len(code) == 0:
         sys.exit(0)
-        pos = -(len(code))
+    pos = -(len(code))
     if len(char) <= 15:
         for char in code:
             if letter >= 1:
