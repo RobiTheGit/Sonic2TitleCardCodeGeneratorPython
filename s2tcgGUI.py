@@ -2,6 +2,11 @@ import tkinter as tk
 from tkinter import *
 import re
 import sys
+'''
+Letter Format
+dc.w $VERTOFF+WIDTH, $PRI+INDEX, $PRI+INDEX2P, $XPOS ; LETTER
+example: dc.w $0005, $85DE, $82ED, $FFD0; FIRST LETTER INDEX WHEN NOT (Z, O, N, E)
+'''
 global text
 text = ''
 def gen(): 
@@ -168,8 +173,6 @@ def run():
     gen()
     output.configure(state='disabled')       
     
-#Letter Format
-#dc.w $VERTOFF+WIDTH, $PRI+INDEX, $PRI+INDEX2P, $XPOS ; LETTER
 class App(tk.Frame):
     global f
     def __init__(self, master):
@@ -215,7 +218,8 @@ class App(tk.Frame):
         pep.pack()
         
 # create the application
+title = "Sonic 2 Titlecard Code Generator"
 root = tk.Tk(className="S2TCG")
 myapp = App(root)
-myapp.master.title("S2TCG")
+myapp.master.title(title)
 myapp.mainloop()
