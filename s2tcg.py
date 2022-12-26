@@ -149,7 +149,8 @@ def gen():
         print(f'titleLetters	"{titleletters}" make sure you have no special characters here though.')
         if debug == True:
             print(charlist)
-            print(charlistcode)         
+            print(charlistcode)
+            print('\tBut you can\'t stick n move')         
         if len(charlistcode) > 8:
             print('You can only have $8 unique indexes excluding Z,O,N, and E, this code will not work')
         if len(code) > 16:

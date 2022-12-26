@@ -9,12 +9,14 @@ example: dc.w $0005, $85DE, $82ED, $FFD0; FIRST LETTER INDEX WHEN NOT (Z, O, N, 
 '''
 global text
 text = ''
+global debug
+debug = False
 def gen(): 
     global text
     global char
     global afterI
     global afterM
-    debug = False
+    global debug
     pos_br = 65520 #position before setting position to $0
     pos_inc = 16 #$10, after M or W, 24/$18, after I, 8/$8
     cur_pos = 65428 #starts with the starting position
@@ -160,29 +162,32 @@ def gen():
                      pass
         output.insert(END,f'\n Fix spacing manually!')
         if len(code) > 16:
-            output.insert(END,'You can only have a maximum of $E characters in sonic 2 title cards, this code will not work') 
+            output.insert(END,'\nYou can only have a maximum of $E characters in sonic 2 title cards, this code will not work') 
         if len(charlistcode) > 8:     
-            output.insert(END,'You can only have $8 unique indexes excluding Z,O,N, and E, this code will not work')
+            output.insert(END,'\nYou can only have $8 unique indexes excluding Z,O,N, and E, this code will not work')
         if debug == True:
-            output.insert(END, f'{charlist}\n{charlistcode}')
+            output.insert(END, f'\n{charlist}\n{charlistcode}\n\tBut you can\'t stick n move')
 def run():
     global text
     global output
+    global debug
     output.configure(state='normal')
     output.delete(1.0, END)
     gen()
-    output.configure(state='disabled')       
-    
+    output.configure(state='disabled')
 class App(tk.Frame):
     global f
     def __init__(self, master):
         global text
         global output
+        global debug
+        global var1
+        var1 = tk.IntVar()
         super().__init__(master)
         self.pack()        
         photo = PhotoImage(file ="icon.png")
         root.iconphoto(False, photo)        
-        Title = tk.Label(text="SONIC 2 TITLECARD CODE GENERATOR PYTHON", font = ('gaslight', 18))
+        Title = tk.Label(text="SONIC 2 TITLECARD CODE GENERATOR PYTHON \n BY: RobiWanKenobi", font = ('gaslight', 18))
         Title.pack()
         self.entrythingy = tk.Entry()
         self.contents = tk.StringVar()
@@ -193,18 +198,23 @@ class App(tk.Frame):
         B.pack()
         B2 = tk.Button(text = 'TITLECARD LETTERS', command = self.open_popup, font = ('gaslight', 18))
         B2.pack()
-        greeting = tk.Label(text="""
-        
-          
-        
-""")
-        greeting.pack()
+        c1 = tk.Checkbutton(text='See Debug Info',variable=var1, onvalue=1, offvalue=0, command=self.debugset)
+        c1.pack()
         output = tk.Text(state='disabled')
         output.pack()
     def getstr(self):
         global text
         text = self.contents.get()
         run()
+    def debugset(self):
+        global var1
+        global debug
+        if var1.get() == 0:
+            debug = False
+        elif var1.get() == 1:
+            debug = True
+        else:
+            debug = False
     def open_popup(self):
         global text
         titleletters = re.sub(r"[^a-zA-Z,' ']", "", text).upper()
