@@ -66,13 +66,7 @@ def gen():
                 if afterMcount == 0:
                     pos_inc = 16
                 else:
-                    afterMcount -= 1 
-            if afterS == True:
-                pos_inc = 10                    
-                if afterScount == 0:
-                    pos_inc = 16
-                else:
-                    afterScount -= 1                    
+                    afterMcount -= 1 s                    
             if cur_pos <= pos_br:
                 cur_pos += pos_inc
                 char = char.lower()
@@ -119,10 +113,7 @@ def gen():
                        afterIcount = 2
                     if char == 'm' or char == 'w':
                        afterM = True 
-                       afterMcount = 2 
-                    if char == 's':
-                        afterS = True 
-                        afterScount = 1                                          
+                       afterMcount = 2                                          
                 elif char == 'z':
                     INDEX = '58C'
                     INDEX2P = '2C6'
@@ -154,7 +145,7 @@ def gen():
         if len(charlistcode) > 8:
             print('You can only have $8 unique indexes excluding Z,O,N, and E, this code will not work')
         if len(code) > 16:
-            print('You can only have a maximum of $E characters in sonic 2 title cards, this code will not work')
+            print('You can only have a maximum of $10 characters in sonic 2 title cards, this code will not work')
         print(f'\n Fix spacing manually!') 
     sys.exit(0)
 gen()

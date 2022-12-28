@@ -47,7 +47,6 @@ def gen():
     charlistcode = []
     afterI = False 
     afterM = False
-    afterS = False      
     for char in btext:
         code.append(char.lower())
         
@@ -73,13 +72,7 @@ def gen():
                 if afterMcount == 0:
                     pos_inc = 16
                 else:
-                    afterMcount -= 1 
-            if afterS == True:
-                pos_inc = 18                    
-                if afterScount == 0:
-                    pos_inc = 16
-                else:
-                    afterScount -= 1                    
+                    afterMcount -= 1                    
             if cur_pos <= pos_br:
                 cur_pos += pos_inc
                 char = char.lower()
@@ -111,9 +104,6 @@ def gen():
                 if char == 'm' or char == 'w':
                    afterM = True 
                    afterMcount = 1
-                if char == 's':
-                    afterS = True 
-                    afterScount = 1 
             else:
                 if char != 'z' and char != 'o' and char != 'n' and char != 'e' and char != ' ' and char.isalpha():  
                     letter += 1 
@@ -135,10 +125,7 @@ def gen():
                        afterIcount = 2
                     if char == 'm' or char == 'w':
                        afterM = True 
-                       afterMcount = 2
-                    if char == 's':
-                        afterS = True 
-                        afterScount = 1                 
+                       afterMcount = 2                
                 elif char == 'z':
                     INDEX = '58C'
                     INDEX2P = '2C6'
@@ -162,7 +149,7 @@ def gen():
                      pass
         output.insert(END,f'\n Fix spacing manually!')
         if len(code) > 16:
-            output.insert(END,'\nYou can only have a maximum of $E characters in sonic 2 title cards, this code will not work') 
+            output.insert(END,'\nYou can only have a maximum of $10 characters in sonic 2 title cards, this code will not work') 
         if len(charlistcode) > 8:     
             output.insert(END,'\nYou can only have $8 unique indexes excluding Z,O,N, and E, this code will not work')
         if debug == True:
