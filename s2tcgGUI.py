@@ -181,7 +181,7 @@ class App(tk.Frame):
         self.contents.set("")
         self.entrythingy["textvariable"] = self.contents 
         self.entrythingy.pack()
-        B = tk.Button(text = 'GENERATE', command = self.getstr, relief = tk.RAISED, anchor = W, font = ('gaslight', 18))
+        B = tk.Button(text = 'GENERATE', command = self.getstr, anchor = W, font = ('gaslight', 18))
         B.pack()
         B2 = tk.Button(text = 'TITLECARD LETTERS', command = self.open_popup, font = ('gaslight', 18))
         B2.pack()
