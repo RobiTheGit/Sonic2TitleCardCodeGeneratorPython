@@ -1,5 +1,6 @@
 import tkinter as tk
 from tkinter import *
+from tkinter import messagebox
 import re
 import sys
 '''
@@ -38,9 +39,6 @@ def gen():
     else:
         cur_pos = 28 
         after0 = True        
-    proper = hexi.replace("0X", "TC_Zone    dc.w $")
-    output.insert(END,f'In Obj34_MapUnc_147BA Put\n')
-    output.insert(END,f'{proper} \n')
     char = ''
     code = []
     charlist = []
@@ -51,7 +49,11 @@ def gen():
         code.append(char.lower())
         
     if len(code) == 0:
-        pass
+         tk.messagebox.showerror(title='No Title Card To Make!', message='You have no title card to generate!', options=None)
+    else:
+        proper = hexi.replace("0X", "TC_Zone    dc.w $")
+        output.insert(END,f'In Obj34_MapUnc_147BA Put\n')
+        output.insert(END,f'{proper} \n')
     pos = -(len(code))
     if len(char) <= 15:
         for char in code:
@@ -147,13 +149,18 @@ def gen():
                     output.insert(END,'\n')
                 else:
                      pass
-        output.insert(END,f'\n Fix spacing manually!')
-        if len(code) > 16:
-            output.insert(END,'\nYou can only have a maximum of $10 characters in sonic 2 title cards, this code will not work') 
-        if len(charlistcode) > 8:     
-            output.insert(END,'\nYou can only have $8 unique indexes excluding Z,O,N, and E, this code will not work')
-        if debug == True:
-            output.insert(END, f'\n{charlist}\n{charlistcode}\n\tBut you can\'t stick n move')
+        if len(code) == 0:
+            pass
+        else:        
+            output.insert(END,f'\n Fix spacing manually!')
+            if len(code) > 16:
+                output.insert(END,'\nYou can only have a maximum of $10 characters in sonic 2 title cards, this code will not work')
+                tk.messagebox.showerror(title='Error!', message='You can only have a maximum of $10 characters in sonic 2 title cards, this code will not work', options=None) 
+            if len(charlistcode) > 8:     
+                output.insert(END,'\nYou can only have $8 unique indexes excluding Z,O,N, and E, this code will not work')
+                tk.messagebox.showerror(title='Error!', message='You can only have $8 unique indexes excluding Z,O,N, and E, this code will not work', options=None)
+            if debug == True:
+                output.insert(END, f'\nIndexes: {charlist}\nCode for above indexes:{charlistcode}\n\tBut you can\'t stick n move')
 def run():
     global text
     global output
@@ -175,16 +182,18 @@ class App(tk.Frame):
         photo = PhotoImage(file ="icon.png")
         root.iconphoto(False, photo)        
         Title = tk.Label(text="SONIC 2 TITLECARD CODE GENERATOR PYTHON \n BY: RobiWanKenobi", font = ('gaslight', 18))
-        Title.pack()
+        Title.pack(expand=1)
         self.entrythingy = tk.Entry()
         self.contents = tk.StringVar()
         self.contents.set("")
         self.entrythingy["textvariable"] = self.contents 
         self.entrythingy.pack()
-        B = tk.Button(text = 'GENERATE', command = self.getstr, anchor = W, font = ('gaslight', 18))
-        B.pack()
-        B2 = tk.Button(text = 'TITLECARD LETTERS', command = self.open_popup, font = ('gaslight', 18))
-        B2.pack()
+        B = tk.Button(text = 'Generate', command = self.getstr, anchor = W, font = ('gaslight', 18))
+        B.pack(expand=1)
+        B2 = tk.Button(text = 'Titlecard Letters', command = self.open_popup, font = ('gaslight', 18))
+        B2.pack(expand=1)
+        B3 = tk.Button(text = 'Info', command = self.info, font = ('gaslight', 18))
+        B3.pack(expand=1)
         c1 = tk.Checkbutton(text='See Debug Info',variable=var1, onvalue=1, offvalue=0, command=self.debugset)
         c1.pack()
         output = tk.Text(state='disabled')
@@ -213,10 +222,13 @@ class App(tk.Frame):
         pep.insert(END, f'titleLetters	"{titleletters}"',)
         pep.configure(state = 'disabled')
         pep.pack()
+    def info(self):
+         tk.messagebox.showinfo(title='About', message='Sonic 2 Titlecard Code Generator in Python, created by RobiWanKenobi in \nPython 3.10 .', options=None)
         
 # create the application
 title = "Sonic 2 Titlecard Code Generator"
 root = tk.Tk(className="S2TCG")
+root.geometry("650x700")
 myapp = App(root)
 myapp.master.title(title)
 myapp.mainloop()
