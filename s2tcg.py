@@ -9,7 +9,7 @@ else:
 '''    
 Letter Format
 dc.w $VERTOFF+WIDTH, $PRI+INDEX, $PRI+INDEX2P, $XPOS ; LETTER
-example: dc.w $0005, $85DE, $82ED, $FFD0; FIRST LETTER INDEX WHEN NOT (Z, O, N, E)
+example: dc.w $0005, $85DE, $82EF, $0010; FIRST LETTER INDEX WHEN NOT (Z, O, N, E)
 '''
 def gen(): 
     global text
@@ -25,12 +25,12 @@ def gen():
     twopinc = 2
     afterI = False 
     afterM = False
-    btext = re.sub(r"[^a-zA-Z,' ']", "", text)
+    btext = re.sub(r"[^a-zA-Z ]", "", text)
     ntext = btext.replace(" ", "")
     hexi = hex(len(ntext)).upper()
-    if len(text) >= 10:
+    if len(btext) >= 10:
         cur_pos = 65428
-    elif len(text) <= 9 and len(text) > 5:
+    elif len(btext) <= 9 and len(btext) > 5:
         cur_pos = 0
         after0 = True            
     else:
@@ -144,7 +144,7 @@ def gen():
             print('\tBut you can\'t stick n move')         
         if len(charlistcode) > 8:
             print('You can only have $8 unique indexes excluding Z,O,N, and E, this code will not work')
-        if len(code) > 16:
+        if len(ntext) > 16:
             print('You can only have a maximum of $10 characters in sonic 2 title cards, this code will not work')
         print(f'\n Fix spacing manually!') 
     sys.exit(0)

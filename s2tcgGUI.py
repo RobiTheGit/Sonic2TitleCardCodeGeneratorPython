@@ -6,7 +6,7 @@ import sys
 '''
 Letter Format
 dc.w $VERTOFF+WIDTH, $PRI+INDEX, $PRI+INDEX2P, $XPOS ; LETTER
-example: dc.w $0005, $85DE, $82ED, $FFD0; FIRST LETTER INDEX WHEN NOT (Z, O, N, E)
+example: dc.w $0005, $85DE, $82EF, $FFD0; FIRST LETTER INDEX WHEN NOT (Z, O, N, E)
 '''
 global text
 text = ''
@@ -28,12 +28,12 @@ def gen():
     increment = 2
     twopinc = 2
     textt = text
-    btext = re.sub(r"[^a-zA-Z,' ']", "", text)
+    btext = re.sub(r"[^a-zA-Z ]", "", textt)
     ntext = btext.replace(" ", "")
     hexi = hex(len(ntext)).upper()
-    if len(textt) >= 10:
+    if len(btext) >= 10:
         cur_pos = 65428
-    elif len(textt) <= 9 and len(text) > 5:
+    elif len(btext) <= 9 and len(btext) > 5:
         cur_pos = 0
         after0 = True            
     else:
@@ -153,7 +153,7 @@ def gen():
             pass
         else:        
             output.insert(END,f'\n Fix spacing manually!')
-            if len(code) > 16:
+            if len(ntext) > 16:
                 output.insert(END,'\nYou can only have a maximum of $10 characters in sonic 2 title cards, this code will not work')
                 tk.messagebox.showerror(title='Error!', message='You can only have a maximum of $10 characters in sonic 2 title cards, this code will not work', options=None) 
             if len(charlistcode) > 8:     
@@ -187,6 +187,7 @@ class App(tk.Frame):
         self.contents = tk.StringVar()
         self.contents.set("")
         self.entrythingy["textvariable"] = self.contents 
+        self.entrythingy.bind('<Key-Return>', self.enterrun)
         self.entrythingy.pack()
         B = tk.Button(text = 'Generate', command = self.getstr, anchor = W, font = ('gaslight', 18))
         B.pack(expand=1)
@@ -198,6 +199,8 @@ class App(tk.Frame):
         c1.pack()
         output = tk.Text(state='disabled')
         output.pack()
+    def enterrun(self, event):
+        self.getstr()
     def getstr(self):
         global text
         text = self.contents.get()
