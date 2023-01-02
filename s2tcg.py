@@ -36,7 +36,7 @@ def gen():
     else:
         cur_pos = 28 
         after0 = True        
-    print('In Obj34_MapUnc_147BA Put')
+    print(';In Obj34_MapUnc_147BA Put')
     proper = hexi.replace("0X", "TC_Zone    dc.w $")
     print(proper)
     code = []
@@ -66,9 +66,9 @@ def gen():
                 if afterMcount == 0:
                     pos_inc = 16
                 else:
-                    afterMcount -= 1 s                    
+                    afterMcount -= 1
+            cur_pos += pos_inc
             if cur_pos <= pos_br:
-                cur_pos += pos_inc
                 char = char.lower()
                 xpos_b = hex(cur_pos)
                 if after0 == False:
@@ -139,13 +139,11 @@ def gen():
         print('In Off_TitleCardLetters')
         print(f'titleLetters	"{titleletters}" make sure you have no special characters here though.')
         if debug == True:
-            print(charlist)
-            print(charlistcode)
-            print('\tBut you can\'t stick n move')         
+            print(f';Indexes: {charlist} {len(charlist)}\n;Code for above indexes:{charlistcode}\n\t;But you can\'t stick n move')         
         if len(charlistcode) > 8:
-            print('You can only have $8 unique indexes excluding Z,O,N, and E, this code will not work')
+            print(';You can only have $8 unique indexes excluding Z,O,N, and E, this code will not work')
         if len(ntext) > 16:
-            print('You can only have a maximum of $10 characters in sonic 2 title cards, this code will not work')
-        print(f'\n Fix spacing manually!') 
+            print(';You can only have a maximum of $10 characters in sonic 2 title cards, this code will not work')
+        print(f'\n ;Fix spacing manually!') 
     sys.exit(0)
 gen()
