@@ -197,13 +197,33 @@ class App(tk.Frame):
         self.entrythingy["textvariable"] = self.contents 
         self.entrythingy.bind('<Key-Return>', self.enterrun)
         self.entrythingy.pack(side = TOP, anchor = NE,)
-        B = tk.Button(leftframe, text = 'Generate Code', command = self.getstr, font = ('gaslight', 18),height=3, width=10)
+        B = tk.Button(leftframe, 
+        text = 'Generate Code', 
+        command = self.getstr, 
+        font = ('gaslight', 18),
+        height=3, 
+        width=10)
         B.pack(side = TOP, anchor = NE)
-        B2 = tk.Button(leftframe, text = 'Titlecard Letters', command = self.open_popup, font = ('gaslight', 18),height=3, width=10)
+        B2 = tk.Button(leftframe,
+        text = 'Titlecard Letters', 
+        command = self.open_popup, 
+        font = ('gaslight', 18),
+        height=3, 
+        width=10)
         B2.pack(side = TOP, anchor = E)
-        B3 = tk.Button(leftframe, text = 'About S2tcg.py', command = self.info, font = ('gaslight', 18),height=3, width=10)
+        B3 = tk.Button(leftframe,
+        text = 'About S2tcg.py',
+        command = self.info,
+        font = ('gaslight', 18),
+        height=3, 
+        width=10)
         B3.pack(side = TOP, anchor = SE)
-        exitbutton = tk.Button(leftframe, text = 'EXIT', command = self.exit, font = ('gaslight', 18),height=3, width=10)
+        exitbutton = tk.Button(leftframe,
+        text = 'EXIT',
+        command = self.exit, 
+        font = ('gaslight', 18),
+        height=3,
+        width=10)
         exitbutton.pack(side = TOP, anchor = SE)        
         c1 = tk.Checkbutton(topframe, text='See Debug Info',variable=var1, onvalue=1, offvalue=0, command=self.debugset)
         c1.pack(side = BOTTOM)
