@@ -8,6 +8,9 @@ Letter Format
 dc.w $VERTOFF+WIDTH, $PRI+INDEX, $PRI+INDEX2P, $XPOS ; LETTER
 example: dc.w $0005, $85DE, $82EF, $FFD0; FIRST LETTER INDEX WHEN NOT (Z, O, N, E)
 '''
+"""
+Generation Code
+"""
 global text
 text = ''
 global debug
@@ -58,15 +61,15 @@ def gen():
     if len(char) <= 15:
         for char in code:
             if letter >= 1:
-                increment = 4
+                increment = 4 #the first letter is 2 and not 4
             if afterI == True:
-                increment = 2
-                twopinc = 1
-                pos_inc = 4
+                increment = 2 #this is only changed on i from $8 to $4
+                twopinc = 1 #same as above
+                pos_inc = 4 #incrememnt the position less
                 if afterIcount == 0:
-                    increment = 4
-                    twopinc = 2
-                    pos_inc = 16
+                    increment = 4  #restore the default values
+                    twopinc = 2 
+                    pos_inc = 16 
                 else:
                     afterIcount -= 1  
             if afterM == True:
@@ -75,17 +78,17 @@ def gen():
                     pos_inc = 16
                 else:
                     afterMcount -= 1 
-            cur_pos += pos_inc
+            cur_pos += pos_inc #increment position by the position incrementer, there is a reason this is defined after the afterM and afterI stuff
             if cur_pos <= pos_br:
                 char = char.lower()
                 xpos_b = hex(cur_pos)
                 if after0 == False:
-                    XPOS = xpos_b.replace("0x", "").upper()
+                    XPOS = xpos_b.replace("0x", "").upper() #this is for dissam compatibility
                 else:
-                    XPOS = xpos_b.replace("0x", "00").upper()
+                    XPOS = xpos_b.replace("0x", "00").upper() #this is also for dissam compatibility
             elif cur_pos >= pos_br:
                 cur_pos = 0
-                XPOS = '0000'
+                XPOS = '0000' #this is for dissam compatibility but also that is how the values work 
                 after0 = True 
             else:
                 cur_pos = 0
@@ -160,7 +163,10 @@ def gen():
                 output.insert(END,'\n;You can only have $8 unique indexes excluding Z,O,N, and E, this code will not work')
                 tk.messagebox.showerror(title='Error!', message='You can only have $8 unique indexes excluding Z,O,N, and E, this code will not work', options=None)
             if debug == True:
-                output.insert(END, f'\n;Indexes: {charlist} {len(charlist)}\nCode for above indexes:{charlistcode}\n\tBut you can\'t stick n move')
+                output.insert(END, f'\n;Indexes: {charlist} {len(charlist)}\n;Code for above indexes:{charlistcode}\n;\tBut you can\'t stick n move')
+"""
+Tkinter Code
+"""
 def run():
     global text
     global output
@@ -180,11 +186,11 @@ class App(tk.Frame):
         super().__init__(master)
         self.pack()
         leftframe = Frame(root, relief="raised")
-        leftframe.pack(side = LEFT, fill=BOTH, anchor = NE)
+        leftframe.pack(side = LEFT, fill=BOTH, anchor = NE, padx = 5)
         topframe = Frame(root)
         topframe.pack(side = TOP, fill=BOTH)        
         bottomframe = Frame(root)
-        bottomframe.pack(side = TOP, fill=BOTH)
+        bottomframe.pack(side = TOP, fill=BOTH, pady = 5)
         photo = PhotoImage(file ="icon.png")
         root.iconphoto(False, photo)        
         Title = tk.Label(topframe,text="SONIC 2 TITLECARD CODE GENERATOR PYTHON \nBY: RobiWanKenobi", font = ('gaslight', 18))
@@ -202,28 +208,28 @@ class App(tk.Frame):
         command = self.getstr, 
         font = ('gaslight', 18),
         height=3, 
-        width=10)
+        width=8)
         B.pack(side = TOP, anchor = NE)
         B2 = tk.Button(leftframe,
         text = 'Titlecard Letters', 
         command = self.open_popup, 
         font = ('gaslight', 18),
         height=3, 
-        width=10)
+        width=8)
         B2.pack(side = TOP, anchor = E)
         B3 = tk.Button(leftframe,
         text = 'About S2tcg.py',
         command = self.info,
         font = ('gaslight', 18),
         height=3, 
-        width=10)
+        width=8)
         B3.pack(side = TOP, anchor = SE)
         exitbutton = tk.Button(leftframe,
         text = 'EXIT',
         command = self.exit, 
         font = ('gaslight', 18),
         height=3,
-        width=10)
+        width=5)
         exitbutton.pack(side = TOP, anchor = SE)        
         c1 = tk.Checkbutton(topframe, text='See Debug Info',variable=var1, onvalue=1, offvalue=0, command=self.debugset)
         c1.pack(side = BOTTOM)
@@ -257,7 +263,7 @@ class App(tk.Frame):
         pep.configure(state = 'disabled')
         pep.pack()
     def info(self):
-        tk.messagebox.showinfo(title='About', message='Sonic 2 Titlecard Code Generator in Python, created by RobiWanKenobi in \nPython 3.10 .', options=None)
+        tk.messagebox.showinfo(title='About', message='Sonic 2 Titlecard Code Generator in Python, created by RobiWanKenobi in \nPython 3.10 . \nIf you want to support htis project, I have no way to currently :( .', options=None)
     def exit(self):
         sys.exit(0)        
 # create the application

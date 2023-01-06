@@ -35,30 +35,34 @@ def gen():
         after0 = True            
     else:
         cur_pos = 28 
-        after0 = True        
+        after0 = True 
+    if len(btext) == 0:
+        print('No title card to generate!')
+        sys.exit(0)       
     print(';In Obj34_MapUnc_147BA Put')
-    proper = hexi.replace("0X", "TC_Zone    dc.w $")
-    print(proper)
+    proper = hexi.replace("0X", "TC_EHZ    dc.w $")
+    print(proper, '; EHZ can be changed to the word it is or the title card name it is')
     code = []
     charlist = []
     charlistcode = []
     for char in btext:
         code.append(char.lower())
     if len(code) == 0:
+        print('Not title card to generate!')
         sys.exit(0)
     pos = -(len(code))
     if len(char) <= 15:
         for char in code:
             if letter >= 1:
-                increment = 4
+                increment = 4 #the first letter is 2 and not 4
             if afterI == True:
-                increment = 2
-                twopinc = 1
-                pos_inc = 8
+                increment = 2 #this is only changed on i from $8 to $4
+                twopinc = 1 #same as above
+                pos_inc = 4 #incrememnt the position less
                 if afterIcount == 0:
-                    increment = 4
-                    twopinc = 2
-                    pos_inc = 16
+                    increment = 4  #restore the default values
+                    twopinc = 2 
+                    pos_inc = 16 
                 else:
                     afterIcount -= 1  
             if afterM == True:
@@ -66,19 +70,19 @@ def gen():
                 if afterMcount == 0:
                     pos_inc = 16
                 else:
-                    afterMcount -= 1
-            cur_pos += pos_inc
+                    afterMcount -= 1 
+            cur_pos += pos_inc #increment position by the position incrementer, there is a reason this is defined after the afterM and afterI stuff
             if cur_pos <= pos_br:
                 char = char.lower()
                 xpos_b = hex(cur_pos)
                 if after0 == False:
-                    XPOS = xpos_b.replace("0x", "").upper()
+                    XPOS = xpos_b.replace("0x", "").upper() #this is for dissam compatibility
                 else:
-                    XPOS = xpos_b.replace("0x", "00").upper()
+                    XPOS = xpos_b.replace("0x", "00").upper() #this is also for dissam compatibility
             elif cur_pos >= pos_br:
                 cur_pos = 0
-                XPOS = '0000'
-                after0 = True            
+                XPOS = '0000' #this is for dissam compatibility but also that is how the values work 
+                after0 = True 
             else:
                 cur_pos = 0
                 XPOS = '0000'
