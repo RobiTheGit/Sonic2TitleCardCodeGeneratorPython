@@ -54,9 +54,9 @@ def gen():
     if len(code) == 0:
          tk.messagebox.showerror(title='No Title Card To Make!', message='You have no title card to generate!', options=None)
     else:
-        proper = hexi.replace("0X", "TC_Zone    dc.w $")
+        proper = hexi.replace("0X", "TC_EHZ    dc.w $")
         output.insert(END,f';In Obj34_MapUnc_147BA Put\n')
-        output.insert(END,f'{proper} \n')
+        output.insert(END,f'{proper} ; EHZ can be changed to the word it is, EHZ\'s is word_147E8 \n')
     pos = -(len(code))
     if len(char) <= 15:
         for char in code:
@@ -229,7 +229,7 @@ class App(tk.Frame):
         command = self.exit, 
         font = ('gaslight', 18),
         height=3,
-        width=5)
+        width=8)
         exitbutton.pack(side = TOP, anchor = SE)        
         c1 = tk.Checkbutton(topframe, text='See Debug Info',variable=var1, onvalue=1, offvalue=0, command=self.debugset)
         c1.pack(side = BOTTOM)
@@ -259,9 +259,10 @@ class App(tk.Frame):
         top.title("GITHUB Off_TitleCardLetters")
         Label(top, text= f'In Off_TitleCardLetters, for the zone title card you want to modify, where it says \ntitleLetters    "EMERALD HILL" or whatever zone you are replacing, \n you type in the zone\'s name, currently your titleLetters would have\n').pack()
         pep = Text(top, state = 'normal')
+        pep.pack()
+        pep.delete(1.0, END)
         pep.insert(END, f'titleLetters	"{titleletters}"',)
         pep.configure(state = 'disabled')
-        pep.pack()
     def info(self):
         tk.messagebox.showinfo(title='About', message='Sonic 2 Titlecard Code Generator in Python, created by RobiWanKenobi in \nPython 3.10 . \nIf you want to support htis project, I have no way to currently :( .', options=None)
     def exit(self):
@@ -269,7 +270,7 @@ class App(tk.Frame):
 # create the application
 title = "Sonic 2 Titlecard Code Generator"
 root = tk.Tk(className="S2TCG")
-root.geometry("800x450")
+root.geometry("850x450")
 root.resizable(True,True)
 myapp = App(root)
 myapp.master.title(title)

@@ -41,7 +41,7 @@ def gen():
         sys.exit(0)       
     print(';In Obj34_MapUnc_147BA Put')
     proper = hexi.replace("0X", "TC_EHZ    dc.w $")
-    print(proper, '; EHZ can be changed to the word it is or the title card name it is')
+    print(proper, '; EHZ can be changed to the word it is or the title card name it is, the word for EHZ is word_147E8')
     code = []
     charlist = []
     charlistcode = []
