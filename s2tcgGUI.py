@@ -3,6 +3,10 @@ from tkinter import *
 from tkinter import messagebox
 import re
 import sys
+import customtkinter
+
+customtkinter.set_appearance_mode("System")  # Modes: system (default), light, dark
+customtkinter.set_default_color_theme("blue")  # Themes: blue (default), dark-blue, green
 '''
 Letter Format
 dc.w $VERTOFF+WIDTH, $PRI+INDEX, $PRI+INDEX2P, $XPOS ; LETTER
@@ -52,7 +56,11 @@ def gen():
         code.append(char.lower())
         
     if len(code) == 0:
-         tk.messagebox.showerror(title='No Title Card To Make!', message='You have no title card to generate!', options=None)
+         tk.messagebox.showerror(
+         title='No Titlecard To Make!',
+         message='You have no titlecard to generate!',
+         options=None
+         )
     else:
         proper = hexi.replace("0X", "TC_EHZ    dc.w $")
         output.insert(END,f';In Obj34_MapUnc_147BA Put\n')
@@ -185,56 +193,94 @@ class App(tk.Frame):
         var1 = tk.IntVar()
         super().__init__(master)
         self.pack()
-        leftframe = Frame(root, relief="raised")
+        leftframe = customtkinter.CTkFrame(
+        root
+        )        
         leftframe.pack(side = LEFT, fill=BOTH, anchor = NE, padx = 5)
-        topframe = Frame(root)
-        topframe.pack(side = TOP, fill=BOTH)        
-        bottomframe = Frame(root)
+        
+        topframe = customtkinter.CTkFrame(
+        root 
+        )
+        topframe.pack(side = TOP, fill=BOTH)
+                
+        bottomframe = customtkinter.CTkFrame(
+        root 
+        )
         bottomframe.pack(side = TOP, fill=BOTH, pady = 5)
+        
         photo = PhotoImage(file ="icon.png")
-        root.iconphoto(False, photo)        
-        Title = tk.Label(topframe,text="SONIC 2 TITLECARD CODE GENERATOR PYTHON \nBY: RobiWanKenobi", font = ('gaslight', 18))
+        root.iconphoto(False, photo)
+                
+        Title = customtkinter.CTkLabel(
+        topframe,
+        text="SONIC 2 TITLECARD CODE GENERATOR PYTHON \nBY: RobiWanKenobi", 
+        font = ('gaslight', 29)
+        )        
         Title.pack(side = TOP, fill=BOTH)
-        inlbl = tk.Label(leftframe, text='Input Title Card Name Here')
+        
+        inlbl = customtkinter.CTkLabel(
+        leftframe, 
+        text='Input Title Card Name Here'
+        )
         inlbl.pack(side = TOP, anchor = NE)
+        
         self.entrythingy = tk.Entry(leftframe)
         self.contents = tk.StringVar()
         self.contents.set("")
         self.entrythingy["textvariable"] = self.contents 
         self.entrythingy.bind('<Key-Return>', self.enterrun)
         self.entrythingy.pack(side = TOP, anchor = NE,)
-        B = tk.Button(leftframe, 
+        
+        B = customtkinter.CTkButton(leftframe, 
         text = 'Generate Code', 
         command = self.getstr, 
-        font = ('gaslight', 18),
+        font = ('gaslight', 28),
         height=3, 
-        width=8)
-        B.pack(side = TOP, anchor = NE)
-        B2 = tk.Button(leftframe,
+        width=9)
+        B.pack(side = TOP, anchor = E)
+        
+        B2 = customtkinter.CTkButton(leftframe,
         text = 'Titlecard Letters', 
         command = self.open_popup, 
-        font = ('gaslight', 18),
+        font = ('gaslight', 28),
         height=3, 
         width=8)
         B2.pack(side = TOP, anchor = E)
-        B3 = tk.Button(leftframe,
+        
+        B3 = customtkinter.CTkButton(leftframe,
         text = 'About S2tcg.py',
         command = self.info,
-        font = ('gaslight', 18),
+        font = ('gaslight', 28),
         height=3, 
         width=8)
         B3.pack(side = TOP, anchor = SE)
-        exitbutton = tk.Button(leftframe,
+        
+        exitbutton = customtkinter.CTkButton(
+        leftframe,
         text = 'EXIT',
         command = self.exit, 
-        font = ('gaslight', 18),
+        font = ('gaslight', 28),
         height=3,
         width=8)
-        exitbutton.pack(side = TOP, anchor = SE)        
-        c1 = tk.Checkbutton(topframe, text='See Debug Info',variable=var1, onvalue=1, offvalue=0, command=self.debugset)
+        exitbutton.pack(side = TOP, anchor = SE) 
+               
+        c1 = customtkinter.CTkCheckBox(
+        topframe,
+         text='See Debug Info',
+         variable=var1,
+         onvalue=1,
+         offvalue=0, 
+         command=self.debugset
+         )
         c1.pack(side = BOTTOM)
-        output = tk.Text(bottomframe, state='disabled')
-        output.pack( expand = 1, fill = BOTH)
+        
+        output = customtkinter.CTkTextbox(
+        bottomframe,
+        state='disabled',
+        height = 400
+        )
+        output.pack(fill = BOTH)
+        
     def enterrun(self, event):
         self.getstr()
     def getstr(self):
@@ -253,23 +299,31 @@ class App(tk.Frame):
     def open_popup(self):
         global text
         titleletters = re.sub(r"[^a-zA-Z,' ']", "", text).upper()
-        top= Toplevel()
+        top= customtkinter.CTkToplevel()
         top.geometry("550x200")
         top.resizable(False,False)
         top.title("GITHUB Off_TitleCardLetters")
-        Label(top, text= f'In Off_TitleCardLetters, for the zone title card you want to modify, where it says \ntitleLetters    "EMERALD HILL" or whatever zone you are replacing, \n you type in the zone\'s name, currently your titleLetters would have\n').pack()
-        pep = Text(top, state = 'normal')
-        pep.pack()
+        customtkinter.CTkLabel(
+        top,
+        text= f'In Off_TitleCardLetters, for the zone title card you want to modify, where it says \ntitleLetters    "EMERALD HILL" or whatever zone you are replacing, \n you type in the zone\'s name, currently your titleLetters would have\n'
+        ).pack()
+        pep = customtkinter.CTkTextbox(top,
+        state = 'normal'
+        )
+        pep.pack(fill = BOTH)
         pep.delete(1.0, END)
         pep.insert(END, f'titleLetters	"{titleletters}"',)
         pep.configure(state = 'disabled')
     def info(self):
-        tk.messagebox.showinfo(title='About', message='Sonic 2 Titlecard Code Generator in Python, created by RobiWanKenobi in \nPython 3.10 . \nIf you want to support htis project, I have no way to currently :( .', options=None)
+        tk.messagebox.showinfo(
+        title='About',
+        message='Sonic 2 Titlecard Code Generator in Python, created by RobiWanKenobi in \nPython 3.10 . \nIf you want to support htis project, I have no way to currently :( .', options=None
+        )
     def exit(self):
-        sys.exit(0)        
+        sys.exit(0)
 # create the application
 title = "Sonic 2 Titlecard Code Generator"
-root = tk.Tk(className="S2TCG")
+root = customtkinter.CTk(className="S2TCG")
 root.geometry("850x450")
 root.resizable(True,True)
 myapp = App(root)
