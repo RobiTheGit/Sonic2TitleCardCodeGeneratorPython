@@ -6,7 +6,7 @@ import sys
 import customtkinter
 
 customtkinter.set_appearance_mode("System")  # Modes: system (default), light, dark
-customtkinter.set_default_color_theme("blue")  # Themes: blue (default), dark-blue, green
+customtkinter.set_default_color_theme("dark-blue")  # Themes: blue (default), dark-blue, green
 '''
 Letter Format
 dc.w $VERTOFF+WIDTH, $PRI+INDEX, $PRI+INDEX2P, $XPOS ; LETTER
@@ -34,11 +34,10 @@ def gen():
     twopcurrent = 749
     increment = 2
     twopinc = 2
-    textt = text
-    btext = re.sub(r"[^a-zA-Z ]", "", textt)
+    btext = re.sub(r"[^a-zA-Z ]", "", text)
     ntext = btext.replace(" ", "")
     hexi = hex(len(ntext)).upper()
-    if len(btext) >= 10:
+    if len(btext) >= 10: 
         cur_pos = 65428
     elif len(btext) <= 9 and len(btext) > 5:
         cur_pos = 0
@@ -101,7 +100,7 @@ def gen():
             else:
                 cur_pos = 0
                 XPOS = '0000'
-                after0 = True                              
+                after0 = True                                           
             if char == 'm' or char == 'w':
                 width = '09'
             elif char == 'i':
@@ -170,6 +169,8 @@ def gen():
             if len(charlistcode) > 8:     
                 output.insert(END,'\n;You can only have $8 unique indexes excluding Z,O,N, and E, this code will not work')
                 tk.messagebox.showerror(title='Error!', message='You can only have $8 unique indexes excluding Z,O,N, and E, this code will not work', options=None)
+            if after0 == True and cur_pos >= 127:
+                tk.messagebox.showerror(title='Error!', message='Position Out Of bounds', options=None)
             if debug == True:
                 output.insert(END, f'\n;Indexes: {charlist} {len(charlist)}\n;Code for above indexes:{charlistcode}\n;\tBut you can\'t stick n move')
 """
@@ -214,7 +215,7 @@ class App(tk.Frame):
         Title = customtkinter.CTkLabel(
         topframe,
         text="SONIC 2 TITLECARD CODE GENERATOR PYTHON \nBY: RobiWanKenobi", 
-        font = ('gaslight', 29)
+        font = ('gaslight', 25)
         )        
         Title.pack(side = TOP, fill=BOTH)
         
@@ -224,7 +225,7 @@ class App(tk.Frame):
         )
         inlbl.pack(side = TOP, anchor = NE)
         
-        self.entrythingy = tk.Entry(leftframe)
+        self.entrythingy = customtkinter.CTkEntry(leftframe, placeholder_text="type level name")
         self.contents = tk.StringVar()
         self.contents.set("")
         self.entrythingy["textvariable"] = self.contents 
@@ -232,34 +233,34 @@ class App(tk.Frame):
         self.entrythingy.pack(side = TOP, anchor = NE,)
         
         B = customtkinter.CTkButton(leftframe, 
-        text = 'Generate Code', 
+        text = '  Generate Code', 
         command = self.getstr, 
-        font = ('gaslight', 28),
+        font = ('gaslight', 30),
         height=3, 
         width=9)
         B.pack(side = TOP, anchor = E)
         
         B2 = customtkinter.CTkButton(leftframe,
-        text = 'Titlecard Letters', 
+        text = '  Titlecard Letters', 
         command = self.open_popup, 
-        font = ('gaslight', 28),
+        font = ('gaslight', 30),
         height=3, 
         width=8)
         B2.pack(side = TOP, anchor = E)
         
         B3 = customtkinter.CTkButton(leftframe,
-        text = 'About S2tcg.py',
+        text = '  About S2tcg.py',
         command = self.info,
-        font = ('gaslight', 28),
+        font = ('gaslight', 30),
         height=3, 
         width=8)
         B3.pack(side = TOP, anchor = SE)
         
         exitbutton = customtkinter.CTkButton(
         leftframe,
-        text = 'EXIT',
+        text = '     EXIT     ',
         command = self.exit, 
-        font = ('gaslight', 28),
+        font = ('gaslight', 30),
         height=3,
         width=8)
         exitbutton.pack(side = TOP, anchor = SE) 
@@ -285,7 +286,7 @@ class App(tk.Frame):
         self.getstr()
     def getstr(self):
         global text
-        text = self.contents.get()
+        text = self.entrythingy.get()
         run()
     def debugset(self):
         global var1

@@ -13,7 +13,6 @@ example: dc.w $0005, $85DE, $82EF, $0010; FIRST LETTER INDEX WHEN NOT (Z, O, N, 
 '''
 def gen(): 
     global text
-    debug = False
     pos_br = 65520 #position before setting position to $0
     pos_inc = 16 #$10, after M or W, 24/$18, after I, 8/$8
     cur_pos = 65428 #starts with the starting position
@@ -48,7 +47,7 @@ def gen():
     for char in btext:
         code.append(char.lower())
     if len(code) == 0:
-        print('Not title card to generate!')
+        print('No title card to generate!')
         sys.exit(0)
     pos = -(len(code))
     if len(char) <= 15:
@@ -148,6 +147,8 @@ def gen():
             print(';You can only have $8 unique indexes excluding Z,O,N, and E, this code will not work')
         if len(ntext) > 16:
             print(';You can only have a maximum of $10 characters in sonic 2 title cards, this code will not work')
+        if after0 == True and cur_pos >= 127:
+            print(';Position Out Of bounds')
         print(f'\n ;Fix spacing manually!') 
     sys.exit(0)
-gen()
+gen() #run the code
