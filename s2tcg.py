@@ -79,12 +79,14 @@ def gen():
                 else:
                     XPOS = xpos_b.replace("0x", "00").upper() #this is also for dissam compatibility
             elif cur_pos >= pos_br:
-                cur_pos = 0
-                XPOS = '0000' #this is for dissam compatibility but also that is how the values work 
-                after0 = True 
+                cur_pos -= 65536
+                xpos_b = hex(abs(cur_pos))
+                XPOS =  xpos_b.replace("0x", "000").upper()
+                after0 = True
             else:
-                cur_pos = 0
-                XPOS = '0000'
+                cur_pos -= 65536
+                xpos_b = hex(cur_pos)
+                XPOS =  xpos_b.replace("0x", "").upper()
                 after0 = True            
             if char == 'm' or char == 'w':
                 width = '09'
@@ -149,6 +151,5 @@ def gen():
             print(';You can only have a maximum of $10 characters in sonic 2 title cards, this code will not work')
         if after0 == True and cur_pos >= 127:
             print(';Position Out Of bounds')
-        print(f'\n ;Fix spacing manually!') 
     sys.exit(0)
 gen() #run the code

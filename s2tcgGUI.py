@@ -94,12 +94,14 @@ def gen():
                 else:
                     XPOS = xpos_b.replace("0x", "00").upper() #this is also for dissam compatibility
             elif cur_pos >= pos_br:
-                cur_pos = 0
-                XPOS = '0000' #this is for dissam compatibility but also that is how the values work 
-                after0 = True 
+                cur_pos -= 65536
+                xpos_b = hex(abs(cur_pos))
+                XPOS =  xpos_b.replace("0x", "000").upper()
+                after0 = True
             else:
-                cur_pos = 0
-                XPOS = '0000'
+                cur_pos -= 65536
+                xpos_b = hex(cur_pos)
+                XPOS =  xpos_b.replace("0x", "00").upper()
                 after0 = True                                           
             if char == 'm' or char == 'w':
                 width = '09'
@@ -162,7 +164,6 @@ def gen():
         if len(code) == 0:
             pass
         else:        
-            output.insert(END,f'\n ;Fix spacing manually!')
             if len(ntext) > 16:
                 output.insert(END,'\n;You can only have a maximum of $10 characters in sonic 2 title cards, this code will not work')
                 tk.messagebox.showerror(title='Error!', message='You can only have a maximum of $10 characters in sonic 2 title cards, this code will not work', options=None) 
@@ -301,7 +302,7 @@ class App(tk.Frame):
         global text
         titleletters = re.sub(r"[^a-zA-Z,' ']", "", text).upper()
         top= customtkinter.CTkToplevel()
-        top.geometry("550x200")
+        top.geometry("550x400")
         top.resizable(False,False)
         top.title("GITHUB Off_TitleCardLetters")
         customtkinter.CTkLabel(
@@ -315,6 +316,10 @@ class App(tk.Frame):
         pep.delete(1.0, END)
         pep.insert(END, f'titleLetters	"{titleletters}"',)
         pep.configure(state = 'disabled')
+        customtkinter.CTkLabel(
+        top,
+        text= f'The order for title card letters is the same as the order for the mappings code '
+        ).pack()
     def info(self):
         tk.messagebox.showinfo(
         title='About',
