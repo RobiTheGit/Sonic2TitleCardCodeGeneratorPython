@@ -92,17 +92,32 @@ def gen():
                 if after0 == False:
                     XPOS = xpos_b.replace("0x", "").upper() #this is for dissam compatibility
                 else:
-                    XPOS = xpos_b.replace("0x", "00").upper() #this is also for dissam compatibility
+                    if cur_pos >= 16:
+                        XPOS = xpos_b.replace("0x", "00").upper() #this is also for dissam compatibility
+                    elif cur_pos <= 16:
+                        XPOS =  xpos_b.replace("0x", "000").upper()
+                    else:    
+                        XPOS =  xpos_b.replace("0x", "000").upper()
             elif cur_pos >= pos_br:
                 cur_pos -= 65536
                 xpos_b = hex(abs(cur_pos))
-                XPOS =  xpos_b.replace("0x", "000").upper()
+                if cur_pos >= 16:
+                    XPOS = xpos_b.replace("0x", "00").upper() #this is also for dissam compatibility
+                elif cur_pos <= 16:
+                    XPOS =  xpos_b.replace("0x", "000").upper()
+                else:    
+                    XPOS =  xpos_b.replace("0x", "000").upper()
                 after0 = True
             else:
-                cur_pos -= 65536
-                xpos_b = hex(cur_pos)
-                XPOS =  xpos_b.replace("0x", "00").upper()
                 after0 = True                                           
+                cur_pos -= 65536
+                xpos_b = hex(abs(cur_pos))
+                if cur_pos >= 16:
+                    XPOS = xpos_b.replace("0x", "00").upper() #this is also for dissam compatibility
+                if cur_pos <= 16:
+                    XPOS =  xpos_b.replace("0x", "000").upper()
+                else:    
+                    XPOS =  xpos_b.replace("0x", "000").upper()
             if char == 'm' or char == 'w':
                 width = '09'
             elif char == 'i':
