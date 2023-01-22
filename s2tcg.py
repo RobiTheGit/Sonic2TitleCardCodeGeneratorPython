@@ -11,6 +11,7 @@ Letter Format
 dc.w $VERTOFF+WIDTH, $PRI+INDEX, $PRI+INDEX2P, $XPOS ; LETTER
 example: dc.w $0005, $85DE, $82EF, $0010; FIRST LETTER INDEX WHEN NOT (Z, O, N, E)
 '''
+debug = False
 def gen(): 
     global text
     pos_br = 65520 #position before setting position to $0
