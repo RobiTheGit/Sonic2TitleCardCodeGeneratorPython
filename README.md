@@ -2,4 +2,5 @@
  It works, positioning shouldn't but might need manual edits though
 
 The GUI requires Tk/Tcl, customtkinter ,and Tkinter and both use the re module
-![Screenshot from 2023-01-15 12-07-33](https://user-images.githubusercontent.com/94720060/212561787-bd9fbe48-9dc2-48a2-b66f-245e625ca289.png)
+
+![Screenshot from 2023-01-21 18-03-56](https://user-images.githubusercontent.com/94720060/213896651-37f9e8b2-8da3-4512-8b81-985771166197.png)
