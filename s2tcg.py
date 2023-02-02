@@ -3,7 +3,10 @@ import sys
 argv = False
 if argv == True:
     from sys import argv
-    script, text = argv
+    try:
+        script, text = argv
+    except:
+        text = str(input('Level Name > '))    
 else:
     text = str(input('Level Name > '))
 '''    
