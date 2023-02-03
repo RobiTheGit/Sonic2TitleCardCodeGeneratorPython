@@ -271,7 +271,15 @@ class App(tk.Frame):
         height=3, 
         width=8)
         B3.pack(side = TOP, anchor = SE)
-        
+ 
+        B4 = customtkinter.CTkButton(leftframe,
+        text = 'Export Titlecard',
+        command = self.export,
+        font = ('gaslight', 30),
+        height=3, 
+        width=8)
+        B4.pack(side = TOP, anchor = SE)
+               
         exitbutton = customtkinter.CTkButton(
         leftframe,
         text = '     EXIT     ',
@@ -297,7 +305,15 @@ class App(tk.Frame):
         height = 400
         )
         output.pack(fill = BOTH)
-        
+    def export(self):
+        global text
+        if text == '':
+            pass
+        else:
+            f = open(f'{text.upper()}.txt', 'a')
+            titleletters = re.sub(r"[^a-zA-Z,' ']", "", text).upper()
+            f.write(output.get(1.0, END))
+            f.write(f'titleLetters	"{titleletters}"')
     def enterrun(self, event):
         self.getstr()
     def getstr(self):
