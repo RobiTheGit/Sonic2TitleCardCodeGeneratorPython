@@ -3,4 +3,4 @@
 
 The GUI requires Tk/Tcl, customtkinter ,and Tkinter and both use the re module
 
-![Screenshot from 2023-01-21 18-03-56](https://user-images.githubusercontent.com/94720060/213896651-37f9e8b2-8da3-4512-8b81-985771166197.png)
+![Screenshot from 2023-02-03 11-50-33](https://user-images.githubusercontent.com/94720060/216683529-3ea22133-5e7f-4976-b8fe-af95ae862078.png)
