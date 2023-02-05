@@ -48,6 +48,8 @@ def gen():
     proper = hexi.replace("0X", "TC_EHZ    dc.w $")
     f.write(f'{proper} ; EHZ can be changed to the word it is or the title card name it is, the word for EHZ is word_147E8')
     f.write('\n')
+    if debug == True:
+        print(f';In Obj34_MapUnc_147BA Put\n{proper} ; EHZ can be changed to the word it is or the title card name it is, the word for EHZ is word_147E8\n')
     code = []
     charlist = []
     charlistcode = []
@@ -120,6 +122,8 @@ def gen():
                 x = charlist.index(char) 
                 f.write(f'{charlistcode[x]} ${XPOS} ; {char.upper()}')
                 f.write('\n')
+                if debug == True:
+                    print(f'{charlistcode[x]} ${XPOS} ; {char.upper()}')
             else:
                 if char != 'z' and char != 'o' and char != 'n' and char != 'e' and char != ' ' and char.isalpha():  
                     letter += 1 
@@ -134,6 +138,8 @@ def gen():
                     charlistcode.append(indexcode2)    
                     f.write(indexcode)
                     f.write('\n')
+                    if debug == True:
+                        print(indexcode)
                     charlist.append(char)
                     current = result
                     twopcurrent = twopresult
@@ -148,42 +154,55 @@ def gen():
                     INDEX2P = '2C6'
                     f.write(f'\tdc.w $00{width}, $8{INDEX}, $8{INDEX2P}, ${XPOS} ; {char.upper()}' )
                     f.write('\n')
+                    if debug == True:
+                        print(f'\tdc.w $00{width}, $8{INDEX}, $8{INDEX2P}, ${XPOS} ; {char.upper()}')                    
                 elif char == 'o':
                     INDEX = '588'
                     INDEX2P = '2C4'
                     f.write(f'\tdc.w $00{width}, $8{INDEX}, $8{INDEX2P}, ${XPOS} ; {char.upper()}' )
-                    f.write('\n')          
+                    f.write('\n') 
+                    if debug == True:
+                        print(f'\tdc.w $00{width}, $8{INDEX}, $8{INDEX2P}, ${XPOS} ; {char.upper()}')                              
                 elif char == 'n':
                     INDEX = '584'
                     INDEX2P = '2C2'
                     f.write(f'\tdc.w $00{width}, $8{INDEX}, $8{INDEX2P}, ${XPOS} ; {char.upper()}' ) 
-                    f.write('\n')                      
+                    f.write('\n')     
+                    if debug == True:  
+                        print(f'\tdc.w $00{width}, $8{INDEX}, $8{INDEX2P}, ${XPOS} ; {char.upper()}')               
                 elif char == 'e':
                     INDEX = '580'
                     INDEX2P = '2C0'
                     f.write(f'\tdc.w $00{width}, $8{INDEX}, $8{INDEX2P}, ${XPOS} ; {char.upper()}' )
-                    f.write('\n')              
+                    f.write('\n') 
+                    if debug == True:  
+                        print(f'\tdc.w $00{width}, $8{INDEX}, $8{INDEX2P}, ${XPOS} ; {char.upper()}')           
                 elif char == ' ':
                     f.write('\n')
-                    cur_pos += 2                 
+                    cur_pos += 2
+                    if debug == True:
+                        print('\n')                 
                 else:
                      pass
         titleletters = re.sub(r"[^a-zA-Z,' ']", "", text).upper()          
-        f.write('In Off_TitleCardLetters')
-        f.write('\n')
-        f.write(f'titleLetters	"{titleletters}" make sure you have no special characters here though.')
-        f.write('\n')
+        f.write(f'In Off_TitleCardLetters\ntitleLetters	"{titleletters}" make sure you have no special characters here though.')
+        if debug == True:
+            print(f'In Off_TitleCardLetters\ntitleLetters	"{titleletters}" make sure you have no special characters here though.')
         if debug == True:
             f.write(f';Indexes: {charlist} {len(charlist)}\n;Code for above indexes:{charlistcode}\n\t;But you can\'t stick n move')  
             f.write('\n')       
         if len(charlistcode) > 8:
             f.write(';You can only have $8 unique indexes excluding Z,O,N, and E, this code will not work')
+            print('You can only have $8 unique indexes excluding Z,O,N, and E, this code will not work')
             f.write('\n')
         if len(ntext) > 16:
             f.write(';You can only have a maximum of $10 characters in sonic 2 title cards, this code will not work')
+            print('You can only have a maximum of $10 characters in sonic 2 title cards, this code will not work')
             f.write('\n')
         if after0 == True and cur_pos >= 127:
             f.write(';Position Out Of bounds')
+            print('Position Out Of bounds')
             f.write('\n')
+    f.close()
     sys.exit(0)
 gen() #run the code
