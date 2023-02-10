@@ -1,6 +1,7 @@
+#!/usr/bin/python3 
 import re
 import sys
-argv = False
+argv = True
 if argv == True:
     from sys import argv
     try:

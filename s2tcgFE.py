@@ -1,3 +1,4 @@
+#!/usr/bin/python3 
 import re
 import sys
 from sys import argv

@@ -1,3 +1,4 @@
+#!/usr/bin/python3 
 import tkinter as tk
 from tkinter import *
 from tkinter import messagebox
@@ -314,6 +315,7 @@ class App(tk.Frame):
             titleletters = re.sub(r"[^a-zA-Z,' ']", "", text).upper()
             f.write(output.get(1.0, END))
             f.write(f'titleLetters	"{titleletters}"')
+            f.close()
     def enterrun(self, event):
         self.getstr()
     def getstr(self):
