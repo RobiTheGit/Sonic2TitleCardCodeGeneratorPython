@@ -26,7 +26,7 @@ def gen():
     global afterI
     global afterM
     global debug
-    pos_br = 65520 #position before setting position to $0
+    pos_br = 65535 #position before setting position to $0
     pos_inc = 16 #$10, after M or W, 24/$18, after I, 8/$8
     cur_pos = 65428 #starts with the starting position
     after0 = False
@@ -79,13 +79,23 @@ def gen():
                     twopinc = 2 
                     pos_inc = 16 
                 else:
-                    afterIcount -= 1  
+                    afterIcount -= 1 
+                    if afterIposcount == 0:
+                        pos_inc = 16
+                    else:
+                        afterIposcount -= 1                      
             if afterM == True:
-                pos_inc = 24                    
+                pos_inc = 24   
+                increment = 6  #restore the default values                 
                 if afterMcount == 0:
-                    pos_inc = 16
+                    increment = 4  #restore the default values
+                    twopinc = 2 
                 else:
                     afterMcount -= 1 
+                    if afterMposcount == 0:
+                        pos_inc = 16
+                    else:
+                        afterMposcount -= 1                   
             cur_pos += pos_inc #increment position by the position incrementer, there is a reason this is defined after the afterM and afterI stuff
             if cur_pos <= pos_br:
                 char = char.lower()
@@ -153,28 +163,47 @@ def gen():
                     if char == 'i':
                        afterI = True 
                        afterIcount = 2
+                       afterIposcount = 1               
                     if char == 'm' or char == 'w':
                        afterM = True 
-                       afterMcount = 2                
+                       afterMcount = 2 
+                       afterMposcount = 1               
                 elif char == 'z':
                     INDEX = '58C'
                     INDEX2P = '2C6'
                     output.insert(END,f'\tdc.w $00{width}, $8{INDEX}, $8{INDEX2P}, ${XPOS} ; {char.upper()} \n' ) 
+                    if afterI == True:
+                       afterIcount += 1
+                    if afterM == True:
+                       afterMcount += 1                                            
                 elif char == 'o':
                     INDEX = '588'
                     INDEX2P = '2C4'
-                    output.insert(END,f'\tdc.w $00{width}, $8{INDEX}, $8{INDEX2P}, ${XPOS} ; {char.upper()} \n' )            
+                    output.insert(END,f'\tdc.w $00{width}, $8{INDEX}, $8{INDEX2P}, ${XPOS} ; {char.upper()} \n' ) 
+                    if afterI == True:
+                       afterIcount += 1
+                    if afterM == True:
+                       afterMcount += 1 
                 elif char == 'n':
                     INDEX = '584'
                     INDEX2P = '2C2'
                     output.insert(END,f'\tdc.w $00{width}, $8{INDEX}, $8{INDEX2P}, ${XPOS} ; {char.upper()} \n' )                         
+                    if afterI == True:
+                       afterIcount += 1
+                    if afterM == True:
+                       afterMcount += 1 
                 elif char == 'e':
                     INDEX = '580'
                     INDEX2P = '2C0'
                     output.insert(END,f'\tdc.w $00{width}, $8{INDEX}, $8{INDEX2P}, ${XPOS} ; {char.upper()} \n' )               
+                    if afterI == True:
+                       afterIcount += 1
+                    if afterM == True:
+                       afterMcount += 1 
                 elif char == ' ':
                     cur_pos += 2                   
                     output.insert(END,'\n')
+
                 else:
                      pass
         if len(code) == 0:

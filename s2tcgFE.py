@@ -18,8 +18,8 @@ def gen():
     try:
         f = open('Titlecard.txt', 'a')
     except:
-        print('error')
-    pos_br = 65520 #position before setting position to $0
+        print('error opening Titlecard.txt')
+    pos_br = 65535 #position before setting position to $0
     pos_inc = 16 #$10, after M or W, 24/$18, after I, 8/$8
     cur_pos = 65428 #starts with the starting position
     after0 = False
@@ -73,14 +73,23 @@ def gen():
                     twopinc = 2 
                     pos_inc = 16 
                 else:
-                    afterIcount -= 1  
+                    afterIcount -= 1 
+                    if afterIposcount == 0:
+                        pos_inc = 16
+                    else:
+                        afterIposcount -= 1                      
             if afterM == True:
-                pos_inc = 24                    
+                pos_inc = 24   
+                increment = 6  #restore the default values                 
                 if afterMcount == 0:
-                    pos_inc = 16
+                    increment = 4  #restore the default values
+                    twopinc = 2 
                 else:
                     afterMcount -= 1 
-            cur_pos += pos_inc #increment position by the position incrementer, there is a reason this is defined after the afterM and afterI stuff
+                    if afterMposcount == 0:
+                        pos_inc = 16
+                    else:
+                        afterMposcount -= 1    
             if cur_pos <= pos_br:
                 char = char.lower()
                 xpos_b = hex(cur_pos)
@@ -155,20 +164,32 @@ def gen():
                     INDEX2P = '2C6'
                     f.write(f'\tdc.w $00{width}, $8{INDEX}, $8{INDEX2P}, ${XPOS} ; {char.upper()}' )
                     f.write('\n')
+                    if afterI == True:
+                       afterIcount += 1
+                    if afterM == True:
+                       afterMcount += 1                    
                     if debug == True:
                         print(f'\tdc.w $00{width}, $8{INDEX}, $8{INDEX2P}, ${XPOS} ; {char.upper()}')                    
                 elif char == 'o':
                     INDEX = '588'
                     INDEX2P = '2C4'
                     f.write(f'\tdc.w $00{width}, $8{INDEX}, $8{INDEX2P}, ${XPOS} ; {char.upper()}' )
-                    f.write('\n') 
+                    f.write('\n')
+                    if afterI == True:
+                       afterIcount += 1
+                    if afterM == True:
+                       afterMcount += 1                     
                     if debug == True:
                         print(f'\tdc.w $00{width}, $8{INDEX}, $8{INDEX2P}, ${XPOS} ; {char.upper()}')                              
                 elif char == 'n':
                     INDEX = '584'
                     INDEX2P = '2C2'
                     f.write(f'\tdc.w $00{width}, $8{INDEX}, $8{INDEX2P}, ${XPOS} ; {char.upper()}' ) 
-                    f.write('\n')     
+                    f.write('\n')
+                    if afterI == True:
+                       afterIcount += 1
+                    if afterM == True:
+                       afterMcount += 1                         
                     if debug == True:  
                         print(f'\tdc.w $00{width}, $8{INDEX}, $8{INDEX2P}, ${XPOS} ; {char.upper()}')               
                 elif char == 'e':
@@ -176,6 +197,10 @@ def gen():
                     INDEX2P = '2C0'
                     f.write(f'\tdc.w $00{width}, $8{INDEX}, $8{INDEX2P}, ${XPOS} ; {char.upper()}' )
                     f.write('\n') 
+                    if afterI == True:
+                       afterIcount += 1
+                    if afterM == True:
+                       afterMcount += 1
                     if debug == True:  
                         print(f'\tdc.w $00{width}, $8{INDEX}, $8{INDEX2P}, ${XPOS} ; {char.upper()}')           
                 elif char == ' ':

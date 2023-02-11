@@ -1,7 +1,7 @@
 #!/usr/bin/python3 
 import re
 import sys
-argv = False
+argv = True
 if argv == True:
     from sys import argv
     try:
@@ -18,7 +18,7 @@ example: dc.w $0005, $85DE, $82EF, $0010; FIRST LETTER INDEX WHEN NOT (Z, O, N, 
 debug = False
 def gen(): 
     global text
-    pos_br = 65520 #position before setting position to $0
+    pos_br = 65535 #position before setting position to $0
     pos_inc = 16 #$10, after M or W, 24/$18, after I, 8/$8
     cur_pos = 65428 #starts with the starting position
     after0 = False
@@ -68,13 +68,23 @@ def gen():
                     twopinc = 2 
                     pos_inc = 16 
                 else:
-                    afterIcount -= 1  
+                    afterIcount -= 1 
+                    if afterIposcount == 0:
+                        pos_inc = 16
+                    else:
+                        afterIposcount -= 1                      
             if afterM == True:
-                pos_inc = 24                    
+                pos_inc = 24   
+                increment = 6  #restore the default values                 
                 if afterMcount == 0:
-                    pos_inc = 16
+                    increment = 4  #restore the default values
+                    twopinc = 2 
                 else:
                     afterMcount -= 1 
+                    if afterMposcount == 0:
+                        pos_inc = 16
+                    else:
+                        afterMposcount -= 1     
             cur_pos += pos_inc #increment position by the position incrementer, there is a reason this is defined after the afterM and afterI stuff
             if cur_pos <= pos_br:
                 char = char.lower()
@@ -142,18 +152,34 @@ def gen():
                 elif char == 'z':
                     INDEX = '58C'
                     INDEX2P = '2C6'
+                    if afterI == True:
+                       afterIcount += 1
+                    if afterM == True:
+                       afterMcount += 1                    
                     print(f'\tdc.w $00{width}, $8{INDEX}, $8{INDEX2P}, ${XPOS} ; {char.upper()}' )
                 elif char == 'o':
                     INDEX = '588'
                     INDEX2P = '2C4'
+                     if afterI == True:
+                       afterIcount += 1
+                    if afterM == True:
+                       afterMcount += 1                   
                     print(f'\tdc.w $00{width}, $8{INDEX}, $8{INDEX2P}, ${XPOS} ; {char.upper()}' )          
                 elif char == 'n':
                     INDEX = '584'
                     INDEX2P = '2C2'
+                     if afterI == True:
+                       afterIcount += 1
+                    if afterM == True:
+                       afterMcount += 1                   
                     print(f'\tdc.w $00{width}, $8{INDEX}, $8{INDEX2P}, ${XPOS} ; {char.upper()}' )                       
                 elif char == 'e':
                     INDEX = '580'
                     INDEX2P = '2C0'
+                      if afterI == True:
+                       afterIcount += 1
+                    if afterM == True:
+                       afterMcount += 1                  
                     print(f'\tdc.w $00{width}, $8{INDEX}, $8{INDEX2P}, ${XPOS} ; {char.upper()}' )              
                 elif char == ' ':
                     print('')
