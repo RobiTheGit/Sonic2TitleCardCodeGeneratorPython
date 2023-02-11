@@ -86,6 +86,7 @@ def gen():
                         afterIposcount -= 1                      
             if afterM == True:
                 pos_inc = 24   
+                twopinc = 3 
                 increment = 6  #restore the default values                 
                 if afterMcount == 0:
                     increment = 4  #restore the default values
