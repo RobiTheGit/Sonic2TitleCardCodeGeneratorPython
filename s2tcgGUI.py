@@ -38,13 +38,16 @@ def gen():
     btext = re.sub(r"[^a-zA-Z ]", "", text)
     ntext = btext.replace(" ", "")
     hexi = hex(len(ntext)).upper()
+    #start position setting code
     if len(btext) >= 10: 
         cur_pos = 65428
-    elif len(btext) <= 9 and len(btext) > 5:
+    elif len(btext) <= 9 and len(btext) > 6:
+        cur_pos = 65446
+    elif len(btext) <= 6 and len(btext) > 4:
         cur_pos = 0
         after0 = True            
     else:
-        cur_pos = 28 
+        cur_pos = 48 
         after0 = True        
     char = ''
     code = []
@@ -73,13 +76,12 @@ def gen():
             if afterI == True:
                 increment = 2 #this is only changed on i from $8 to $4
                 twopinc = 1 #same as above
-                pos_inc = 4 #incrememnt the position less
+                pos_inc = 8 #incrememnt the position less
                 if afterIcount == 0:
                     increment = 4  #restore the default values
                     twopinc = 2 
                     pos_inc = 16 
                 else:
-                    afterIcount -= 1 
                     if afterIposcount == 0:
                         pos_inc = 16
                     else:

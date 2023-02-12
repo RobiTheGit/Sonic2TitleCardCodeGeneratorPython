@@ -32,14 +32,16 @@ def gen():
     btext = re.sub(r"[^a-zA-Z ]", "", text)
     ntext = btext.replace(" ", "")
     hexi = hex(len(ntext)).upper()
-    if len(btext) >= 10:
+    if len(btext) >= 10: 
         cur_pos = 65428
-    elif len(btext) <= 9 and len(btext) > 5:
+    elif len(btext) <= 9 and len(btext) > 6:
+        cur_pos = 65446
+    elif len(btext) <= 6 and len(btext) > 4:
         cur_pos = 0
         after0 = True            
     else:
-        cur_pos = 28 
-        after0 = True 
+        cur_pos = 48 
+        after0 = True
     if len(btext) == 0:
         print('No title card to generate!')
         sys.exit(0)       
@@ -68,7 +70,6 @@ def gen():
                     twopinc = 2 
                     pos_inc = 16 
                 else:
-                    afterIcount -= 1 
                     if afterIposcount == 0:
                         pos_inc = 16
                     else:
@@ -147,9 +148,11 @@ def gen():
                     if char == 'i':
                        afterI = True 
                        afterIcount = 2
+                       afterIposcount = 1                                                                                                           
                     if char == 'm' or char == 'w':
                        afterM = True 
-                       afterMcount = 2                                          
+                       afterMcount = 2
+                       afterMposcount = 1                                                                                                           
                 elif char == 'z':
                     INDEX = '58C'
                     INDEX2P = '2C6'
