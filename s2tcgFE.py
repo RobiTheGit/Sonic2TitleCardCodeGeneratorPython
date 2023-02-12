@@ -6,7 +6,10 @@ try:
     script, text = argv
 except:
     text = str(input('Level Name > '))
-        
+try:
+    f = open('Titlecard.txt', 'a')
+except:
+    print('error opening Titlecard.txt')        
 '''    
 Letter Format
 dc.w $VERTOFF+WIDTH, $PRI+INDEX, $PRI+INDEX2P, $XPOS ; LETTER
@@ -15,10 +18,7 @@ example: dc.w $0005, $85DE, $82EF, $0010; FIRST LETTER INDEX WHEN NOT (Z, O, N, 
 debug = False
 def gen(): 
     global text
-    try:
-        f = open('Titlecard.txt', 'a')
-    except:
-        print('error opening Titlecard.txt')
+    global f
     pos_br = 65535 #position before setting position to $0
     pos_inc = 16 #$10, after M or W, 24/$18, after I, 8/$8
     cur_pos = 65428 #starts with the starting position
