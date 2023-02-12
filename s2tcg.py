@@ -172,7 +172,7 @@ def gen():
                 elif char == 'n':
                     INDEX = '584'
                     INDEX2P = '2C2'
-                     if afterI == True:
+                    if afterI == True:
                        afterIcount += 1
                     if afterM == True:
                        afterMcount += 1                   
@@ -180,7 +180,7 @@ def gen():
                 elif char == 'e':
                     INDEX = '580'
                     INDEX2P = '2C0'
-                      if afterI == True:
+                    if afterI == True:
                        afterIcount += 1
                     if afterM == True:
                        afterMcount += 1                  
