@@ -164,7 +164,7 @@ def gen():
                 elif char == 'o':
                     INDEX = '588'
                     INDEX2P = '2C4'
-                     if afterI == True:
+                    if afterI == True:
                        afterIcount += 1
                     if afterM == True:
                        afterMcount += 1                   
