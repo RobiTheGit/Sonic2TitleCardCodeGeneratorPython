@@ -165,7 +165,7 @@ def gen():
                     twopcurrent = twopresult
                     if char == 'i':
                        afterI = True 
-                       afterIcount = 2
+                       afterIcount = 1
                        afterIposcount = 1               
                     if char == 'm' or char == 'w':
                        afterM = True 
@@ -218,7 +218,7 @@ def gen():
             if len(charlistcode) > 8:     
                 output.insert(END,'\n;You can only have $8 unique indexes excluding Z,O,N, and E, this code will not work')
                 tk.messagebox.showerror(title='Error!', message='You can only have $8 unique indexes excluding Z,O,N, and E, this code will not work', options=None)
-            if after0 == True and cur_pos >= 127:
+            if after0 == True and cur_pos >= 256:
                 tk.messagebox.showerror(title='Error!', message='Position Out Of bounds', options=None)
             if debug == True:
                 output.insert(END, f'\n;Indexes: {charlist} {len(charlist)}\n;Code for above indexes:{charlistcode}\n;\tBut you can\'t stick n move')

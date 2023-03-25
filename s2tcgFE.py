@@ -158,7 +158,7 @@ def gen():
                     twopcurrent = twopresult
                     if char == 'i':
                        afterI = True 
-                       afterIcount = 2
+                       afterIcount = 1
                        afterIposcount = 1                                                                                                           
                     if char == 'm' or char == 'w':
                        afterM = True 
@@ -230,7 +230,7 @@ def gen():
             f.write(';You can only have a maximum of $10 characters in sonic 2 title cards, this code will not work')
             print('You can only have a maximum of $10 characters in sonic 2 title cards, this code will not work')
             f.write('\n')
-        if after0 == True and cur_pos >= 127:
+        if after0 == True and cur_pos >= 256:
             f.write(';Position Out Of bounds')
             print('Position Out Of bounds')
             f.write('\n')
