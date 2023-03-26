@@ -79,7 +79,7 @@ def gen():
                     if afterIposcount == 0:
                         pos_inc = 16
                     else:
-                        afterIposcount -= 1                      
+                        afterIposcount = 0                      
             if afterM == True:
                 pos_inc = 24  
                 twopinc = 2 
@@ -87,12 +87,14 @@ def gen():
                 if afterMcount == 0:
                     increment = 4  #restore the default values
                     twopinc = 2 
+                    afterM = False
                 else:
                     afterMcount -= 1 
                     if afterMposcount == 0:
                         pos_inc = 16
+                        afterM = False
                     else:
-                        afterMposcount -= 1    
+                        afterMposcount = 0    
             if cur_pos <= pos_br:
                 char = char.lower()
                 xpos_b = hex(cur_pos)
@@ -162,7 +164,7 @@ def gen():
                        afterIposcount = 1                                                                                                           
                     if char == 'm' or char == 'w':
                        afterM = True 
-                       afterMcount = 2
+                       afterMcount = 1
                        afterMposcount = 1                                           
                 elif char == 'z':
                     INDEX = '58C'
