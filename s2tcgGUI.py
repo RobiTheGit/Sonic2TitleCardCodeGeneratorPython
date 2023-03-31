@@ -322,8 +322,17 @@ class App(tk.Frame):
         font = ('gaslight', 30),
         height=3,
         width=8)
-        exitbutton.pack(side = TOP, anchor = SE) 
-               
+        exitbutton.pack(side = TOP, anchor = SE)
+         
+        copybutton = customtkinter.CTkButton(
+        topframe,
+        text = 'COPY TO CLIPBOARD',
+        command = self.copy_output, 
+        font = ('gaslight', 30),
+        height=3,
+        width=8)
+        copybutton.pack(side = BOTTOM)  
+                      
         c1 = customtkinter.CTkCheckBox(
         topframe,
          text='See Debug Info',
@@ -337,7 +346,8 @@ class App(tk.Frame):
         output = customtkinter.CTkTextbox(
         bottomframe,
         state='disabled',
-        height = 400
+        height = 400,
+        font = ("courier", 18)
         )
         output.pack(fill = BOTH)
     def export(self):
@@ -365,6 +375,9 @@ class App(tk.Frame):
             debug = True
         else:
             debug = False
+    def copy_output(self):
+        root.clipboard_clear()
+        root.clipboard_append(output.get(1.0, END))
     def open_popup(self):
         global text
         titleletters = re.sub(r"[^a-zA-Z,' ']", "", text).upper()
@@ -377,7 +390,8 @@ class App(tk.Frame):
         text= f'In Off_TitleCardLetters, for the zone title card you want to modify, where it says \ntitleLetters    "EMERALD HILL" or whatever zone you are replacing, \n you type in the zone\'s name, currently your titleLetters would have\n'
         ).pack()
         pep = customtkinter.CTkTextbox(top,
-        state = 'normal'
+        state = 'normal',
+        font = ("courier", 18)
         )
         pep.pack(fill = BOTH)
         pep.delete(1.0, END)
