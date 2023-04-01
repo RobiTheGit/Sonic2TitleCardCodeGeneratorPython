@@ -67,7 +67,7 @@ def gen():
     else:
         proper = hexi.replace("0X", "TC_EHZ    dc.w $")
         output.insert(END,f';In Obj34_MapUnc_147BA Put\n')
-        output.insert(END,f'{proper} ; EHZ can be changed to the word it is, EHZ\'s is word_147E8 \n')
+        output.insert(END,f'{proper} ; EHZ can be changed to the word it is located at, EHZ\'s is word_147E8 \n')
     pos = -(len(code))
     if len(char) <= 15:
         for char in code:
@@ -326,7 +326,7 @@ class App(tk.Frame):
          
         copybutton = customtkinter.CTkButton(
         topframe,
-        text = 'COPY TO CLIPBOARD',
+        text = 'Copy To Clipboard',
         command = self.copy_output, 
         font = ('gaslight', 30),
         height=3,
@@ -404,7 +404,7 @@ class App(tk.Frame):
     def info(self):
         tk.messagebox.showinfo(
         title='About',
-        message='Sonic 2 Titlecard Code Generator in Python, created by RobiWanKenobi in \nPython 3.10 . \nIf you want to support htis project, I have no way to currently :( .', options=None
+        message='Sonic 2 Titlecard Code Generator in Python, created by RobiWanKenobi in \nPython 3.10 . \nIf you want to support this project, I have no way to currently :( .', options=None
         )
     def exit(self):
         sys.exit(0)
