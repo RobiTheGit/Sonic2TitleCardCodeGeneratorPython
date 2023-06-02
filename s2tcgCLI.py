@@ -48,7 +48,7 @@ def gen():
         cur_pos = 0
         after0 = True            
     else:
-        cur_pos = 48 
+        cur_pos = 64 
         after0 = True
     if len(btext) == 0:
         print('No title card to generate!')
@@ -56,9 +56,9 @@ def gen():
     if export == True:     
         f.write(';In Obj34_MapUnc_147BA Put')
         f.write('\n')
-    proper = hexi.replace("0X", "TC_EHZ    dc.w $")
+    proper = hexi.replace("0X", "TC_ZONE    dc.w $")
     if export == True:
-        f.write(f'{proper} ; EHZ can be changed to the word it is or the title card name it is, the word for EHZ is word_147E8')
+        f.write(f'{proper} ; EHZ is located at word_147E8')
         f.write('\n')
     print(f';In Obj34_MapUnc_147BA Put\n{proper} ; EHZ can be changed to the word it is or the title card name it is located at, the word for EHZ is word_147E8\n')
     code = []
@@ -247,7 +247,7 @@ def gen():
             print('You can only have a maximum of $10 characters in sonic 2 title cards, this code will not work')
             if export == True:
                 f.write('\n')
-        if after0 == True and cur_pos >= 256:
+        if after0 == True and cur_pos >= 112: #0x70
             if export == True:
                 f.write(';Position Out Of bounds')
             print('Position Out Of bounds')

@@ -5,8 +5,8 @@ from tkinter import messagebox
 import re
 import sys
 import customtkinter
-
-customtkinter.set_appearance_mode("System")  # Modes: system (default), light, dark
+THEME = "DARK"
+customtkinter.set_appearance_mode(THEME)  # Modes: system (default), light, dark
 customtkinter.set_default_color_theme("dark-blue")  # Themes: blue (default), dark-blue, green
 '''
 Letter Format
@@ -45,9 +45,9 @@ def gen():
         cur_pos = 65446
     elif len(btext) <= 6 and len(btext) > 4:
         cur_pos = 0
-        after0 = True            
+        after0 = True          
     else:
-        cur_pos = 48 
+        cur_pos = 64 
         after0 = True        
     char = ''
     code = []
@@ -65,9 +65,9 @@ def gen():
          options=None
          )
     else:
-        proper = hexi.replace("0X", "TC_EHZ    dc.w $")
+        proper = hexi.replace("0X", "TC_ZONE    dc.w $")
         output.insert(END,f';In Obj34_MapUnc_147BA Put\n')
-        output.insert(END,f'{proper} ; EHZ can be changed to the word it is located at, EHZ\'s is word_147E8 \n')
+        output.insert(END,f'{proper} ; EHZ is located at word_147E8 \n')
     pos = -(len(code))
     if len(char) <= 15:
         for char in code:
@@ -220,7 +220,7 @@ def gen():
             if len(charlistcode) > 8:     
                 output.insert(END,'\n;You can only have $8 unique indexes excluding Z,O,N, and E, this code will not work')
                 tk.messagebox.showerror(title='Error!', message='You can only have $8 unique indexes excluding Z,O,N, and E, this code will not work', options=None)
-            if after0 == True and cur_pos >= 256:
+            if after0 == True and cur_pos >= 112: #0x70
                 tk.messagebox.showerror(title='Error!', message='Position Out Of bounds', options=None)
             if debug == True:
                 output.insert(END, f'\n;Indexes: {charlist} {len(charlist)}\n;Code for above indexes:{charlistcode}\n;\tBut you can\'t stick n move')
@@ -241,8 +241,10 @@ class App(tk.Frame):
         global text
         global output
         global debug
-        global var1
-        var1 = tk.IntVar()
+        global dbgvar
+        global themevar     
+        dbgvar = tk.IntVar()
+        themevar = tk.IntVar()        
         super().__init__(master)
         self.pack()
         leftframe = customtkinter.CTkFrame(
@@ -292,7 +294,7 @@ class App(tk.Frame):
         B.pack(side = TOP, anchor = E)
         
         B2 = customtkinter.CTkButton(leftframe,
-        text = '  Titlecard Letters', 
+        text = 'Titlecard Letters', 
         command = self.open_popup, 
         font = ('gaslight', 30),
         height=3, 
@@ -336,18 +338,28 @@ class App(tk.Frame):
         c1 = customtkinter.CTkCheckBox(
         topframe,
          text='See Debug Info',
-         variable=var1,
+         variable=dbgvar,
          onvalue=1,
          offvalue=0, 
          command=self.debugset
          )
         c1.pack(side = BOTTOM)
         
+        c2 = customtkinter.CTkCheckBox(
+        topframe,
+         text='Light Mode',
+         variable=themevar,
+         onvalue=1,
+         offvalue=0, 
+         command=self.chgtheme
+         )
+        c2.pack(side = BOTTOM)   
+            
         output = customtkinter.CTkTextbox(
         bottomframe,
         state='disabled',
         height = 400,
-        font = ("courier", 18)
+        font = ("courier", 16)
         )
         output.pack(fill = BOTH)
     def export(self):
@@ -367,14 +379,25 @@ class App(tk.Frame):
         text = self.entrythingy.get()
         run()
     def debugset(self):
-        global var1
+        global dbgvar
         global debug
-        if var1.get() == 0:
+        if dbgvar.get() == 0:
             debug = False
-        elif var1.get() == 1:
+        elif dbgvar.get() == 1:
             debug = True
         else:
             debug = False
+
+    def chgtheme(self):
+        global themevar
+        global debug
+        if themevar.get() == 0:
+            THEME = "DARK"
+        elif themevar.get() == 1:
+            THEME = "LIGHT"
+        else:
+            THEME = "DARK"
+        customtkinter.set_appearance_mode(THEME)  # Modes: system (default), light, dark                     
     def copy_output(self):
         root.clipboard_clear()
         root.clipboard_append(output.get(1.0, END))
@@ -404,7 +427,7 @@ class App(tk.Frame):
     def info(self):
         tk.messagebox.showinfo(
         title='About',
-        message='Sonic 2 Titlecard Code Generator in Python, created by RobiWanKenobi in \nPython 3.10 . \nIf you want to support this project, I have no way to currently :( .', options=None
+        message="Sonic 2 Titlecard Code Generator in Python aka. S2TCG.py, created by RobiWanKenobi in \nPython 3.10.", options=None
         )
     def exit(self):
         sys.exit(0)
