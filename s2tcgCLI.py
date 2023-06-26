@@ -60,7 +60,7 @@ def gen():
     if export == True:
         f.write(f'{proper} ; EHZ is located at word_147E8')
         f.write('\n')
-    print(f';In Obj34_MapUnc_147BA Put\n{proper} ; Check The Wiki on GitHub for the locations of the mappings or look in Mappings.txt for a replacement for the original mappings \n')
+    print(f';In Obj34_MapUnc_147BA Put\n{proper} ; Check The Wiki on GitHub or Locations.txt for the locations of the mappings or look in Mappings.txt for a replacement for the original mappings \n')
     code = []
     charlist = []
     charlistcode = []
