@@ -1,0 +1,190 @@
+;============================================================
+; Replace the original code of Obj34_MapUnc_147BA up to but not including
+;
+;Obj39_MapUnc_14C6C:	BINCLUDE "mappings/sprite/obj39.bin" ;The file name and label may be different depending on your disasm
+;        even
+;============================================================
+; With the code below
+;============================================================
+Obj34_MapUnc_147BA:	offsetTable
+	offsetTableEntry.w TC_EHZ
+	offsetTableEntry.w TC_EHZ
+	offsetTableEntry.w TC_EHZ
+	offsetTableEntry.w TC_EHZ
+	offsetTableEntry.w TC_MTZ
+	offsetTableEntry.w TC_MTZ
+	offsetTableEntry.w TC_WFZ
+	offsetTableEntry.w TC_HTZ
+	offsetTableEntry.w TC_HPZ
+	offsetTableEntry.w TC_EHZ
+	offsetTableEntry.w TC_OOZ
+	offsetTableEntry.w TC_MCZ
+	offsetTableEntry.w TC_CNZ
+	offsetTableEntry.w TC_CPZ
+	offsetTableEntry.w TC_DEZ
+	offsetTableEntry.w TC_ARZ
+	offsetTableEntry.w TC_SCZ
+	offsetTableEntry.w TC_ZONE
+	offsetTableEntry.w TC_1
+	offsetTableEntry.w TC_2
+	offsetTableEntry.w TC_3
+	offsetTableEntry.w TC_STH
+	offsetTableEntry.w TC_RedStripes
+TC_EHZ:	dc.w $B
+	dc.w 5,	$8580, $82C0, $FFC3
+	dc.w 9,	$85DE, $82EF, $FFD0
+	dc.w 5,	$8580, $82C0, $FFE8
+	dc.w 5,	$85E4, $82F2, $FFF8
+	dc.w 5,	$85E8, $82F4, 8
+	dc.w 5,	$85EC, $82F6, $18
+	dc.w 5,	$85F0, $82F8, $28
+	dc.w 5,	$85F4, $82FA, $48
+	dc.w 1,	$85F8, $82FC, $58
+	dc.w 5,	$85EC, $82F6, $60
+	dc.w 5,	$85EC, $82F6, $70
+TC_MTZ:	dc.w $A
+	dc.w 9,	$85DE, $82EF, $FFE0
+	dc.w 5,	$8580, $82C0, $FFF8
+	dc.w 5,	$85E4, $82F2, 8
+	dc.w 5,	$85E8, $82F4, $18
+	dc.w 5,	$8588, $82C4, $28
+	dc.w 5,	$85EC, $82F6, $38
+	dc.w 5,	$8588, $82C4, $48
+	dc.w 5,	$85F0, $82F8, $58
+	dc.w 1,	$85F4, $82FA, $68
+	dc.w 5,	$85F6, $82FB, $70
+TC_HTZ:	dc.w 7
+	dc.w 5,	$85DE, $82EF, 8
+	dc.w 1,	$85E2, $82F1, $18
+	dc.w 5,	$85E4, $82F2, $20
+	dc.w 5,	$85E4, $82F2, $30
+	dc.w 5,	$85E8, $82F4, $51
+	dc.w 5,	$8588, $82C4, $60
+	dc.w 5,	$85EC, $82F6, $70
+TC_HPZ:	dc.w $C
+	dc.w 5,	$85DE, $82EF, $FFB8
+	dc.w 1,	$85E2, $82F1, $FFC8
+	dc.w 5,	$85E4, $82F2, $FFD0
+	dc.w 5,	$85E4, $82F2, $FFE0
+	dc.w 5,	$8580, $82C0, $FFF0
+	dc.w 5,	$8584, $82C2, 0
+	dc.w 5,	$85E8, $82F4, $20
+	dc.w 5,	$85EC, $82F6, $30
+	dc.w 5,	$85F0, $82F8, $40
+	dc.w 5,	$85EC, $82F6, $50
+	dc.w 5,	$85F4, $82FA, $60
+	dc.w 5,	$8580, $82C0, $70
+TC_OOZ:	dc.w 8
+	dc.w 5,	$8588, $82C4, $FFFB
+	dc.w 1,	$85DE, $82EF, $B
+	dc.w 5,	$85E0, $82F0, $13
+	dc.w 5,	$8588, $82C4, $33
+	dc.w 5,	$85E4, $82F2, $43
+	dc.w 5,	$8580, $82C0, $53
+	dc.w 5,	$85E8, $82F4, $60
+	dc.w 5,	$8584, $82C2, $70
+TC_MCZ:	dc.w $A
+	dc.w 9,	$85DE, $82EF, $FFD0
+	dc.w 5,	$85E4, $82F2, $FFE8
+	dc.w 5,	$85E8, $82F4, $FFF8
+	dc.w 5,	$85EC, $82F6, 8
+	dc.w 1,	$85F0, $82F8, $18
+	dc.w 5,	$85F2, $82F9, $20
+	dc.w 5,	$85F2, $82F9, $41
+	dc.w 5,	$85F6, $82FB, $50
+	dc.w 5,	$85FA, $82FD, $60
+	dc.w 5,	$8580, $82C0, $70
+TC_CNZ:	dc.w $B
+	dc.w 5,	$85DE, $82EF, $FFD1
+	dc.w 5,	$85E2, $82F1, $FFE0
+	dc.w 5,	$85E6, $82F3, $FFF0
+	dc.w 1,	$85EA, $82F5, 0
+	dc.w 5,	$8584, $82C2, 8
+	dc.w 5,	$8588, $82C4, $18
+	dc.w 5,	$8584, $82C2, $38
+	dc.w 1,	$85EA, $82F5, $48
+	dc.w 5,	$85EC, $82F6, $50
+	dc.w 5,	$85F0, $82F8, $60
+	dc.w 5,	$85F4, $82FA, $70
+TC_CPZ:	dc.w $D
+	dc.w 5,	$85DE, $82EF, $FFA4
+	dc.w 5,	$85E2, $82F1, $FFB4
+	dc.w 5,	$8580, $82C0, $FFC4
+	dc.w 9,	$85E6, $82F3, $FFD1
+	dc.w 1,	$85EC, $82F6, $FFE9
+	dc.w 5,	$85DE, $82EF, $FFF1
+	dc.w 5,	$85EE, $82F7, 0
+	dc.w 5,	$85F2, $82F9, $10
+	dc.w 5,	$85F6, $82FB, $31
+	dc.w 5,	$85F2, $82F9, $41
+	dc.w 5,	$85EE, $82F7, $50
+	dc.w 5,	$8584, $82C2, $60
+	dc.w 5,	$85FA, $82FD, $70
+TC_ARZ:	dc.w $B
+	dc.w 5,	$85DE, $82EF, $FFD2
+	dc.w 5,	$85E2, $82F1, $FFE2
+	dc.w 5,	$85E6, $82F3, $FFF2
+	dc.w 5,	$85DE, $82EF, 0
+	dc.w 5,	$85EA, $82F5, $10
+	dc.w 1,	$85EE, $82F7, $20
+	dc.w 5,	$85F0, $82F8, $28
+	dc.w 5,	$85F4, $82FA, $48
+	dc.w 5,	$85E6, $82F3, $58
+	dc.w 1,	$85EE, $82F7, $68
+	dc.w 5,	$8584, $82C2, $70
+TC_SCZ:	dc.w 8
+	dc.w 5,	$85DE, $82EF, $FFF0
+	dc.w 5,	$85E2, $82F1, 0
+	dc.w 5,	$85E6, $82F3, $10
+	dc.w 5,	$85EA, $82F5, $30
+	dc.w 5,	$85EE, $82F7, $40
+	dc.w 5,	$85F2, $82F9, $50
+	dc.w 5,	$85DE, $82EF, $60
+	dc.w 5,	$8580, $82C0, $70
+TC_WFZ:	dc.w $C
+	dc.w 9,	$85DE, $82EF, $FFB1
+	dc.w 1,	$85E4, $82F2, $FFC8
+	dc.w 5,	$8584, $82C2, $FFD0
+	dc.w 5,	$85E6, $82F3, $FFE0
+	dc.w 5,	$85EA, $82F5, 1
+	dc.w 5,	$8588, $82C4, $10
+	dc.w 5,	$85EE, $82F7, $20
+	dc.w 5,	$85F2, $82F9, $30
+	dc.w 5,	$85EE, $82F7, $40
+	dc.w 5,	$8580, $82C0, $50
+	dc.w 5,	$85F6, $82FB, $5F
+	dc.w 5,	$85F6, $82FB, $6F
+TC_DEZ:	dc.w 8
+	dc.w 5,	$85DE, $82EF, $FFF2
+	dc.w 5,	$8580, $82C0, 2
+	dc.w 5,	$85E2, $82F1, $10
+	dc.w 5,	$85E6, $82F3, $20
+	dc.w 5,	$85EA, $82F5, $30
+	dc.w 5,	$8580, $82C0, $51
+	dc.w 5,	$85EE, $82F7, $60
+	dc.w 5,	$85EE, $82F7, $70
+TC_ZONE:	dc.w 4
+	dc.w 5,	$858C, $82C6, 1
+	dc.w 5,	$8588, $82C4, $10
+	dc.w 5,	$8584, $82C2, $20
+	dc.w 5,	$8580, $82C0, $30
+TC_1:	dc.w 1
+	dc.w 7,	$A590, $A2C8, 0
+TC_2:	dc.w 1
+	dc.w $B, $A598,	$A2CC, 0
+TC_3:	dc.w 1
+	dc.w $B, $A5A4,	$A2D2, 0
+TC_STH:	dc.w 5
+	dc.w $D, $85B0,	$82D8, $FFB8
+	dc.w $D, $85B8,	$82DC, $FFD8
+	dc.w $D, $85C0,	$82E0, $FFF8
+	dc.w $D, $85C8,	$82E4, $18
+	dc.w 5,	$85D0, $82E8, $38
+TC_RedStripes:	dc.w 7
+	dc.w $9003, $85D4, $82EA, 0
+	dc.w $B003, $85D4, $82EA, 0
+	dc.w $D003, $85D4, $82EA, 0
+	dc.w $F003, $85D4, $82EA, 0
+	dc.w $1003, $85D4, $82EA, 0
+	dc.w $3003, $85D4, $82EA, 0
+	dc.w $5003, $85D4, $82EA, 0
