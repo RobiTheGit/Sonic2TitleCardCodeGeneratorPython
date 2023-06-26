@@ -67,7 +67,7 @@ def gen():
     else:
         proper = hexi.replace("0X", "TC_ZONE    dc.w $")
         output.insert(END,f';In Obj34_MapUnc_147BA Put\n')
-        output.insert(END,f'{proper} ; EHZ is located at word_147E8 \n')
+        output.insert(END,f'{proper} ; Check The Wiki on GitHub for the locations of the mappings, or look in Mappings.txt for a replacement for the original mappings \n')
     pos = -(len(code))
     if len(char) <= 15:
         for char in code:
@@ -422,7 +422,7 @@ class App(tk.Frame):
         pep.configure(state = 'disabled')
         customtkinter.CTkLabel(
         top,
-        text= f'The order for title card letters is the same as the order for the mappings code '
+        text= f'The order for title card letters is the same as the order for the mappings code'
         ).pack()
     def info(self):
         tk.messagebox.showinfo(
