@@ -316,7 +316,15 @@ class App(tk.Frame):
         height=3, 
         width=8)
         B4.pack(side = TOP, anchor = SE)
-               
+        
+        B5 = customtkinter.CTkButton(leftframe,
+        text = 'Mapping Locations',
+        command = self.open_popup2,
+        font = ('gaslight', 30),
+        height=3, 
+        width=8)
+        B5.pack(side = TOP, anchor = SE)
+                     
         exitbutton = customtkinter.CTkButton(
         leftframe,
         text = '     EXIT     ',
@@ -424,6 +432,25 @@ class App(tk.Frame):
         top,
         text= f'The order for title card letters is the same as the order for the mappings code'
         ).pack()
+        
+    def open_popup2(self):
+        global text
+        titleletters = re.sub(r"[^a-zA-Z,' ']", "", text).upper()
+        top= customtkinter.CTkToplevel()
+        top.geometry("550x250")
+        top.resizable(False,False)
+        top.title("Titlecard Mapping Label Translation")
+        pep2 = customtkinter.CTkTextbox(top,
+        state = 'normal',
+        font = ("courier", 18)
+        )
+        LocFile = open("Locations.txt", "r")
+        pep2.pack(fill = BOTH)
+        pep2.delete(1.0, END)
+        pep2.insert(END, LocFile.read(),)
+        pep2.configure(state = 'disabled')
+
+
     def info(self):
         tk.messagebox.showinfo(
         title='About',
