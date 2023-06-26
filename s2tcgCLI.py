@@ -56,7 +56,7 @@ def gen():
     if export == True:     
         f.write(';In Obj34_MapUnc_147BA Put')
         f.write('\n')
-    proper = hexi.replace("0X", "TC_LVL    dc.w $")
+    proper = hexi.replace("0X", "TC_LVL:    dc.w $")
     if export == True:
         f.write(f'{proper} ; EHZ is located at word_147E8')
         f.write('\n')

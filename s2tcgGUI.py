@@ -65,7 +65,7 @@ def gen():
          options=None
          )
     else:
-        proper = hexi.replace("0X", "TC_LVL    dc.w $")
+        proper = hexi.replace("0X", "TC_LVL:    dc.w $")
         output.insert(END,f';In Obj34_MapUnc_147BA Put\n')
         output.insert(END,f'{proper} ; Check The Wiki on GitHub or Locations.txt for the locations of the mappings, or look in Mappings.txt for a replacement for the original mappings \n')
     pos = -(len(code))
