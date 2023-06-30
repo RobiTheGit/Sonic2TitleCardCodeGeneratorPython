@@ -75,34 +75,35 @@ def gen():
             if letter >= 1:
                 increment = 4 #the first letter is 2 and not 4
             if afterI == True:
-                increment = 2 #this is only changed on i from $8 to $4
-                twopinc = 1 #same as above
                 pos_inc = 4 #incrememnt the position less
                 if afterIcount == 0:
                     increment = 4  #restore the default values
                     twopinc = 2 
-                    pos_inc = 16 
+                    pos_inc = 8 
                 else:
-                    afterIcount -= 1 
                     if afterIposcount == 0:
                         pos_inc = 16
                     else:
+                        cur_pos += 8
                         afterIposcount = 0                      
             if afterM == True:
-                pos_inc = 24  
-                twopinc = 2 
+                pos_inc = 24   
+                twopinc = 3 
                 increment = 6  #restore the default values                 
                 if afterMcount == 0:
                     increment = 4  #restore the default values
                     twopinc = 2 
-                    afterM = False
+                    pos_inc = 16
+                    afterM = False                    
                 else:
                     afterMcount -= 1 
                     if afterMposcount == 0:
+                        increment = 4  #restore the default values
+                        twopinc = 2 
                         pos_inc = 16
                         afterM = False
                     else:
-                        afterMposcount = 0    
+                        afterMposcount = 0         
             if cur_pos <= pos_br:
                 char = char.lower()
                 xpos_b = hex(cur_pos)
@@ -151,6 +152,8 @@ def gen():
                 if char != 'z' and char != 'o' and char != 'n' and char != 'e' and char != ' ' and char.isalpha():  
                     letter += 1 
                     result = int(current)+int(increment)
+                    if afterI == True:
+                        result -= 2                    
                     result2 = hex(result)
                     INDEX = result2.replace("0x", "").upper()
                     twopresult = int(twopcurrent)+int(twopinc)
@@ -158,6 +161,8 @@ def gen():
                     INDEX2P = twopres2.replace("0x", "").upper()
                     indexcode = (f'\tdc.w $00{width}, $8{INDEX}, $8{INDEX2P}, ${XPOS} ; {char.upper()}')
                     indexcode2 = (f'\tdc.w $00{width}, $8{INDEX}, $8{INDEX2P} ')
+                    if afterI == True:
+                        result += 2 
                     charlistcode.append(indexcode2)   
                     if export == True: 
                         f.write(indexcode)
