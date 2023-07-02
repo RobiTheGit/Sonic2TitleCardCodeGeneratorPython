@@ -1,23 +1,12 @@
 word_147E8 = Emerald Hill Zone
-
 word_14842 = Metropolis Zone
-
 word_14894 = Hill Top Zone
-
 word_148CE = Hidden Palace Zone
-
 word_14930 = Oil Ocean Zone
-
 word_14972 = Mystic Cave Zone
-
 word_149C4 = Casino Night Zone
-
 word_14A1E = Chemical Plant Zone
-
 word_14A88 = Aquatic Ruin Zone
-
 word_14AE2 = Sky Chase Zone
-
 word_14B24 = Wing Fortress Zone
-
 word_14B86 = Death Egg Zone
