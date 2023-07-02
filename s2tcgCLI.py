@@ -58,9 +58,9 @@ def gen():
         f.write('\n')
     proper = hexi.replace("0X", "TC_LVL:    dc.w $")
     if export == True:
-        f.write(f'{proper} ; EHZ is located at word_147E8')
+        f.write(f'{proper}')
         f.write('\n')
-    print(f';In Obj34_MapUnc_147BA Put\n{proper} ; Check The Wiki on GitHub or Locations.txt for the locations of the mappings or look in Mappings.txt for a replacement for the original mappings \n')
+    print(f';In Obj34_MapUnc_147BA Put\n{proper}')
     code = []
     charlist = []
     charlistcode = []
@@ -252,12 +252,17 @@ def gen():
             print('You can only have a maximum of $10 characters in sonic 2 title cards, this code will not work')
             if export == True:
                 f.write('\n')
-        if after0 == True and cur_pos >= 112: #0x70
+        if after0 == True and cur_pos >= 112:
             if export == True:
                 f.write(';Position Out Of bounds')
             print('Position Out Of bounds')
             if export == True:
                 f.write('\n')
+
+        if export == True:
+            f.write(f'\n; Check The Wiki on GitHub or Locations.txt for the locations of the mappings\n; Look in Mappings.txt for a replacement for the original mappings')
+        print(f'\n; Check The Wiki on GitHub or Locations.txt for the locations of the mappings\n; Look in Mappings.txt for a replacement for the original mappings')
+
     if export == True:
         f.close()
     sys.exit(0)

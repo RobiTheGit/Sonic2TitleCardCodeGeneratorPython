@@ -10,16 +10,20 @@ customtkinter.set_appearance_mode(THEME)  # Modes: system (default), light, dark
 customtkinter.set_default_color_theme("dark-blue")  # Themes: blue (default), dark-blue, green
 '''
 Letter Format
-dc.w $VERTOFF+WIDTH, $PRI+INDEX, $PRI+INDEX2P, $XPOS ; LETTER
-example: dc.w $0005, $85DE, $82EF, $FFD0; FIRST LETTER INDEX WHEN NOT (Z, O, N, E)
+dc.w        $VERTOFF+WIDTH, $PRI+INDEX, $PRI+INDEX2P, $XPOS ; LETTER
+example: 
+dc.w        $0005, $85DE, $82EF, $FFD0; FIRST LETTER INDEX WHEN NOT (Z, O, N, E)
 '''
+
 """
 Generation Code
 """
+
 global text
 text = ''
 global debug
 debug = False
+
 def gen(): 
     global text
     global char
@@ -67,7 +71,7 @@ def gen():
     else:
         proper = hexi.replace("0X", "TC_LVL:    dc.w $")
         output.insert(END,f';In Obj34_MapUnc_147BA Put\n')
-        output.insert(END,f'{proper} ; Check The Wiki on GitHub or Locations.txt for the locations of the mappings, or look in Mappings.txt for a replacement for the original mappings \n')
+        output.insert(END,f'{proper} \n')
     pos = -(len(code))
     if len(char) <= 15:
         for char in code:
@@ -219,14 +223,15 @@ def gen():
                      pass
         if len(code) == 0:
             pass
-        else:        
+        else:
+            output.insert(END, f'\n; Open "Mapping Locations" for locations of titlecards\n; Open Mappings.txt for a replacement for the original mappings')
             if len(ntext) > 16:
                 output.insert(END,'\n;You can only have a maximum of $10 characters in sonic 2 title cards, this code will not work')
                 tk.messagebox.showerror(title='Error!', message='You can only have a maximum of $10 characters in sonic 2 title cards, this code will not work', options=None) 
             if len(charlistcode) > 8:     
                 output.insert(END,'\n;You can only have $8 unique indexes excluding Z,O,N, and E, this code will not work')
                 tk.messagebox.showerror(title='Error!', message='You can only have $8 unique indexes excluding Z,O,N, and E, this code will not work', options=None)
-            if after0 == True and cur_pos >= 112: #0x70
+            if after0 == True and cur_pos >= 112:
                 tk.messagebox.showerror(title='Error!', message='Position Out Of bounds', options=None)
             if debug == True:
                 output.insert(END, f'\n;Indexes: {charlist} {len(charlist)}\n;Code for above indexes:{charlistcode}\n;\tBut you can\'t stick n move')
@@ -241,6 +246,7 @@ def run():
     output.delete(1.0, END)
     gen()
     output.configure(state='disabled')
+
 class App(tk.Frame):
     global f
     def __init__(self, master):
@@ -376,6 +382,7 @@ class App(tk.Frame):
         font = ("courier", 16)
         )
         output.pack(fill = BOTH)
+ 
     def export(self):
         global text
         if text == '':
@@ -386,12 +393,15 @@ class App(tk.Frame):
             f.write(output.get(1.0, END))
             f.write(f'titleLetters	"{titleletters}"')
             f.close()
+
     def enterrun(self, event):
         self.getstr()
+
     def getstr(self):
         global text
         text = self.entrythingy.get()
         run()
+
     def debugset(self):
         global dbgvar
         global debug
@@ -412,9 +422,11 @@ class App(tk.Frame):
         else:
             THEME = "DARK"
         customtkinter.set_appearance_mode(THEME)  # Modes: system (default), light, dark                     
+
     def copy_output(self):
         root.clipboard_clear()
         root.clipboard_append(output.get(1.0, END))
+
     def open_popup(self):
         global text
         titleletters = re.sub(r"[^a-zA-Z,' ']", "", text).upper()
@@ -462,8 +474,10 @@ class App(tk.Frame):
         title='About',
         message="Sonic 2 Titlecard Code Generator in Python aka. S2TCG.py, created by RobiWanKenobi in \nPython 3.10.", options=None
         )
+
     def exit(self):
         sys.exit(0)
+
 # create the application
 title = "Sonic 2 Titlecard Code Generator"
 root = customtkinter.CTk(className="S2TCG")
