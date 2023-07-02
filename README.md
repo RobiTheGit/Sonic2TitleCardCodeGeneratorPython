@@ -3,4 +3,4 @@
 
 The GUI requires Tk/Tcl, customtkinter ,and Tkinter and both use the re module
 
-![Screenshot from 2023-03-31 09-22-31](https://user-images.githubusercontent.com/94720060/229162566-22838fed-00d3-4373-9287-9468669e5a19.png)
+![image](https://github.com/RobiTheGit/Sonic2TitleCardCodeGeneratorPython/assets/94720060/47b2e35f-3815-418c-b00e-c8b8c5931b70)
