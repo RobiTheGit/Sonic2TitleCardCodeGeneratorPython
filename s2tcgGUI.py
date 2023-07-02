@@ -69,7 +69,7 @@ def gen():
          options=None
          )
     else:
-        proper = hexi.replace("0X", "TC_LVL:    dc.w $")
+        proper = hexi.replace("0X", f"TC_{dispzone}:    dc.w $")
         output.insert(END,f';In Obj34_MapUnc_147BA Put\n')
         output.insert(END,f'{proper} \n')
     pos = -(len(code))
@@ -254,8 +254,11 @@ class App(tk.Frame):
         global output
         global debug
         global dbgvar
-        global themevar     
+        global themevar
+        global zone     
+        global ZoneMenu
         dbgvar = tk.IntVar()
+        zone = tk.IntVar()
         themevar = tk.IntVar()        
         super().__init__(master)
         self.pack()
@@ -336,7 +339,15 @@ class App(tk.Frame):
         height=3, 
         width=8)
         B5.pack(side = TOP, anchor = SE)
-                     
+
+        ZoneMenu = customtkinter.CTkOptionMenu(
+        leftframe,
+        variable = zone,
+        values=["EHZ", "CPZ", "ARZ", "CNZ", "HTZ", "MCZ", "OOZ", "MTZ", "SCZ", "WFZ", "DEZ", "HPZ"]
+        )
+        ZoneMenu.pack(side = BOTTOM) 
+        ZoneMenu.set("EHZ") 
+                           
         exitbutton = customtkinter.CTkButton(
         leftframe,
         text = '     EXIT     ',
@@ -399,7 +410,9 @@ class App(tk.Frame):
 
     def getstr(self):
         global text
+        global dispzone
         text = self.entrythingy.get()
+        dispzone = ZoneMenu.get()
         run()
 
     def debugset(self):
@@ -481,7 +494,7 @@ class App(tk.Frame):
 # create the application
 title = "Sonic 2 Titlecard Code Generator"
 root = customtkinter.CTk(className="S2TCG")
-root.geometry("850x450")
+root.geometry("900x500")
 root.resizable(True,True)
 myapp = App(root)
 myapp.master.title(title)
