@@ -10,9 +10,9 @@ customtkinter.set_appearance_mode(THEME)  # Modes: system (default), light, dark
 customtkinter.set_default_color_theme("dark-blue")  # Themes: blue (default), dark-blue, green
 '''
 Letter Format
-dc.w        $VERTOFF+WIDTH, $PRI+INDEX, $PRI+INDEX2P, $XPOS ; LETTER
+	dc.w        $VERTOFF+WIDTH, $PRI+INDEX, $PRI+INDEX2P, $XPOS ; LETTER
 example: 
-dc.w        $0005, $85DE, $82EF, $FFD0; FIRST LETTER INDEX WHEN NOT (Z, O, N, E)
+	dc.w        $0005, $85DE, $82EF, $FFD0; FIRST LETTER INDEX WHEN NOT (Z, O, N, E)
 '''
 
 """
@@ -112,10 +112,10 @@ def gen():
                 char = char.lower()
                 xpos_b = hex(cur_pos)
                 if after0 == False:
-                    XPOS = xpos_b.replace("0x", "").upper() #this is for dissam compatibility
+                    XPOS = xpos_b.replace("0x", "").upper()
                 else:
                     if cur_pos >= 16:
-                        XPOS = xpos_b.replace("0x", "00").upper() #this is also for dissam compatibility
+                        XPOS = xpos_b.replace("0x", "00").upper()
                     elif cur_pos <= 16:
                         XPOS =  xpos_b.replace("0x", "000").upper()
                     else:    
@@ -124,7 +124,7 @@ def gen():
                 cur_pos -= 65536
                 xpos_b = hex(abs(cur_pos))
                 if cur_pos >= 16:
-                    XPOS = xpos_b.replace("0x", "00").upper() #this is also for dissam compatibility
+                    XPOS = xpos_b.replace("0x", "00").upper()
                 elif cur_pos <= 16:
                     XPOS =  xpos_b.replace("0x", "000").upper()
                 else:    
@@ -135,7 +135,7 @@ def gen():
                 cur_pos -= 65536
                 xpos_b = hex(abs(cur_pos))
                 if cur_pos >= 16:
-                    XPOS = xpos_b.replace("0x", "00").upper() #this is also for dissam compatibility
+                    XPOS = xpos_b.replace("0x", "00").upper()
                 if cur_pos <= 16:
                     XPOS =  xpos_b.replace("0x", "000").upper()
                 else:    
