@@ -233,8 +233,8 @@ def gen():
                      pass
         titleletters = re.sub(r"[^a-zA-Z,' ']", "", text).upper()          
         if export == True:
-            f.write(f'In Off_TitleCardLetters\ntitleLetters	"{titleletters}" make sure you have no special characters here though.')
-        print(f'In Off_TitleCardLetters\ntitleLetters	"{titleletters}" make sure you have no special characters here though.')
+            f.write(f'In Off_TitleCardLetters\ntitleLetters	"{titleletters}" make sure you have no special characters here though.\nIf you are using the 2007 Xenowhirl disasm, read Xenowhirl_Setup.txt, and use the letter macros, and skip Z, O, N, & E')
+        print(f'In Off_TitleCardLetters\ntitleLetters	"{titleletters}" make sure you have no special characters here though.\nIf you are using the 2007 Xenowhirl disasm, read Xenowhirl_Setup.txt, and use the letter macros, and skip Z, O, N, & E')
         if debug == True:
             if export == True:
                 f.write(f';Indexes: {charlist} {len(charlist)}\n;Code for above indexes:{charlistcode}\n\t;But you can\'t stick n move')  

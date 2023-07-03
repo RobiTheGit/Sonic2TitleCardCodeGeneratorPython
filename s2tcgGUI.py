@@ -446,7 +446,7 @@ class App(tk.Frame):
         top= customtkinter.CTkToplevel()
         top.geometry("550x400")
         top.resizable(False,False)
-        top.title("GITHUB Off_TitleCardLetters")
+        top.title("Off_TitleCardLetters")
         customtkinter.CTkLabel(
         top,
         text= f'In Off_TitleCardLetters, for the zone title card you want to modify, where it says \ntitleLetters    "EMERALD HILL" or whatever zone you are replacing, \n you type in the zone\'s name, currently your titleLetters would have\n'
@@ -456,6 +456,10 @@ class App(tk.Frame):
         font = ("courier", 18)
         )
         pep.pack(fill = BOTH)
+        customtkinter.CTkLabel(
+        top,
+        text= f'If you are using the 2007 Xenowhirl disasm, read Xenowhirl_Setup.txt, and use the letter macros, and skip Z, O, N, & E\n'
+        ).pack()        
         pep.delete(1.0, END)
         pep.insert(END, f'titleLetters	"{titleletters}"',)
         pep.configure(state = 'disabled')
