@@ -168,18 +168,23 @@ TC_ZONE:	dc.w 4
 	dc.w 5,	$8588, $82C4, $10
 	dc.w 5,	$8584, $82C2, $20
 	dc.w 5,	$8580, $82C0, $30
+	
 TC_1:	dc.w 1
 	dc.w 7,	$A590, $A2C8, 0
+	
 TC_2:	dc.w 1
 	dc.w $B, $A598,	$A2CC, 0
+	
 TC_3:	dc.w 1
 	dc.w $B, $A5A4,	$A2D2, 0
+	
 TC_STH:	dc.w 5
 	dc.w $D, $85B0,	$82D8, $FFB8
 	dc.w $D, $85B8,	$82DC, $FFD8
 	dc.w $D, $85C0,	$82E0, $FFF8
 	dc.w $D, $85C8,	$82E4, $18
 	dc.w 5,	$85D0, $82E8, $38
+	
 TC_RedStripes:	dc.w 7
 	dc.w $9003, $85D4, $82EA, 0
 	dc.w $B003, $85D4, $82EA, 0
@@ -188,3 +193,11 @@ TC_RedStripes:	dc.w 7
 	dc.w $1003, $85D4, $82EA, 0
 	dc.w $3003, $85D4, $82EA, 0
 	dc.w $5003, $85D4, $82EA, 0
+; =====================================================================================================
+; You'll also need to updated the end of act results mappings since it uses the zone, 1, 2, and 3 text 
+;	so replace all occurrences of the first thing with the second                                  
+;		word_14BC8 = TC_ZONE
+;		word_14BEA = TC_1
+;		word_14BF4 = TC_2
+;		word_14BFE = TC_3
+; =====================================================================================================
