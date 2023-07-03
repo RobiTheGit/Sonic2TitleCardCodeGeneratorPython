@@ -282,7 +282,7 @@ class App(tk.Frame):
                 
         Title = customtkinter.CTkLabel(
         topframe,
-        text="SONIC 2 TITLECARD CODE GENERATOR PYTHON \nBY: RobiWanKenobi", 
+        text="SONIC 2 TITLECARD CODE GENERATOR PYTHON \nBy: RobiWanKenobi", 
         font = ('gaslight', 25)
         )        
         Title.pack(side = TOP, fill=BOTH)
@@ -305,7 +305,8 @@ class App(tk.Frame):
         command = self.getstr, 
         font = ('gaslight', 30),
         height=3, 
-        width=9)
+        width=9
+        )
         B.pack(side = TOP, anchor = E)
         
         B2 = customtkinter.CTkButton(leftframe,
@@ -313,7 +314,8 @@ class App(tk.Frame):
         command = self.open_popup, 
         font = ('gaslight', 30),
         height=3, 
-        width=8)
+        width=8
+        )
         B2.pack(side = TOP, anchor = E)
         
         B3 = customtkinter.CTkButton(leftframe,
@@ -321,7 +323,8 @@ class App(tk.Frame):
         command = self.info,
         font = ('gaslight', 30),
         height=3, 
-        width=8)
+        width=8
+        )
         B3.pack(side = TOP, anchor = SE)
  
         B4 = customtkinter.CTkButton(leftframe,
@@ -329,7 +332,8 @@ class App(tk.Frame):
         command = self.export,
         font = ('gaslight', 30),
         height=3, 
-        width=8)
+        width=8
+        )
         B4.pack(side = TOP, anchor = SE)
         
         B5 = customtkinter.CTkButton(leftframe,
@@ -337,24 +341,39 @@ class App(tk.Frame):
         command = self.open_popup2,
         font = ('gaslight', 30),
         height=3, 
-        width=8)
+        width=8
+        )
         B5.pack(side = TOP, anchor = SE)
 
         ZoneMenu = customtkinter.CTkOptionMenu(
         leftframe,
         variable = zone,
-        values=["EHZ", "CPZ", "ARZ", "CNZ", "HTZ", "MCZ", "OOZ", "MTZ", "SCZ", "WFZ", "DEZ", "HPZ"]
+        values=[
+        "EHZ",
+        "CPZ",
+        "ARZ",
+        "CNZ",
+        "HTZ",
+        "MCZ",
+        "OOZ",
+        "MTZ",
+        "SCZ",
+        "WFZ",
+        "DEZ",
+        "HPZ"
+        ]
         )
         ZoneMenu.pack(side = BOTTOM) 
-        ZoneMenu.set("EHZ") 
+        ZoneMenu.set(ZoneMenu._values[0]) 
                            
         exitbutton = customtkinter.CTkButton(
         leftframe,
-        text = '     EXIT     ',
+        text = '     Exit     ',
         command = self.exit, 
         font = ('gaslight', 30),
         height=3,
-        width=8)
+        width=8
+        )
         exitbutton.pack(side = TOP, anchor = SE)
          
         copybutton = customtkinter.CTkButton(
@@ -363,27 +382,28 @@ class App(tk.Frame):
         command = self.copy_output, 
         font = ('gaslight', 30),
         height=3,
-        width=8)
+        width=8
+        )
         copybutton.pack(side = BOTTOM)  
                       
         c1 = customtkinter.CTkCheckBox(
         topframe,
-         text='See Debug Info',
-         variable=dbgvar,
-         onvalue=1,
-         offvalue=0, 
-         command=self.debugset
-         )
+        text='See Debug Info',
+        variable=dbgvar,
+        onvalue=1,
+        offvalue=0, 
+        command=self.debugset
+        )
         c1.pack(side = BOTTOM)
         
         c2 = customtkinter.CTkCheckBox(
         topframe,
-         text='Light Mode',
-         variable=themevar,
-         onvalue=1,
-         offvalue=0, 
-         command=self.chgtheme
-         )
+        text='Light Mode',
+        variable=themevar,
+        onvalue=1,
+        offvalue=0, 
+        command=self.chgtheme
+        )
         c2.pack(side = BOTTOM)   
             
         output = customtkinter.CTkTextbox(
@@ -444,7 +464,7 @@ class App(tk.Frame):
         global text
         titleletters = re.sub(r"[^a-zA-Z,' ']", "", text).upper()
         top= customtkinter.CTkToplevel()
-        top.geometry("550x400")
+        top.geometry("600x400")
         top.resizable(False,False)
         top.title("Off_TitleCardLetters")
         customtkinter.CTkLabel(
@@ -458,7 +478,7 @@ class App(tk.Frame):
         pep.pack(fill = BOTH)
         customtkinter.CTkLabel(
         top,
-        text= f'If you are using the 2007 Xenowhirl disasm, read Xenowhirl_Setup.txt, and use the letter macros, and skip Z, O, N, & E\n'
+        text= f'If you are using the 2007 Xenowhirl disasm, read Xenowhirl_Setup.txt\nUse the letter macros, and skip Z, O, N, & E\n'
         ).pack()        
         pep.delete(1.0, END)
         pep.insert(END, f'titleLetters	"{titleletters}"',)
