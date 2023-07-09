@@ -30,28 +30,28 @@ def GenerateMappings():
     global afterI
     global afterM
     global debug
-    pos_br = 65535 #position before setting position to $0
-    pos_inc = 16 #$10, after M or W, 24/$18, after I, 8/$8
-    cur_pos = 65428 #starts with the starting position
+    NegativeToPositive_Position = 65535 #position before setting position to $0
+    SpaceBetweenLetter = 16 #$10, after M or W, 24/$18, after I, 8/$8
+    Current_XPOS = 65428 #starts with the starting position
     after0 = False
     letter = 0
-    current = 1500
-    twopcurrent = 749
-    increment = 2
-    twopinc = 2
+    Current_Index = 1500
+    Current_2PIndex = 749
+    Index_Increment = 2
+    Index_Increment_2P = 2
     btext = re.sub(r"[^a-zA-Z ]", "", text)
     ntext = btext.replace(" ", "")
     hexi = hex(len(ntext)).upper()
     #start position setting code
     if len(btext) >= 10: 
-        cur_pos = 65428
+        Current_XPOS = 65428
     elif len(btext) <= 9 and len(btext) > 6:
-        cur_pos = 65446
+        Current_XPOS = 65446
     elif len(btext) <= 6 and len(btext) > 4:
-        cur_pos = 0
+        Current_XPOS = 0
         after0 = True
     else:
-        cur_pos = 64 
+        Current_XPOS = 64 
         after0 = True
     char = ''
     code = []
@@ -76,67 +76,67 @@ def GenerateMappings():
     if len(char) <= 15:
         for char in code:
             if letter >= 1:
-                increment = 4 #the first letter is 2 and not 4
+                Index_Increment = 4 #the first letter is 2 and not 4
             if afterI == True:
-                pos_inc = 4 #incrememnt the position less
+                SpaceBetweenLetter = 4 #incrememnt the position less
                 if afterIcount == 0:
-                    increment = 4  #restore the default values
-                    twopinc = 2 
-                    pos_inc = 8 
+                    Index_Increment = 4  #restore the default values
+                    Index_Increment_2P = 2 
+                    SpaceBetweenLetter = 8 
                 else:
                     if afterIposcount == 0:
-                        pos_inc = 16
+                        SpaceBetweenLetter = 16
                     else:
-                        cur_pos += 8
+                        Current_XPOS += 8
                         afterIposcount = 0
             if afterM == True:
-                pos_inc = 24   
-                twopinc = 3 
-                increment = 6  #restore the default values
+                SpaceBetweenLetter = 24   
+                Index_Increment_2P = 3 
+                Index_Increment = 6  #restore the default values
                 if afterMcount == 0:
-                    increment = 4  #restore the default values
-                    twopinc = 2 
-                    pos_inc = 16
+                    Index_Increment = 4  #restore the default values
+                    Index_Increment_2P = 2 
+                    SpaceBetweenLetter = 16
                     afterM = False
                 else:
                     afterMcount -= 1 
                     if afterMposcount == 0:
-                        increment = 4  #restore the default values
-                        twopinc = 2 
-                        pos_inc = 16
+                        Index_Increment = 4  #restore the default values
+                        Index_Increment_2P = 2 
+                        SpaceBetweenLetter = 16
                         afterM = False
                     else:
                         afterMposcount = 0
-            cur_pos += pos_inc #increment position by the position incrementer, there is a reason this is defined after the afterM and afterI stuff
-            if cur_pos <= pos_br:
+            Current_XPOS += SpaceBetweenLetter #Index_Increment position by the position Index_Incrementer, there is a reason this is defined after the afterM and afterI stuff
+            if Current_XPOS <= NegativeToPositive_Position:
                 char = char.lower()
-                xpos_b = hex(cur_pos)
+                xpos_b = hex(Current_XPOS)
                 if after0 == False:
                     XPOS = xpos_b.replace("0x", "").upper()
                 else:
-                    if cur_pos >= 16:
+                    if Current_XPOS >= 16:
                         XPOS = xpos_b.replace("0x", "00").upper()
-                    elif cur_pos <= 16:
+                    elif Current_XPOS <= 16:
                         XPOS =  xpos_b.replace("0x", "000").upper()
                     else:    
                         XPOS =  xpos_b.replace("0x", "000").upper()
-            elif cur_pos >= pos_br:
-                cur_pos -= 65536
-                xpos_b = hex(abs(cur_pos))
-                if cur_pos >= 16:
+            elif Current_XPOS >= NegativeToPositive_Position:
+                Current_XPOS -= 65536
+                xpos_b = hex(abs(Current_XPOS))
+                if Current_XPOS >= 16:
                     XPOS = xpos_b.replace("0x", "00").upper()
-                elif cur_pos <= 16:
+                elif Current_XPOS <= 16:
                     XPOS =  xpos_b.replace("0x", "000").upper()
                 else:    
                     XPOS =  xpos_b.replace("0x", "000").upper()
                 after0 = True
             else:
                 after0 = True
-                cur_pos -= 65536
-                xpos_b = hex(abs(cur_pos))
-                if cur_pos >= 16:
+                Current_XPOS -= 65536
+                xpos_b = hex(abs(Current_XPOS))
+                if Current_XPOS >= 16:
                     XPOS = xpos_b.replace("0x", "00").upper()
-                if cur_pos <= 16:
+                if Current_XPOS <= 16:
                     XPOS =  xpos_b.replace("0x", "000").upper()
                 else:    
                     XPOS =  xpos_b.replace("0x", "000").upper()
@@ -158,12 +158,12 @@ def GenerateMappings():
             else:
                 if char != 'z' and char != 'o' and char != 'n' and char != 'e' and char != ' ' and char.isalpha():  
                     letter += 1 
-                    result = int(current)+int(increment)
+                    result = int(Current_Index)+int(Index_Increment)
                     if afterI == True:
                         result -= 2
                     result2 = hex(result)
                     INDEX = result2.replace("0x", "").upper()
-                    twopresult = int(twopcurrent)+int(twopinc)
+                    twopresult = int(Current_2PIndex)+int(Index_Increment_2P)
                     twopres2 = hex(twopresult) 
                     INDEX2P = twopres2.replace("0x", "").upper()
                     indexcode = (f'\tdc.w $00{width}, $8{INDEX}, $8{INDEX2P}, ${XPOS} ; {char.upper()}')
@@ -173,8 +173,8 @@ def GenerateMappings():
                     charlistcode.append(indexcode2)
                     output.insert(END,f'{indexcode} \n')
                     charlist.append(char)
-                    current = result
-                    twopcurrent = twopresult
+                    Current_Index = result
+                    Current_2PIndex = twopresult
                     if char == 'i':
                        afterI = True 
                        afterIcount = 0
@@ -216,7 +216,7 @@ def GenerateMappings():
                     if afterM == True:
                        afterMcount += 1 
                 elif char == ' ':
-                    cur_pos += 2
+                    Current_XPOS += 2
                     output.insert(END,'\n')
 
                 else:
@@ -231,7 +231,7 @@ def GenerateMappings():
             if len(charlistcode) > 8:     
                 output.insert(END,'\n;You can only have $8 unique indexes excluding Z,O,N, and E, this code will not work')
                 tk.messagebox.showerror(title='Error!', message='You can only have $8 unique indexes excluding Z,O,N, and E, this code will not work', options=None)
-            if after0 == True and cur_pos >= 112:
+            if after0 == True and Current_XPOS >= 112:
                 tk.messagebox.showerror(title='Error!', message='Position Out Of bounds', options=None)
             if debug == True:
                 output.insert(END, f'\n;Indexes: {charlist} {len(charlist)}\n;Code for above indexes:{charlistcode}\n;\tBut you can\'t stick n move')
