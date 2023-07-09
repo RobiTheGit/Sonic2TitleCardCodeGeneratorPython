@@ -24,7 +24,7 @@ text = ''
 global debug
 debug = False
 
-def gen(): 
+def GenerateMappings(): 
     global text
     global char
     global afterI
@@ -244,7 +244,7 @@ def GenerateTitlecardFromText():
     global debug
     output.configure(state='normal')
     output.delete(1.0, END)
-    gen()
+    GenerateMappings()
     output.configure(state='disabled')
 
 class App(tk.Frame):
