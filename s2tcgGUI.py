@@ -49,10 +49,10 @@ def gen():
         cur_pos = 65446
     elif len(btext) <= 6 and len(btext) > 4:
         cur_pos = 0
-        after0 = True          
+        after0 = True
     else:
         cur_pos = 64 
-        after0 = True        
+        after0 = True
     char = ''
     code = []
     charlist = []
@@ -88,16 +88,16 @@ def gen():
                         pos_inc = 16
                     else:
                         cur_pos += 8
-                        afterIposcount = 0                      
+                        afterIposcount = 0
             if afterM == True:
                 pos_inc = 24   
                 twopinc = 3 
-                increment = 6  #restore the default values                 
+                increment = 6  #restore the default values
                 if afterMcount == 0:
                     increment = 4  #restore the default values
                     twopinc = 2 
                     pos_inc = 16
-                    afterM = False                    
+                    afterM = False
                 else:
                     afterMcount -= 1 
                     if afterMposcount == 0:
@@ -106,7 +106,7 @@ def gen():
                         pos_inc = 16
                         afterM = False
                     else:
-                        afterMposcount = 0                  
+                        afterMposcount = 0
             cur_pos += pos_inc #increment position by the position incrementer, there is a reason this is defined after the afterM and afterI stuff
             if cur_pos <= pos_br:
                 char = char.lower()
@@ -131,7 +131,7 @@ def gen():
                     XPOS =  xpos_b.replace("0x", "000").upper()
                 after0 = True
             else:
-                after0 = True                                           
+                after0 = True
                 cur_pos -= 65536
                 xpos_b = hex(abs(cur_pos))
                 if cur_pos >= 16:
@@ -170,7 +170,7 @@ def gen():
                     indexcode2 = (f'\tdc.w $00{width}, $8{INDEX}, $8{INDEX2P} ')
                     if afterI == True:
                         result += 2
-                    charlistcode.append(indexcode2)    
+                    charlistcode.append(indexcode2)
                     output.insert(END,f'{indexcode} \n')
                     charlist.append(char)
                     current = result
@@ -178,11 +178,11 @@ def gen():
                     if char == 'i':
                        afterI = True 
                        afterIcount = 0
-                       afterIposcount = 1               
+                       afterIposcount = 1
                     if char == 'm' or char == 'w':
                        afterM = True 
                        afterMcount = 1 
-                       afterMposcount = 1               
+                       afterMposcount = 1
                 elif char == 'z':
                     INDEX = '58C'
                     INDEX2P = '2C6'
@@ -190,7 +190,7 @@ def gen():
                     if afterI == True:
                        afterIcount += 1
                     if afterM == True:
-                       afterMcount += 1                                            
+                       afterMcount += 1
                 elif char == 'o':
                     INDEX = '588'
                     INDEX2P = '2C4'
@@ -201,8 +201,8 @@ def gen():
                        afterMcount += 1 
                 elif char == 'n':
                     INDEX = '584'
-                    INDEX2P = '2C2'
-                    output.insert(END,f'\tdc.w $00{width}, $8{INDEX}, $8{INDEX2P}, ${XPOS} ; {char.upper()} \n' )                         
+                    INDEX2P = '2ThemeCheck'
+                    output.insert(END,f'\tdc.w $00{width}, $8{INDEX}, $8{INDEX2P}, ${XPOS} ; {char.upper()} \n' )
                     if afterI == True:
                        afterIcount += 1
                     if afterM == True:
@@ -210,13 +210,13 @@ def gen():
                 elif char == 'e':
                     INDEX = '580'
                     INDEX2P = '2C0'
-                    output.insert(END,f'\tdc.w $00{width}, $8{INDEX}, $8{INDEX2P}, ${XPOS} ; {char.upper()} \n' )               
+                    output.insert(END,f'\tdc.w $00{width}, $8{INDEX}, $8{INDEX2P}, ${XPOS} ; {char.upper()} \n' )
                     if afterI == True:
                        afterIcount += 1
                     if afterM == True:
                        afterMcount += 1 
                 elif char == ' ':
-                    cur_pos += 2                   
+                    cur_pos += 2
                     output.insert(END,'\n')
 
                 else:
@@ -238,7 +238,7 @@ def gen():
 """
 Tkinter Code
 """
-def run():
+def GenerateTitlecardFromText():
     global text
     global output
     global debug
@@ -255,96 +255,97 @@ class App(tk.Frame):
         global debug
         global dbgvar
         global themevar
-        global zone     
+        global zone
         global ZoneMenu
         dbgvar = tk.IntVar()
         zone = tk.IntVar()
-        themevar = tk.IntVar()        
+        themevar = tk.IntVar()
         super().__init__(master)
         self.pack()
+#	Initilize left frame
         leftframe = customtkinter.CTkFrame(
         root
         )        
         leftframe.pack(side = LEFT, fill=BOTH, anchor = NE, padx = 5)
-        
+ #	Initilize top frame
         topframe = customtkinter.CTkFrame(
         root 
         )
         topframe.pack(side = TOP, fill=BOTH)
-                
+#	Initilize bottom frame
         bottomframe = customtkinter.CTkFrame(
         root 
         )
         bottomframe.pack(side = TOP, fill=BOTH, pady = 5)
-        
+#	Load icon for app
         photo = PhotoImage(file ="icon.png")
         root.iconphoto(False, photo)
-                
+#	Draw title
         Title = customtkinter.CTkLabel(
         topframe,
         text="SONIC 2 TITLECARD CODE GENERATOR PYTHON \nBy: RobiWanKenobi", 
         font = ('gaslight', 25)
         )        
         Title.pack(side = TOP, fill=BOTH)
-        
+#	Add label to tell peopel where inout goes
         inlbl = customtkinter.CTkLabel(
         leftframe, 
         text='Input Title Card Name Here'
         )
         inlbl.pack(side = TOP, anchor = NE)
-        
-        self.entrythingy = customtkinter.CTkEntry(leftframe, placeholder_text="type level name")
+#	Add level name input
+        self.LevelName = customtkinter.CTkEntry(leftframe, placeholder_text="type level name")
         self.contents = tk.StringVar()
         self.contents.set("")
-        self.entrythingy["textvariable"] = self.contents 
-        self.entrythingy.bind('<Key-Return>', self.enterrun)
-        self.entrythingy.pack(side = TOP, anchor = NE,)
-        
-        B = customtkinter.CTkButton(leftframe, 
+        self.LevelName["textvariable"] = self.contents 
+        self.LevelName.bind('<Key-Return>', self.RunFromEnterKey)
+        self.LevelName.pack(side = TOP, anchor = NE,)
+#	Add button to generate the titlecard code
+        Generate = customtkinter.CTkButton(leftframe, 
         text = '  Generate Code', 
-        command = self.getstr, 
+        command = self.RunGeneration, 
         font = ('gaslight', 30),
         height=3, 
         width=9
         )
-        B.pack(side = TOP, anchor = E)
-        
-        B2 = customtkinter.CTkButton(leftframe,
+        Generate.pack(side = TOP, anchor = E)
+#	Add button to open the titlecard letters popup
+        TitlecardLetters = customtkinter.CTkButton(leftframe,
         text = 'Titlecard Letters', 
-        command = self.open_popup, 
+        command = self.TitlecardLetters_Popup, 
         font = ('gaslight', 30),
         height=3, 
         width=8
         )
-        B2.pack(side = TOP, anchor = E)
-        
-        B3 = customtkinter.CTkButton(leftframe,
+        TitlecardLetters.pack(side = TOP, anchor = E)
+#	Add button to open the about screen
+        About = customtkinter.CTkButton(leftframe,
         text = '  About S2tcg.py',
         command = self.info,
         font = ('gaslight', 30),
         height=3, 
         width=8
         )
-        B3.pack(side = TOP, anchor = SE)
- 
-        B4 = customtkinter.CTkButton(leftframe,
+        About.pack(side = TOP, anchor = SE)
+#	Add button to export the titlecard code
+        Export = customtkinter.CTkButton(leftframe,
         text = 'Export Titlecard',
-        command = self.export,
+        command = self.ExportTitlecard,
         font = ('gaslight', 30),
         height=3, 
         width=8
         )
-        B4.pack(side = TOP, anchor = SE)
-        
-        B5 = customtkinter.CTkButton(leftframe,
+        Export.pack(side = TOP, anchor = SE)
+#	Add button to open the mapping locations for titlecards popup
+        MappingsLocations = customtkinter.CTkButton(leftframe,
         text = 'Mapping Locations',
-        command = self.open_popup2,
+        command = self.MappingLocations_Popup,
         font = ('gaslight', 30),
         height=3, 
         width=8
         )
-        B5.pack(side = TOP, anchor = SE)
-
+        MappingsLocations.pack(side = TOP, anchor = SE)
+#	Add the zone selector
         ZoneMenu = customtkinter.CTkOptionMenu(
         leftframe,
         variable = zone,
@@ -365,47 +366,47 @@ class App(tk.Frame):
         )
         ZoneMenu.pack(side = BOTTOM) 
         ZoneMenu.set(ZoneMenu._values[0]) 
-                           
+#	Add the button to exit the program
         exitbutton = customtkinter.CTkButton(
         leftframe,
         text = '     Exit     ',
-        command = self.exit, 
+        command = self.ExitProgram, 
         font = ('gaslight', 30),
         height=3,
         width=8
         )
         exitbutton.pack(side = TOP, anchor = SE)
-         
+#	Add the copy to clipboard button
         copybutton = customtkinter.CTkButton(
         topframe,
         text = 'Copy To Clipboard',
-        command = self.copy_output, 
+        command = self.CopyToClipboard, 
         font = ('gaslight', 30),
         height=3,
         width=8
         )
-        copybutton.pack(side = BOTTOM)  
-                      
-        c1 = customtkinter.CTkCheckBox(
+        copybutton.pack(side = BOTTOM)
+#	Add the debug flag checkbox
+        DebugCheck = customtkinter.CTkCheckBox(
         topframe,
         text='See Debug Info',
         variable=dbgvar,
         onvalue=1,
         offvalue=0, 
-        command=self.debugset
+        command=self.SetDebugFlag
         )
-        c1.pack(side = BOTTOM)
-        
-        c2 = customtkinter.CTkCheckBox(
+        DebugCheck.pack(side = BOTTOM)
+#	Add the Light/Dark mode checkbox
+        ThemeCheck = customtkinter.CTkCheckBox(
         topframe,
         text='Light Mode',
         variable=themevar,
         onvalue=1,
         offvalue=0, 
-        command=self.chgtheme
+        command=self.ChangeAppTheme
         )
-        c2.pack(side = BOTTOM)   
-            
+        ThemeCheck.pack(side = BOTTOM)
+#	Add the output box
         output = customtkinter.CTkTextbox(
         bottomframe,
         state='disabled',
@@ -413,8 +414,10 @@ class App(tk.Frame):
         font = ("courier", 16)
         )
         output.pack(fill = BOTH)
- 
-    def export(self):
+
+#	Code To Export Titlecard Into a File
+
+    def ExportTitlecard(self):
         global text
         if text == '':
             pass
@@ -425,17 +428,21 @@ class App(tk.Frame):
             f.write(f'titleLetters	"{titleletters}"')
             f.close()
 
-    def enterrun(self, event):
-        self.getstr()
+#	Code to run the generator
 
-    def getstr(self):
+    def RunFromEnterKey(self, event):
+        self.RunGeneration()
+
+    def RunGeneration(self):
         global text
         global dispzone
-        text = self.entrythingy.get()
+        text = self.LevelName.get()
         dispzone = ZoneMenu.get()
-        run()
+        GenerateTitlecardFromText()
 
-    def debugset(self):
+#	Code to set the debug flag
+
+    def SetDebugFlag(self):
         global dbgvar
         global debug
         if dbgvar.get() == 0:
@@ -445,7 +452,9 @@ class App(tk.Frame):
         else:
             debug = False
 
-    def chgtheme(self):
+#	Code to change themes
+
+    def ChangeAppTheme(self):
         global themevar
         global debug
         if themevar.get() == 0:
@@ -454,13 +463,17 @@ class App(tk.Frame):
             THEME = "LIGHT"
         else:
             THEME = "DARK"
-        customtkinter.set_appearance_mode(THEME)  # Modes: system (default), light, dark                     
+        customtkinter.set_appearance_mode(THEME)  # Modes: system (default), light, dark
 
-    def copy_output(self):
+#	Code to copy output to clipboard
+
+    def CopyToClipboard(self):
         root.clipboard_clear()
         root.clipboard_append(output.get(1.0, END))
 
-    def open_popup(self):
+#	Code to open the titlecard letters popup
+
+    def TitlecardLetters_Popup(self):
         global text
         titleletters = re.sub(r"[^a-zA-Z,' ']", "", text).upper()
         top= customtkinter.CTkToplevel()
@@ -479,7 +492,7 @@ class App(tk.Frame):
         customtkinter.CTkLabel(
         top,
         text= f'If you are using the 2007 Xenowhirl disasm, read Xenowhirl_Setup.txt\nUse the letter macros, and skip Z, O, N, & E\n'
-        ).pack()        
+        ).pack()
         pep.delete(1.0, END)
         pep.insert(END, f'titleLetters	"{titleletters}"',)
         pep.configure(state = 'disabled')
@@ -487,8 +500,10 @@ class App(tk.Frame):
         top,
         text= f'The order for title card letters is the same as the order for the mappings code'
         ).pack()
-        
-    def open_popup2(self):
+
+#	Code to open the titlecard mapping locations popup
+
+    def MappingLocations_Popup(self):
         global text
         titleletters = re.sub(r"[^a-zA-Z,' ']", "", text).upper()
         top= customtkinter.CTkToplevel()
@@ -506,13 +521,13 @@ class App(tk.Frame):
         pep2.configure(state = 'disabled')
 
 
-    def info(self):
-        tk.messagebox.showinfo(
+    def OpenAbout(self):
+        tk.messagebox.showOpenAbout(
         title='About',
         message="Sonic 2 Titlecard Code Generator in Python aka. S2TCG.py, created by RobiWanKenobi in \nPython 3.10.", options=None
         )
 
-    def exit(self):
+    def ExitProgram(self):
         sys.exit(0)
 
 # create the application
