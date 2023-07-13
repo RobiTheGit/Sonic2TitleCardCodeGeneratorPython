@@ -201,7 +201,7 @@ def GenerateMappings():
                        afterMcount += 1 
                 elif char == 'n':
                     INDEX = '584'
-                    INDEX2P = '2ThemeCheck'
+                    INDEX2P = '2C2'
                     output.insert(END,f'\tdc.w $00{width}, $8{INDEX}, $8{INDEX2P}, ${XPOS} ; {char.upper()} \n' )
                     if afterI == True:
                        afterIcount += 1
