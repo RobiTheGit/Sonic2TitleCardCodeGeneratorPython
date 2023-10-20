@@ -94,15 +94,15 @@ def GenerateMappings():
                 Index_Increment_2P = 3 
                 Index_Increment = 6  #restore the default values
                 if afterMcount == 0:
-                    Index_Increment = 4  #restore the default values
-                    Index_Increment_2P = 2 
+                    Index_Increment = 6 #restore the default values
+                    Index_Increment_2P = 3 
                     SpaceBetweenLetter = 16
                     afterM = False
                 else:
                     afterMcount -= 1 
                     if afterMposcount == 0:
-                        Index_Increment = 4  #restore the default values
-                        Index_Increment_2P = 2 
+                        Index_Increment = 6  #restore the default values
+                        Index_Increment_2P = 3 
                         SpaceBetweenLetter = 16
                         afterM = False
                     else:
@@ -177,11 +177,11 @@ def GenerateMappings():
                     Current_2PIndex = twopresult
                     if char == 'i':
                        afterI = True 
-                       afterIcount = 0
+                       afterIcount = 1
                        afterIposcount = 1
                     if char == 'm' or char == 'w':
                        afterM = True 
-                       afterMcount = 1 
+                       afterMcount = 2 
                        afterMposcount = 1
                 elif char == 'z':
                     INDEX = '58C'

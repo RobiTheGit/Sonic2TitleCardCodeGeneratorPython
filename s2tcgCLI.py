@@ -86,21 +86,21 @@ def gen():
                         SpaceBetweenLetter = 16
                     else:
                         Current_XPOS += 8
-                        afterIposcount = 0                      
+                        afterIposcount = 0
             if afterM == True:
                 SpaceBetweenLetter = 24   
                 Index_Increment_2P = 3 
-                Index_Increment = 6  #restore the default values                 
+                Index_Increment = 6  #restore the default values
                 if afterMcount == 0:
-                    Index_Increment = 4  #restore the default values
-                    Index_Increment_2P = 2 
+                    Index_Increment = 6 #restore the default values
+                    Index_Increment_2P = 3 
                     SpaceBetweenLetter = 16
-                    afterM = False                    
+                    afterM = False
                 else:
                     afterMcount -= 1 
                     if afterMposcount == 0:
-                        Index_Increment = 4  #restore the default values
-                        Index_Increment_2P = 2 
+                        Index_Increment = 6  #restore the default values
+                        Index_Increment_2P = 3 
                         SpaceBetweenLetter = 16
                         afterM = False
                     else:
