@@ -75,36 +75,47 @@ def gen():
         for char in code:
             if letter >= 1:
                 Index_Increment = 4 #the first letter is 2 and not 4
-            if afterI == True:
-                SpaceBetweenLetter = 4 #incrememnt the position less
-                if afterIcount == 0:
-                    Index_Increment = 4  #restore the default values
-                    Index_Increment_2P = 2 
-                    SpaceBetweenLetter = 8 
-                else:
-                    if afterIposcount == 0:
-                        SpaceBetweenLetter = 16
+                if afterI == True:
+                    SpaceBetweenLetter = 4 #incrememnt the position less
+                    if afterIcount == 0:
+                        if afterM == False:
+                            Index_Increment = 4  #restore the default values
+                            Index_Increment_2P = 2 
+                        SpaceBetweenLetter = 8 
                     else:
-                        Current_XPOS += 8
-                        afterIposcount = 0
-            if afterM == True:
-                SpaceBetweenLetter = 24   
-                Index_Increment_2P = 3 
-                Index_Increment = 6  #restore the default values
-                if afterMcount == 0:
-                    Index_Increment = 6 #restore the default values
-                    Index_Increment_2P = 3 
-                    SpaceBetweenLetter = 16
-                    afterM = False
-                else:
-                    afterMcount -= 1 
-                    if afterMposcount == 0:
-                        Index_Increment = 6  #restore the default values
+                        if afterIposcount == 0:
+                            Index_Increment = 6  #restore the default values
+                            Index_Increment_2P = 3 
+                            SpaceBetweenLetter = 16
+                        else:
+                            Index_Increment = 6  #restore the default values
+                            Index_Increment_2P = 3                   
+                            Current_XPOS += 8
+                            afterIposcount = 0
+
+                if afterM == True:
+                    SpaceBetweenLetter = 24 
+                    if afterI == False: 
                         Index_Increment_2P = 3 
+                        Index_Increment = 6  #restore the default values
+                    else:
+                        Index_Increment = 4  #restore the default values
+                        Index_Increment_2P = 2                     
+                    if afterMcount == 0:
+                        if afterI == False:
+                            afterMcount += 1
+                        else:
+                            Index_Increment = 4  #restore the default values
+                            Index_Increment_2P = 2 
                         SpaceBetweenLetter = 16
                         afterM = False
                     else:
-                        afterMposcount = 0                  
+                        afterMcount -= 1 
+                        if afterMposcount == 0:
+                            SpaceBetweenLetter = 16
+                            afterM = False
+                        else:
+                            afterMposcount = 0                  
             Current_XPOS += SpaceBetweenLetter #Index_Increment position by the position Index_Incrementer, there is a reason this is defined after the afterM and afterI stuff
             if Current_XPOS <= NegativeToPositive_Position:
                 char = char.lower()
@@ -144,8 +155,17 @@ def gen():
                 width = '01'
             else:
                 width = '05'
-            if char in charlist:
-                x = charlist.index(char)
+           if char in charlist:
+                x = charlist.index(char) 
+                output.insert(END,f'{charlistcode[x]}, ${XPOS} ; {char.upper()} \n')
+                if char == 'i':
+                   afterI = True 
+                   afterIcount = 3
+                   afterIposcount = 1
+                if char == 'm' or char == 'w':
+                   afterM = True 
+                   afterMcount = 3
+                   afterMposcount = 1
                 if export == True: 
                     f.write(f'{charlistcode[x]} ${XPOS} ; {char.upper()}')
                     f.write('\n')
@@ -162,7 +182,7 @@ def gen():
                     twopres2 = hex(twopresult) 
                     INDEX2P = twopres2.replace("0x", "").upper()
                     indexcode = (f'\tdc.w $00{width}, $8{INDEX}, $8{INDEX2P}, ${XPOS} ; {char.upper()}')
-                    indexcode2 = (f'\tdc.w $00{width}, $8{INDEX}, $8{INDEX2P} ')
+                    indexcode2 = (f'\tdc.w $00{width}, $8{INDEX}, $8{INDEX2P},')
                     if afterI == True:
                         result += 2 
                     charlistcode.append(indexcode2)   
@@ -175,11 +195,11 @@ def gen():
                     Current_2PIndex = twopresult
                     if char == 'i':
                        afterI = True 
-                       afterIcount = 1
+                       afterIcount = 3
                        afterIposcount = 1                                                                                                           
                     if char == 'm' or char == 'w':
                        afterM = True 
-                       afterMcount = 1
+                       afterMcount = 3
                        afterMposcount = 1                                           
                 elif char == 'z':
                     INDEX = '58C'
