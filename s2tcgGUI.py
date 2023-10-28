@@ -178,6 +178,8 @@ def GenerateMappings():
                     result = int(Current_Index)+int(Index_Increment)
                     if afterI == True:
                         result -= 2
+                        if char == "m":
+                            result -= 2
                     result2 = hex(result)
                     INDEX = result2.replace("0x", "").upper()
                     twopresult = int(Current_2PIndex)+int(Index_Increment_2P)
@@ -186,7 +188,9 @@ def GenerateMappings():
                     indexcode = (f'\tdc.w $00{width}, $8{INDEX}, $8{INDEX2P}, ${XPOS} ; {char.upper()}')
                     indexcode2 = (f'\tdc.w $00{width}, $8{INDEX}, $8{INDEX2P}')
                     if afterI == True:
-                        result += 2
+                        result += 2 
+                        if char == "m":
+                            result += 2  
                     charlistcode.append(indexcode2)
                     output.insert(END,f'{indexcode} \n')
                     charlist.append(char)

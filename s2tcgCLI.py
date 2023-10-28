@@ -175,7 +175,9 @@ def gen():
                     letter += 1 
                     result = int(Current_Index)+int(Index_Increment)
                     if afterI == True:
-                        result -= 2                    
+                        result -= 2
+                        if char == "m":
+                            result -= 2                   
                     result2 = hex(result)
                     INDEX = result2.replace("0x", "").upper()
                     twopresult = int(Current_2PIndex)+int(Index_Increment_2P)
@@ -185,6 +187,8 @@ def gen():
                     indexcode2 = (f'\tdc.w $00{width}, $8{INDEX}, $8{INDEX2P},')
                     if afterI == True:
                         result += 2 
+                        if char == "m":
+                            result += 2  
                     charlistcode.append(indexcode2)   
                     if export == True: 
                         f.write(indexcode)
@@ -198,6 +202,7 @@ def gen():
                        afterIcount = 3
                        afterIposcount = 1                                                                                                           
                     if char == 'm' or char == 'w':
+
                        afterM = True 
                        afterMcount = 3
                        afterMposcount = 1                                           
