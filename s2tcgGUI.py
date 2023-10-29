@@ -119,7 +119,11 @@ def GenerateMappings():
                             afterM = False
                         else:
                             afterMposcount = 0
-	
+
+                else:
+                    Index_Increment = 4  #restore the default values
+                    Index_Increment_2P = 2 
+                    SpaceBetweenLetter = 16     
 #position
             Current_XPOS += SpaceBetweenLetter #Index_Increment position by the position Index_Incrementer, there is a reason this is defined after the afterM and afterI stuff
             if Current_XPOS <= NegativeToPositive_Position:
@@ -179,8 +183,6 @@ def GenerateMappings():
                     result = int(Current_Index)+int(Index_Increment)
                     if afterI == True:
                         result -= 2
-                        if char == "m":
-                            result -= 2
                     result2 = hex(result)
                     INDEX = result2.replace("0x", "").upper()
                     twopresult = int(Current_2PIndex)+int(Index_Increment_2P)

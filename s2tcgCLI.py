@@ -175,9 +175,7 @@ def gen():
                     letter += 1 
                     result = int(Current_Index)+int(Index_Increment)
                     if afterI == True:
-                        result -= 2
-                        if char == "m":
-                            result -= 2                   
+                        result -= 2                 
                     result2 = hex(result)
                     INDEX = result2.replace("0x", "").upper()
                     twopresult = int(Current_2PIndex)+int(Index_Increment_2P)
