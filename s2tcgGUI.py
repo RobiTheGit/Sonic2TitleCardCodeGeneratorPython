@@ -83,7 +83,7 @@ def GenerateMappings():
                     if afterIcount == 0:
                         if afterM == False:
                             Index_Increment = 4  #restore the default values
-                            Index_Increment_2P = 2 
+                            Index_Increment_2P = 2
                         SpaceBetweenLetter = 8 
                     else:
                         if afterIposcount == 0:
@@ -119,6 +119,10 @@ def GenerateMappings():
                             afterM = False
                         else:
                             afterMposcount = 0
+                else:
+                    Index_Increment = 4  #restore the default values
+                    Index_Increment_2P = 2 
+                    SpaceBetweenLetter = 16                    
 #position
             Current_XPOS += SpaceBetweenLetter #Index_Increment position by the position Index_Incrementer, there is a reason this is defined after the afterM and afterI stuff
             if Current_XPOS <= NegativeToPositive_Position:
