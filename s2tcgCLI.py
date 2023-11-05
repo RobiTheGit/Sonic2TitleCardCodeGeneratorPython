@@ -25,7 +25,7 @@ def GenerateTitlecardFromText():
     NegativeToPositive_Position = 65535 #position before setting position to $0
     SpaceBetweenLetter = 16 #$10, after M or W, 24/$18, after I, 8/$8
     Current_XPOS = 65428 #starts with the starting position
-    IndexIsAfter0 = False
+    PositionsIsAfter0 = False
     CurrentCharacter = 0
     Current_Index = 1500
     Current_2PIndex = 749
@@ -47,10 +47,10 @@ def GenerateTitlecardFromText():
         Current_XPOS = 65446
     elif len(REGEX_STEP) <= 6 and len(REGEX_STEP) > 2:
         Current_XPOS = 0
-        IndexIsAfter0 = True            
+        PositionsIsAfter0 = True            
     else:
         Current_XPOS = 64 
-        IndexIsAfter0 = True
+        PositionsIsAfter0 = True
     if len(REGEX_STEP) == 0:
         print('No title card to generate!')
         exit(0)  
@@ -120,7 +120,7 @@ def GenerateTitlecardFromText():
             if Current_XPOS <= NegativeToPositive_Position:
                 CharacterOfTitleCard = CharacterOfTitleCard.lower()
                 PreFinal_XPOS = hex(Current_XPOS)
-                if IndexIsAfter0 == False:
+                if PositionsIsAfter0 == False:
                     XPOS = PreFinal_XPOS.replace("0x", "").upper()
                 else:
                     if Current_XPOS >= 16:
@@ -138,9 +138,9 @@ def GenerateTitlecardFromText():
                     XPOS =  PreFinal_XPOS.replace("0x", "000").upper()
                 else:    
                     XPOS =  PreFinal_XPOS.replace("0x", "000").upper()
-                IndexIsAfter0 = True
+                PositionsIsAfter0 = True
             else:
-                IndexIsAfter0 = True                                           
+                PositionsIsAfter0 = True                                           
                 Current_XPOS -= 65536
                 PreFinal_XPOS = hex(abs(Current_XPOS))
                 if Current_XPOS >= 16:
@@ -277,7 +277,7 @@ def GenerateTitlecardFromText():
             print('You can only have a maximum of $10 characters in sonic 2 title cards, this code will not work')
             if export == True:
                 f.write('\n')
-        if IndexIsAfter0 == True and Current_XPOS >= 112:
+        if PositionsIsAfter0 == True and Current_XPOS >= 112:
             if export == True:
                 f.write(';Position Out Of bounds')
             print('Position Out Of bounds')

@@ -33,7 +33,7 @@ def GenerateMappings():
     NegativeToPositive_Position = 65535 #position before setting position to $0
     SpaceBetweenLetter = 16 #$10, after M or W, 24/$18, after I, 8/$8
     Current_XPOS = 65428 #starts with the starting position
-    IndexIsAfter0 = False
+    PositionsIsAfter0 = False
     CurrentCharacter = 0
     Current_Index = 1500
     Current_2PIndex = 749
@@ -49,10 +49,10 @@ def GenerateMappings():
         Current_XPOS = 65446
     elif len(REGEX_STEP) <= 6 and len(REGEX_STEP) > 2:
         Current_XPOS = 0
-        IndexIsAfter0 = True
+        PositionsIsAfter0 = True
     else:
         Current_XPOS = 64 
-        IndexIsAfter0 = True
+        PositionsIsAfter0 = True
     CharacterOfTitleCard = ''
     AllOfTheCharacters = []
     CharactersList = []
@@ -129,7 +129,7 @@ def GenerateMappings():
             if Current_XPOS <= NegativeToPositive_Position:
                 CharacterOfTitleCard = CharacterOfTitleCard.lower()
                 PreFinal_XPOS = hex(Current_XPOS)
-                if IndexIsAfter0 == False:
+                if PositionsIsAfter0 == False:
                     XPOS = PreFinal_XPOS.replace("0x", "").upper()
                 else:
                     if Current_XPOS >= 16:
@@ -147,9 +147,9 @@ def GenerateMappings():
                     XPOS =  PreFinal_XPOS.replace("0x", "000").upper()
                 else:    
                     XPOS =  PreFinal_XPOS.replace("0x", "000").upper()
-                IndexIsAfter0 = True
+                PositionsIsAfter0 = True
             else:
-                IndexIsAfter0 = True
+                PositionsIsAfter0 = True
                 Current_XPOS -= 65536
                 PreFinal_XPOS = hex(abs(Current_XPOS))
                 if Current_XPOS >= 16:
@@ -255,7 +255,7 @@ def GenerateMappings():
             if len(SavedIndexes) > 8:     
                 TitlecardOutput.insert(END,'\n;You can only have $8 unique indexes excluding Z,O,N, and E, this code will not work')
                 tk.messagebox.showerror(title='Error!', message='You can only have $8 unique indexes excluding Z,O,N, and E, this code will not work', options=None)
-            if IndexIsAfter0 == True and Current_XPOS >= 112:
+            if PositionsIsAfter0 == True and Current_XPOS >= 112:
                 tk.messagebox.showerror(title='Error!', message='Position Out Of bounds', options=None)
             if DebugFlag == True:
                 TitlecardOutput.insert(END, f'\n;Indexes: {CharactersList} {len(CharactersList)}\n;Code for above indexes:{SavedIndexes}\n;\tBut you can\'t stick n move')
