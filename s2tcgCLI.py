@@ -1,6 +1,6 @@
 #!/usr/bin/python3 
-import re
-import sys
+from re import sub
+from sys import exit
 from sys import argv
 global export
 export = input('Would you like to export the titlecard when it is generated. ')
@@ -18,42 +18,42 @@ Letter Format
 example: 
 	dc.w        $0005, $85DE, $82EF, $FFD0; FIRST LETTER INDEX WHEN NOT (Z, O, N, E)
 '''
-debug = False
-def gen(): 
+DebugFlag = False
+def GenerateTitlecardFromText(): 
     global text
     global f
     NegativeToPositive_Position = 65535 #position before setting position to $0
     SpaceBetweenLetter = 16 #$10, after M or W, 24/$18, after I, 8/$8
     Current_XPOS = 65428 #starts with the starting position
-    after0 = False
-    letter = 0
+    IndexIsAfter0 = False
+    CurrentCharacter = 0
     Current_Index = 1500
     Current_2PIndex = 749
     Index_Increment = 2
     Index_Increment_2P = 2
-    afterI = False 
-    afterM = False
-    btext = re.sub(r"[^a-zA-Z ]", "", text)
-    ntext = btext.replace(" ", "")
+    LetterIsAfterI = False 
+    LetterIsAfterM = False
+    REGEX_STEP = sub(r"[^a-zA-Z ]", "", text)
+    LENGTH_STEP = REGEX_STEP.replace(" ", "")
     if export == True:
-        if len(btext) == 0:
+        if len(REGEX_STEP) == 0:
             pass
         else:
-            f = open(f'{btext.upper()}.txt', 'a')
-    hexi = hex(len(ntext)).upper()
-    if len(btext) >= 10: 
+            f = open(f'{REGEX_STEP.upper()}.txt', 'a')
+    hexi = hex(len(LENGTH_STEP)).upper()
+    if len(REGEX_STEP) >= 10: 
         Current_XPOS = 65428
-    elif len(btext) <= 9 and len(btext) > 6:
+    elif len(REGEX_STEP) <= 9 and len(REGEX_STEP) > 6:
         Current_XPOS = 65446
-    elif len(btext) <= 6 and len(btext) > 4:
+    elif len(REGEX_STEP) <= 6 and len(REGEX_STEP) > 2:
         Current_XPOS = 0
-        after0 = True            
+        IndexIsAfter0 = True            
     else:
         Current_XPOS = 64 
-        after0 = True
-    if len(btext) == 0:
+        IndexIsAfter0 = True
+    if len(REGEX_STEP) == 0:
         print('No title card to generate!')
-        sys.exit(0)  
+        exit(0)  
     if export == True:     
         f.write(';In Obj34_MapUnc_147BA Put')
         f.write('\n')
@@ -62,28 +62,28 @@ def gen():
         f.write(f'{proper}')
         f.write('\n')
     print(f';In Obj34_MapUnc_147BA Put\n{proper}')
-    code = []
-    charlist = []
-    charlistcode = []
-    for char in btext:
-        code.append(char.lower())
-    if len(code) == 0:
+    AllOfTheCharacters = []
+    CharactersList = []
+    SavedIndexes = []
+    for CharacterOfTitleCard in REGEX_STEP:
+        AllOfTheCharacters.append(CharacterOfTitleCard.lower())
+    if len(AllOfTheCharacters) == 0:
         print('No title card to generate!')
-        sys.exit(0)
-    pos = -(len(code))
-    if len(char) <= 15:
-        for char in code:
-            if letter >= 1:
+        exit(0)
+    pos = -(len(AllOfTheCharacters))
+    if len(CharacterOfTitleCard) <= 15:
+        for CharacterOfTitleCard in AllOfTheCharacters:
+            if CurrentCharacter >= 1:
                 Index_Increment = 4 #the first letter is 2 and not 4
-                if afterI == True:
+                if LetterIsAfterI == True:
                     SpaceBetweenLetter = 4 #incrememnt the position less
-                    if afterIcount == 0:
-                        if afterM == False:
+                    if LetterIsAfterIcount == 0:
+                        if LetterIsAfterM == False:
                             Index_Increment = 4  #restore the default values
                             Index_Increment_2P = 2 
                         SpaceBetweenLetter = 8 
                     else:
-                        if afterIposcount == 0:
+                        if LetterIsAfterIposcount == 0:
                             Index_Increment = 6  #restore the default values
                             Index_Increment_2P = 3 
                             SpaceBetweenLetter = 16
@@ -91,193 +91,193 @@ def gen():
                             Index_Increment = 6  #restore the default values
                             Index_Increment_2P = 3                   
                             Current_XPOS += 8
-                            afterIposcount = 0
+                            LetterIsAfterIposcount = 0
 
-                if afterM == True:
+                if LetterIsAfterM == True:
                     SpaceBetweenLetter = 24 
-                    if afterI == False: 
+                    if LetterIsAfterI == False: 
                         Index_Increment_2P = 3 
                         Index_Increment = 6  #restore the default values
                     else:
                         Index_Increment = 4  #restore the default values
                         Index_Increment_2P = 2                     
-                    if afterMcount == 0:
-                        if afterI == False:
-                            afterMcount += 1
+                    if LetterIsAfterMcount == 0:
+                        if LetterIsAfterI == False:
+                            LetterIsAfterMcount += 1
                         else:
                             Index_Increment = 4  #restore the default values
                             Index_Increment_2P = 2 
                         SpaceBetweenLetter = 16
-                        afterM = False
+                        LetterIsAfterM = False
                     else:
-                        afterMcount -= 1 
-                        if afterMposcount == 0:
+                        LetterIsAfterMcount -= 1 
+                        if LetterIsAfterMposcount == 0:
                             SpaceBetweenLetter = 16
-                            afterM = False
+                            LetterIsAfterM = False
                         else:
-                            afterMposcount = 0                  
-            Current_XPOS += SpaceBetweenLetter #Index_Increment position by the position Index_Incrementer, there is a reason this is defined after the afterM and afterI stuff
+                            LetterIsAfterMposcount = 0                  
+            Current_XPOS += SpaceBetweenLetter #Index_Increment position by the position Index_Incrementer, there is a reason this is defined after the LetterIsAfterM and LetterIsAfterI stuff
             if Current_XPOS <= NegativeToPositive_Position:
-                char = char.lower()
-                xpos_b = hex(Current_XPOS)
-                if after0 == False:
-                    XPOS = xpos_b.replace("0x", "").upper()
+                CharacterOfTitleCard = CharacterOfTitleCard.lower()
+                PreFinal_XPOS = hex(Current_XPOS)
+                if IndexIsAfter0 == False:
+                    XPOS = PreFinal_XPOS.replace("0x", "").upper()
                 else:
                     if Current_XPOS >= 16:
-                        XPOS = xpos_b.replace("0x", "00").upper()
+                        XPOS = PreFinal_XPOS.replace("0x", "00").upper()
                     elif Current_XPOS <= 16:
-                        XPOS =  xpos_b.replace("0x", "000").upper()
+                        XPOS =  PreFinal_XPOS.replace("0x", "000").upper()
                     else:    
-                        XPOS =  xpos_b.replace("0x", "000").upper()
+                        XPOS =  PreFinal_XPOS.replace("0x", "000").upper()
             elif Current_XPOS >= NegativeToPositive_Position:
                 Current_XPOS -= 65536
-                xpos_b = hex(abs(Current_XPOS))
+                PreFinal_XPOS = hex(abs(Current_XPOS))
                 if Current_XPOS >= 16:
-                    XPOS = xpos_b.replace("0x", "00").upper()
+                    XPOS = PreFinal_XPOS.replace("0x", "00").upper()
                 elif Current_XPOS <= 16:
-                    XPOS =  xpos_b.replace("0x", "000").upper()
+                    XPOS =  PreFinal_XPOS.replace("0x", "000").upper()
                 else:    
-                    XPOS =  xpos_b.replace("0x", "000").upper()
-                after0 = True
+                    XPOS =  PreFinal_XPOS.replace("0x", "000").upper()
+                IndexIsAfter0 = True
             else:
-                after0 = True                                           
+                IndexIsAfter0 = True                                           
                 Current_XPOS -= 65536
-                xpos_b = hex(abs(Current_XPOS))
+                PreFinal_XPOS = hex(abs(Current_XPOS))
                 if Current_XPOS >= 16:
-                    XPOS = xpos_b.replace("0x", "00").upper()
+                    XPOS = PreFinal_XPOS.replace("0x", "00").upper()
                 if Current_XPOS <= 16:
-                    XPOS =  xpos_b.replace("0x", "000").upper()
+                    XPOS =  PreFinal_XPOS.replace("0x", "000").upper()
                 else:    
-                    XPOS =  xpos_b.replace("0x", "000").upper()
-            if char == 'm' or char == 'w':
-                width = '09'
-            elif char == 'i':
-                width = '01'
+                    XPOS =  PreFinal_XPOS.replace("0x", "000").upper()
+            if CharacterOfTitleCard == 'm' or CharacterOfTitleCard == 'w':
+                CharacterWidth = '09'
+            elif CharacterOfTitleCard == 'i':
+                CharacterWidth = '01'
             else:
-                width = '05'
-           if char in charlist:
-                x = charlist.index(char) 
-                output.insert(END,f'{charlistcode[x]}, ${XPOS} ; {char.upper()} \n')
-                if char == 'i':
-                   afterI = True 
-                   afterIcount = 3
-                   afterIposcount = 1
-                if char == 'm' or char == 'w':
-                   afterM = True 
-                   afterMcount = 3
-                   afterMposcount = 1
+                CharacterWidth = '05'
+           if CharacterOfTitleCard in CharactersList:
+                x = CharactersList.index(CharacterOfTitleCard) 
+                output.insert(END,f'{SavedIndexes[x]}, ${XPOS} ; {CharacterOfTitleCard.upper()} \n')
+                if CharacterOfTitleCard == 'i':
+                   LetterIsAfterI = True 
+                   LetterIsAfterIcount = 3
+                   LetterIsAfterIposcount = 1
+                if CharacterOfTitleCard == 'm' or CharacterOfTitleCard == 'w':
+                   LetterIsAfterM = True 
+                   LetterIsAfterMcount = 3
+                   LetterIsAfterMposcount = 1
                 if export == True: 
-                    f.write(f'{charlistcode[x]} ${XPOS} ; {char.upper()}')
+                    f.write(f'{SavedIndexes[x]} ${XPOS} ; {CharacterOfTitleCard.upper()}')
                     f.write('\n')
-                print(f'{charlistcode[x]} ${XPOS} ; {char.upper()}')
+                print(f'{SavedIndexes[x]} ${XPOS} ; {CharacterOfTitleCard.upper()}')
             else:
-                if char != 'z' and char != 'o' and char != 'n' and char != 'e' and char != ' ' and char.isalpha():  
-                    letter += 1 
+                if CharacterOfTitleCard != 'z' and CharacterOfTitleCard != 'o' and CharacterOfTitleCard != 'n' and CharacterOfTitleCard != 'e' and CharacterOfTitleCard != ' ' and CharacterOfTitleCard.isalpha():  
+                    CurrentCharacter += 1 
                     result = int(Current_Index)+int(Index_Increment)
-                    if afterI == True:
+                    if LetterIsAfterI == True:
                         result -= 2                 
                     result2 = hex(result)
                     INDEX = result2.replace("0x", "").upper()
                     twopresult = int(Current_2PIndex)+int(Index_Increment_2P)
                     twopres2 = hex(twopresult) 
                     INDEX2P = twopres2.replace("0x", "").upper()
-                    indexcode = (f'\tdc.w $00{width}, $8{INDEX}, $8{INDEX2P}, ${XPOS} ; {char.upper()}')
-                    indexcode2 = (f'\tdc.w $00{width}, $8{INDEX}, $8{INDEX2P},')
-                    if afterI == True:
+                    CodeToOutput = (f'\tdc.w $00{CharacterWidth}, $8{INDEX}, $8{INDEX2P}, ${XPOS} ; {CharacterOfTitleCard.upper()}')
+                    CodeForSavedIndexes = (f'\tdc.w $00{CharacterWidth}, $8{INDEX}, $8{INDEX2P},')
+                    if LetterIsAfterI == True:
                         result += 2 
-                        if char == "m":
+                        if CharacterOfTitleCard == "m":
                             result += 2  
-                    charlistcode.append(indexcode2)   
+                    SavedIndexes.append(CodeForSavedIndexes)   
                     if export == True: 
-                        f.write(indexcode)
+                        f.write(CodeToOutput)
                         f.write('\n')
-                    print(indexcode)
-                    charlist.append(char)
+                    print(CodeToOutput)
+                    CharactersList.append(CharacterOfTitleCard)
                     Current_Index = result
                     Current_2PIndex = twopresult
-                    if char == 'i':
-                       afterI = True 
-                       afterIcount = 3
-                       afterIposcount = 1                                                                                                           
-                    if char == 'm' or char == 'w':
+                    if CharacterOfTitleCard == 'i':
+                       LetterIsAfterI = True 
+                       LetterIsAfterIcount = 3
+                       LetterIsAfterIposcount = 1                                                                                                           
+                    if CharacterOfTitleCard == 'm' or CharacterOfTitleCard == 'w':
 
-                       afterM = True 
-                       afterMcount = 3
-                       afterMposcount = 1                                           
-                elif char == 'z':
+                       LetterIsAfterM = True 
+                       LetterIsAfterMcount = 3
+                       LetterIsAfterMposcount = 1                                           
+                elif CharacterOfTitleCard == 'z':
                     INDEX = '58C'
                     INDEX2P = '2C6'
                     if export == True:
-                        f.write(f'\tdc.w $00{width}, $8{INDEX}, $8{INDEX2P}, ${XPOS} ; {char.upper()}' )
+                        f.write(f'\tdc.w $00{CharacterWidth}, $8{INDEX}, $8{INDEX2P}, ${XPOS} ; {CharacterOfTitleCard.upper()}' )
                         f.write('\n')
-                    if afterI == True:
-                       afterIcount += 1
-                    if afterM == True:
-                       afterMcount += 1                    
-                    print(f'\tdc.w $00{width}, $8{INDEX}, $8{INDEX2P}, ${XPOS} ; {char.upper()}')                    
-                elif char == 'o':
+                    if LetterIsAfterI == True:
+                       LetterIsAfterIcount += 1
+                    if LetterIsAfterM == True:
+                       LetterIsAfterMcount += 1                    
+                    print(f'\tdc.w $00{CharacterWidth}, $8{INDEX}, $8{INDEX2P}, ${XPOS} ; {CharacterOfTitleCard.upper()}')                    
+                elif CharacterOfTitleCard == 'o':
                     INDEX = '588'
                     INDEX2P = '2C4'
                     if export == True:
-                        f.write(f'\tdc.w $00{width}, $8{INDEX}, $8{INDEX2P}, ${XPOS} ; {char.upper()}' )
+                        f.write(f'\tdc.w $00{CharacterWidth}, $8{INDEX}, $8{INDEX2P}, ${XPOS} ; {CharacterOfTitleCard.upper()}' )
                         f.write('\n')
-                    if afterI == True:
-                       afterIcount += 1
-                    if afterM == True:
-                       afterMcount += 1                     
-                    print(f'\tdc.w $00{width}, $8{INDEX}, $8{INDEX2P}, ${XPOS} ; {char.upper()}')                              
-                elif char == 'n':
+                    if LetterIsAfterI == True:
+                       LetterIsAfterIcount += 1
+                    if LetterIsAfterM == True:
+                       LetterIsAfterMcount += 1                     
+                    print(f'\tdc.w $00{CharacterWidth}, $8{INDEX}, $8{INDEX2P}, ${XPOS} ; {CharacterOfTitleCard.upper()}')                              
+                elif CharacterOfTitleCard == 'n':
                     INDEX = '584'
                     INDEX2P = '2C2'
                     if export == True:
-                        f.write(f'\tdc.w $00{width}, $8{INDEX}, $8{INDEX2P}, ${XPOS} ; {char.upper()}' ) 
+                        f.write(f'\tdc.w $00{CharacterWidth}, $8{INDEX}, $8{INDEX2P}, ${XPOS} ; {CharacterOfTitleCard.upper()}' ) 
                         f.write('\n')
                     
-                    if afterI == True:
-                       afterIcount += 1
-                    if afterM == True:
-                       afterMcount += 1                         
-                    print(f'\tdc.w $00{width}, $8{INDEX}, $8{INDEX2P}, ${XPOS} ; {char.upper()}')               
-                elif char == 'e':
+                    if LetterIsAfterI == True:
+                       LetterIsAfterIcount += 1
+                    if LetterIsAfterM == True:
+                       LetterIsAfterMcount += 1                         
+                    print(f'\tdc.w $00{CharacterWidth}, $8{INDEX}, $8{INDEX2P}, ${XPOS} ; {CharacterOfTitleCard.upper()}')               
+                elif CharacterOfTitleCard == 'e':
                     INDEX = '580'
                     INDEX2P = '2C0'
                     if export == True:
-                        f.write(f'\tdc.w $00{width}, $8{INDEX}, $8{INDEX2P}, ${XPOS} ; {char.upper()}' )
+                        f.write(f'\tdc.w $00{CharacterWidth}, $8{INDEX}, $8{INDEX2P}, ${XPOS} ; {CharacterOfTitleCard.upper()}' )
                         f.write('\n') 
-                    if afterI == True:
-                       afterIcount += 1
-                    if afterM == True:
-                       afterMcount += 1
-                    print(f'\tdc.w $00{width}, $8{INDEX}, $8{INDEX2P}, ${XPOS} ; {char.upper()}')           
-                elif char == ' ':
+                    if LetterIsAfterI == True:
+                       LetterIsAfterIcount += 1
+                    if LetterIsAfterM == True:
+                       LetterIsAfterMcount += 1
+                    print(f'\tdc.w $00{CharacterWidth}, $8{INDEX}, $8{INDEX2P}, ${XPOS} ; {CharacterOfTitleCard.upper()}')           
+                elif CharacterOfTitleCard == ' ':
                     if export == True:
                         f.write('\n')
                     Current_XPOS += 2
                     print('\n')                 
                 else:
                      pass
-        titleletters = re.sub(r"[^a-zA-Z,' ']", "", text).upper()          
+        TitlecardLettersToLoad = sub(r"[^a-zA-Z,' ']", "", text).upper()          
         if export == True:
-            f.write(f'In Off_TitleCardLetters\ntitleLetters	"{titleletters}" make sure you have no special characters here though.\nIf you are using the 2007 Xenowhirl disasm, read Xenowhirl_Setup.txt, and use the letter macros, and skip Z, O, N, & E')
-        print(f'In Off_TitleCardLetters\ntitleLetters	"{titleletters}" make sure you have no special characters here though.\nIf you are using the 2007 Xenowhirl disasm, read Xenowhirl_Setup.txt, and use the letter macros, and skip Z, O, N, & E')
-        if debug == True:
+            f.write(f'In Off_TitleCardLetters\ntitleLetters	"{TitlecardLettersToLoad}" make sure you have no special characters here though.\nIf you are using the 2007 Xenowhirl disasm, read Xenowhirl_Setup.txt, and use the letter macros, and skip Z, O, N, & E')
+        print(f'In Off_TitleCardLetters\ntitleLetters	"{TitlecardLettersToLoad}" make sure you have no special characters here though.\nIf you are using the 2007 Xenowhirl disasm, read Xenowhirl_Setup.txt, and use the letter macros, and skip Z, O, N, & E')
+        if DebugFlag == True:
             if export == True:
-                f.write(f';Indexes: {charlist} {len(charlist)}\n;Code for above indexes:{charlistcode}\n\t;But you can\'t stick n move')  
+                f.write(f';Indexes: {CharactersList} {len(CharactersList)}\n;Code for above indexes:{SavedIndexes}\n\t;But you can\'t stick n move')  
                 f.write('\n')
-            print(';Indexes: {charlist} {len(charlist)}\n;Code for above indexes:{charlistcode}\n\t;But you can\'t stick n move')     
-        if len(charlistcode) > 8:
+            print(';Indexes: {CharactersList} {len(CharactersList)}\n;Code for above indexes:{SavedIndexes}\n\t;But you can\'t stick n move')     
+        if len(SavedIndexes) > 8:
             if export == True:
                 f.write(';You can only have $8 unique indexes excluding Z,O,N, and E, this code will not work')
             print('You can only have $8 unique indexes excluding Z,O,N, and E, this code will not work')
             if export == True:
                 f.write('\n')
-        if len(ntext) > 16:
+        if len(LENGTH_STEP) > 16:
             if export == True:
                 f.write(';You can only have a maximum of $10 characters in sonic 2 title cards, this code will not work')
             print('You can only have a maximum of $10 characters in sonic 2 title cards, this code will not work')
             if export == True:
                 f.write('\n')
-        if after0 == True and Current_XPOS >= 112:
+        if IndexIsAfter0 == True and Current_XPOS >= 112:
             if export == True:
                 f.write(';Position Out Of bounds')
             print('Position Out Of bounds')
@@ -290,5 +290,5 @@ def gen():
 
     if export == True:
         f.close()
-    sys.exit(0)
-gen() #run the code
+    exit(0)
+GenerateTitlecardFromText() #run the code

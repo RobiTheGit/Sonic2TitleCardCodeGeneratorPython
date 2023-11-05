@@ -2,8 +2,8 @@
 import tkinter as tk
 from tkinter import *
 from tkinter import messagebox
-import re
-import sys
+from re import sub
+from sys import exit
 import customtkinter
 THEME = "DARK"
 customtkinter.set_appearance_mode(THEME)  # Modes: system (default), light, dark
@@ -21,72 +21,72 @@ Generation Code
 
 global text
 text = ''
-global debug
-debug = False
+global DebugFlag
+DebugFlag = False
 
 def GenerateMappings(): 
     global text
-    global char
-    global afterI
-    global afterM
-    global debug
+    global CharacterOfTitleCard
+    global LetterIsAfterI
+    global LetterIsAfterM
+    global DebugFlag
     NegativeToPositive_Position = 65535 #position before setting position to $0
     SpaceBetweenLetter = 16 #$10, after M or W, 24/$18, after I, 8/$8
     Current_XPOS = 65428 #starts with the starting position
-    after0 = False
-    letter = 0
+    IndexIsAfter0 = False
+    CurrentCharacter = 0
     Current_Index = 1500
     Current_2PIndex = 749
     Index_Increment = 2
     Index_Increment_2P = 2
-    btext = re.sub(r"[^a-zA-Z ]", "", text)
-    ntext = btext.replace(" ", "")
-    hexi = hex(len(ntext)).upper()
-    #start position setting code
-    if len(btext) >= 10: 
+    REGEX_STEP = sub(r"[^a-zA-Z ]", "", text)
+    LENGTH_STEP = REGEX_STEP.replace(" ", "")
+    hexi = hex(len(LENGTH_STEP)).upper()
+#   start position setting position
+    if len(REGEX_STEP) >= 10: 
         Current_XPOS = 65428
-    elif len(btext) <= 9 and len(btext) > 6:
+    elif len(REGEX_STEP) <= 9 and len(REGEX_STEP) > 6:
         Current_XPOS = 65446
-    elif len(btext) <= 6 and len(btext) > 4:
+    elif len(REGEX_STEP) <= 6 and len(REGEX_STEP) > 2:
         Current_XPOS = 0
-        after0 = True
+        IndexIsAfter0 = True
     else:
         Current_XPOS = 64 
-        after0 = True
-    char = ''
-    code = []
-    charlist = []
-    charlistcode = []
-    afterI = False 
-    afterM = False
-    for char in btext:
-        code.append(char.lower())
+        IndexIsAfter0 = True
+    CharacterOfTitleCard = ''
+    AllOfTheCharacters = []
+    CharactersList = []
+    SavedIndexes = []
+    LetterIsAfterI = False 
+    LetterIsAfterM = False
+    for CharacterOfTitleCard in REGEX_STEP:
+        AllOfTheCharacters.append(CharacterOfTitleCard.lower())
         
-    if len(code) == 0:
+    if len(AllOfTheCharacters) == 0:
          tk.messagebox.showerror(
          title='No Titlecard To Make!',
          message='You have no titlecard to generate!',
          options=None
          )
     else:
-        proper = hexi.replace("0X", f"TC_{dispzone}:    dc.w $")
-        output.insert(END,f';In Obj34_MapUnc_147BA Put\n')
-        output.insert(END,f'{proper} \n')
-    pos = -(len(code))
+        proper = hexi.replace("0X", f"TC_{ZoneNameForLabel}:    dc.w $")
+        TitlecardOutput.insert(END,f';In Obj34_MapUnc_147BA Put\n')
+        TitlecardOutput.insert(END,f'{proper} \n')
+    pos = -(len(AllOfTheCharacters))
 #getting the indexes
-    if len(char) <= 15:
-        for char in code:
-            if letter >= 1:
+   if len(CharacterOfTitleCard) <= 15:
+        for CharacterOfTitleCard in AllOfTheCharacters:
+            if CurrentCharacter >= 1:
                 Index_Increment = 4 #the first letter is 2 and not 4
-                if afterI == True:
+                if LetterIsAfterI == True:
                     SpaceBetweenLetter = 4 #incrememnt the position less
-                    if afterIcount == 0:
-                        if afterM == False:
+                    if LetterIsAfterIcount == 0:
+                        if LetterIsAfterM == False:
                             Index_Increment = 4  #restore the default values
                             Index_Increment_2P = 2
                         SpaceBetweenLetter = 8 
                     else:
-                        if afterIposcount == 0:
+                        if LetterIsAfterIposcount == 0:
                             Index_Increment = 6  #restore the default values
                             Index_Increment_2P = 3 
                             SpaceBetweenLetter = 16
@@ -94,196 +94,196 @@ def GenerateMappings():
                             Index_Increment = 6  #restore the default values
                             Index_Increment_2P = 3                   
                             Current_XPOS += 8
-                            afterIposcount = 0
+                            LetterIsAfterIposcount = 0
 
-                if afterM == True:
+                if LetterIsAfterM == True:
                     SpaceBetweenLetter = 24 
-                    if afterI == False: 
+                    if LetterIsAfterI == False: 
                         Index_Increment_2P = 3 
                         Index_Increment = 6  #restore the default values
                     else:
                         Index_Increment = 4  #restore the default values
                         Index_Increment_2P = 2                     
-                    if afterMcount == 0:
-                        if afterI == False:
-                            afterMcount += 1
+                    if LetterIsAfterMcount == 0:
+                        if LetterIsAfterI == False:
+                            LetterIsAfterMcount += 1
                         else:
                             Index_Increment = 4  #restore the default values
                             Index_Increment_2P = 2 
                         SpaceBetweenLetter = 16
-                        afterM = False
+                        LetterIsAfterM = False
                     else:
-                        afterMcount -= 1 
-                        if afterMposcount == 0:
+                        LetterIsAfterMcount -= 1 
+                        if LetterIsAfterMposcount == 0:
                             SpaceBetweenLetter = 16
-                            afterM = False
+                            LetterIsAfterM = False
                         else:
-                            afterMposcount = 0
+                            LetterIsAfterMposcount = 0
 
                 else:
                     Index_Increment = 4  #restore the default values
                     Index_Increment_2P = 2 
                     SpaceBetweenLetter = 16     
 #position
-            Current_XPOS += SpaceBetweenLetter #Index_Increment position by the position Index_Incrementer, there is a reason this is defined after the afterM and afterI stuff
+            Current_XPOS += SpaceBetweenLetter #Index_Increment position by the position Index_Incrementer, there is a reason this is defined after the LetterIsAfterM and LetterIsAfterI stuff
             if Current_XPOS <= NegativeToPositive_Position:
-                char = char.lower()
-                xpos_b = hex(Current_XPOS)
-                if after0 == False:
-                    XPOS = xpos_b.replace("0x", "").upper()
+                CharacterOfTitleCard = CharacterOfTitleCard.lower()
+                PreFinal_XPOS = hex(Current_XPOS)
+                if IndexIsAfter0 == False:
+                    XPOS = PreFinal_XPOS.replace("0x", "").upper()
                 else:
                     if Current_XPOS >= 16:
-                        XPOS = xpos_b.replace("0x", "00").upper()
+                        XPOS = PreFinal_XPOS.replace("0x", "00").upper()
                     elif Current_XPOS <= 16:
-                        XPOS =  xpos_b.replace("0x", "000").upper()
+                        XPOS =  PreFinal_XPOS.replace("0x", "000").upper()
                     else:    
-                        XPOS =  xpos_b.replace("0x", "000").upper()
+                        XPOS =  PreFinal_XPOS.replace("0x", "000").upper()
             elif Current_XPOS >= NegativeToPositive_Position:
                 Current_XPOS -= 65536
-                xpos_b = hex(abs(Current_XPOS))
+                PreFinal_XPOS = hex(abs(Current_XPOS))
                 if Current_XPOS >= 16:
-                    XPOS = xpos_b.replace("0x", "00").upper()
+                    XPOS = PreFinal_XPOS.replace("0x", "00").upper()
                 elif Current_XPOS <= 16:
-                    XPOS =  xpos_b.replace("0x", "000").upper()
+                    XPOS =  PreFinal_XPOS.replace("0x", "000").upper()
                 else:    
-                    XPOS =  xpos_b.replace("0x", "000").upper()
-                after0 = True
+                    XPOS =  PreFinal_XPOS.replace("0x", "000").upper()
+                IndexIsAfter0 = True
             else:
-                after0 = True
+                IndexIsAfter0 = True
                 Current_XPOS -= 65536
-                xpos_b = hex(abs(Current_XPOS))
+                PreFinal_XPOS = hex(abs(Current_XPOS))
                 if Current_XPOS >= 16:
-                    XPOS = xpos_b.replace("0x", "00").upper()
+                    XPOS = PreFinal_XPOS.replace("0x", "00").upper()
                 if Current_XPOS <= 16:
-                    XPOS =  xpos_b.replace("0x", "000").upper()
+                    XPOS =  PreFinal_XPOS.replace("0x", "000").upper()
                 else:    
-                    XPOS =  xpos_b.replace("0x", "000").upper()
+                    XPOS =  PreFinal_XPOS.replace("0x", "000").upper()
 #width                    
-            if char == 'm' or char == 'w':
-                width = '09'
-            elif char == 'i':
-                width = '01'
+            if CharacterOfTitleCard == 'm' or CharacterOfTitleCard == 'w':
+                CharacterWidth = '09'
+            elif CharacterOfTitleCard == 'i':
+                CharacterWidth = '01'
             else:
-                width = '05'
+                CharacterWidth = '05'
 #making the lines of code
-            if char in charlist:
-                x = charlist.index(char) 
-                output.insert(END,f'{charlistcode[x]}, ${XPOS} ; {char.upper()} \n')
-                if char == 'i':
-                   afterI = True 
-                   afterIcount = 3
-                   afterIposcount = 1
-                if char == 'm' or char == 'w':
-                   afterM = True 
-                   afterMcount = 3
-                   afterMposcount = 1
+            if CharacterOfTitleCard in CharactersList:
+                x = CharactersList.index(CharacterOfTitleCard) 
+                TitlecardOutput.insert(END,f'{SavedIndexes[x]}, ${XPOS} ; {CharacterOfTitleCard.upper()} \n')
+                if CharacterOfTitleCard == 'i':
+                   LetterIsAfterI = True 
+                   LetterIsAfterIcount = 3
+                   LetterIsAfterIposcount = 1
+                if CharacterOfTitleCard == 'm' or CharacterOfTitleCard == 'w':
+                   LetterIsAfterM = True 
+                   LetterIsAfterMcount = 3
+                   LetterIsAfterMposcount = 1
             else:
-                if char != 'z' and char != 'o' and char != 'n' and char != 'e' and char != ' ' and char.isalpha():  
-                    letter += 1 
+                if CharacterOfTitleCard != 'z' and CharacterOfTitleCard != 'o' and CharacterOfTitleCard != 'n' and CharacterOfTitleCard != 'e' and CharacterOfTitleCard != ' ' and CharacterOfTitleCard.isalpha():  
+                    CurrentCharacter += 1 
                     result = int(Current_Index)+int(Index_Increment)
-                    if afterI == True:
+                    if LetterIsAfterI == True:
                         result -= 2
                     result2 = hex(result)
                     INDEX = result2.replace("0x", "").upper()
                     twopresult = int(Current_2PIndex)+int(Index_Increment_2P)
                     twopres2 = hex(twopresult) 
                     INDEX2P = twopres2.replace("0x", "").upper()
-                    indexcode = (f'\tdc.w $00{width}, $8{INDEX}, $8{INDEX2P}, ${XPOS} ; {char.upper()}')
-                    indexcode2 = (f'\tdc.w $00{width}, $8{INDEX}, $8{INDEX2P}')
-                    if afterI == True:
+                    CodeToOutput = (f'\tdc.w $00{CharacterWidth}, $8{INDEX}, $8{INDEX2P}, ${XPOS} ; {CharacterOfTitleCard.upper()}')
+                    CodeForSavedIndexes = (f'\tdc.w $00{CharacterWidth}, $8{INDEX}, $8{INDEX2P}')
+                    if LetterIsAfterI == True:
                         result += 2 
-                        if char == "m":
+                        if CharacterOfTitleCard == "m":
                             result += 2  
-                    charlistcode.append(indexcode2)
-                    output.insert(END,f'{indexcode} \n')
-                    charlist.append(char)
+                    SavedIndexes.append(CodeForSavedIndexes)
+                    TitlecardOutput.insert(END,f'{CodeToOutput} \n')
+                    CharactersList.append(CharacterOfTitleCard)
                     Current_Index = result
                     Current_2PIndex = twopresult
-                    if char == 'i':
-                       afterI = True 
-                       afterIcount = 3
-                       afterIposcount = 1
-                    if char == 'm' or char == 'w':
-                       afterM = True 
-                       afterMcount = 3 
-                       afterMposcount = 1
-                elif char == 'z':
+                    if CharacterOfTitleCard == 'i':
+                       LetterIsAfterI = True 
+                       LetterIsAfterIcount = 3
+                       LetterIsAfterIposcount = 1
+                    if CharacterOfTitleCard == 'm' or CharacterOfTitleCard == 'w':
+                       LetterIsAfterM = True 
+                       LetterIsAfterMcount = 3 
+                       LetterIsAfterMposcount = 1
+                elif CharacterOfTitleCard == 'z':
                     INDEX = '58C'
                     INDEX2P = '2C6'
-                    output.insert(END,f'\tdc.w $00{width}, $8{INDEX}, $8{INDEX2P}, ${XPOS} ; {char.upper()} \n' ) 
-                    if afterI == True:
-                       afterIcount += 1
-                    if afterM == True:
-                       afterMcount += 1
-                elif char == 'o':
+                    TitlecardOutput.insert(END,f'\tdc.w $00{CharacterWidth}, $8{INDEX}, $8{INDEX2P}, ${XPOS} ; {CharacterOfTitleCard.upper()} \n' ) 
+                    if LetterIsAfterI == True:
+                       LetterIsAfterIcount += 1
+                    if LetterIsAfterM == True:
+                       LetterIsAfterMcount += 1
+                elif CharacterOfTitleCard == 'o':
                     INDEX = '588'
                     INDEX2P = '2C4'
-                    output.insert(END,f'\tdc.w $00{width}, $8{INDEX}, $8{INDEX2P}, ${XPOS} ; {char.upper()} \n' ) 
-                    if afterI == True:
-                       afterIcount += 1
-                    if afterM == True:
-                       afterMcount += 1 
-                elif char == 'n':
+                    TitlecardOutput.insert(END,f'\tdc.w $00{CharacterWidth}, $8{INDEX}, $8{INDEX2P}, ${XPOS} ; {CharacterOfTitleCard.upper()} \n' ) 
+                    if LetterIsAfterI == True:
+                       LetterIsAfterIcount += 1
+                    if LetterIsAfterM == True:
+                       LetterIsAfterMcount += 1 
+                elif CharacterOfTitleCard == 'n':
                     INDEX = '584'
                     INDEX2P = '2C2'
-                    output.insert(END,f'\tdc.w $00{width}, $8{INDEX}, $8{INDEX2P}, ${XPOS} ; {char.upper()} \n' )
-                    if afterI == True:
-                       afterIcount += 1
-                    if afterM == True:
-                       afterMcount += 1 
-                elif char == 'e':
+                    TitlecardOutput.insert(END,f'\tdc.w $00{CharacterWidth}, $8{INDEX}, $8{INDEX2P}, ${XPOS} ; {CharacterOfTitleCard.upper()} \n' )
+                    if LetterIsAfterI == True:
+                       LetterIsAfterIcount += 1
+                    if LetterIsAfterM == True:
+                       LetterIsAfterMcount += 1 
+                elif CharacterOfTitleCard == 'e':
                     INDEX = '580'
                     INDEX2P = '2C0'
-                    output.insert(END,f'\tdc.w $00{width}, $8{INDEX}, $8{INDEX2P}, ${XPOS} ; {char.upper()} \n' )
-                    if afterI == True:
-                       afterIcount += 1
-                    if afterM == True:
-                       afterMcount += 1 
-                elif char == ' ':
+                    TitlecardOutput.insert(END,f'\tdc.w $00{CharacterWidth}, $8{INDEX}, $8{INDEX2P}, ${XPOS} ; {CharacterOfTitleCard.upper()} \n' )
+                    if LetterIsAfterI == True:
+                       LetterIsAfterIcount += 1
+                    if LetterIsAfterM == True:
+                       LetterIsAfterMcount += 1 
+                elif CharacterOfTitleCard == ' ':
                     Current_XPOS += 2
-                    output.insert(END,'\n')
+                    TitlecardOutput.insert(END,'\n')
 
                 else:
                      pass
-        if len(code) == 0:
+        if len(AllOfTheCharacters) == 0:
             pass
         else:
-            output.insert(END, f'\n; Open "Mapping Locations" for locations of titlecards\n; Open Mappings.txt for a replacement for the original mappings')
-            if len(ntext) > 16:
-                output.insert(END,'\n;You can only have a maximum of $10 characters in sonic 2 title cards, this code will not work')
+            TitlecardOutput.insert(END, f'\n; Open "Mapping Locations" for locations of titlecards\n; Open Mappings.txt for a replacement for the original mappings')
+            if len(LENGTH_STEP) > 16:
+                TitlecardOutput.insert(END,'\n;You can only have a maximum of $10 characters in sonic 2 title cards, this code will not work')
                 tk.messagebox.showerror(title='Error!', message='You can only have a maximum of $10 characters in sonic 2 title cards, this code will not work', options=None) 
-            if len(charlistcode) > 8:     
-                output.insert(END,'\n;You can only have $8 unique indexes excluding Z,O,N, and E, this code will not work')
+            if len(SavedIndexes) > 8:     
+                TitlecardOutput.insert(END,'\n;You can only have $8 unique indexes excluding Z,O,N, and E, this code will not work')
                 tk.messagebox.showerror(title='Error!', message='You can only have $8 unique indexes excluding Z,O,N, and E, this code will not work', options=None)
-            if after0 == True and Current_XPOS >= 112:
+            if IndexIsAfter0 == True and Current_XPOS >= 112:
                 tk.messagebox.showerror(title='Error!', message='Position Out Of bounds', options=None)
-            if debug == True:
-                output.insert(END, f'\n;Indexes: {charlist} {len(charlist)}\n;Code for above indexes:{charlistcode}\n;\tBut you can\'t stick n move')
+            if DebugFlag == True:
+                TitlecardOutput.insert(END, f'\n;Indexes: {CharactersList} {len(CharactersList)}\n;Code for above indexes:{SavedIndexes}\n;\tBut you can\'t stick n move')
 """
 Tkinter Code
 """
 def GenerateTitlecardFromText():
     global text
-    global output
-    global debug
-    output.configure(state='normal')
-    output.delete(1.0, END)
+    global TitlecardOutput
+    global DebugFlag
+    TitlecardOutput.configure(state='normal')
+    TitlecardOutput.delete(1.0, END)
     GenerateMappings()
-    output.configure(state='disabled')
+    TitlecardOutput.configure(state='disabled')
 
 class App(tk.Frame):
     global f
     def __init__(self, master):
         global text
-        global output
-        global debug
-        global dbgvar
-        global themevar
+        global TitlecardOutput
+        global DebugFlag
+        global DebugEnabledFlag
+        global SwitchThemeFlag
         global zone
         global ZoneMenu
-        dbgvar = tk.IntVar()
+        DebugEnabledFlag = tk.IntVar()
         zone = tk.IntVar()
-        themevar = tk.IntVar()
+        SwitchThemeFlag = tk.IntVar()
         super().__init__(master)
         self.pack()
 #	Initilize left frame
@@ -414,7 +414,7 @@ class App(tk.Frame):
         DebugCheck = customtkinter.CTkCheckBox(
         topframe,
         text='See Debug Info',
-        variable=dbgvar,
+        variable=DebugEnabledFlag,
         onvalue=1,
         offvalue=0, 
         command=self.SetDebugFlag
@@ -424,20 +424,20 @@ class App(tk.Frame):
         ThemeCheck = customtkinter.CTkCheckBox(
         topframe,
         text='Light Mode',
-        variable=themevar,
+        variable=SwitchThemeFlag,
         onvalue=1,
         offvalue=0, 
         command=self.ChangeAppTheme
         )
         ThemeCheck.pack(side = BOTTOM)
-#	Add the output box
-        output = customtkinter.CTkTextbox(
+#	Add the TitlecardOutput box
+        TitlecardOutput = customtkinter.CTkTextbox(
         bottomframe,
         state='disabled',
         height = 400,
         font = ("courier", 16)
         )
-        output.pack(fill = BOTH)
+        TitlecardOutput.pack(fill = BOTH)
 
 #	Code To Export Titlecard Into a File
 
@@ -447,9 +447,9 @@ class App(tk.Frame):
             pass
         else:
             f = open(f'{text.upper()}.txt', 'a')
-            titleletters = re.sub(r"[^a-zA-Z,' ']", "", text).upper()
-            f.write(output.get(1.0, END))
-            f.write(f'titleLetters	"{titleletters}"')
+            TitlecardLettersToLoad = sub(r"[^a-zA-Z,' ']", "", text).upper()
+            f.write(TitlecardOutput.get(1.0, END))
+            f.write(f'titleLetters	"{TitlecardLettersToLoad}"')
             f.close()
 
 #	Code to run the generator
@@ -459,47 +459,47 @@ class App(tk.Frame):
 
     def RunGeneration(self):
         global text
-        global dispzone
+        global ZoneNameForLabel
         text = self.LevelName.get()
-        dispzone = ZoneMenu.get()
+        ZoneNameForLabel = ZoneMenu.get()
         GenerateTitlecardFromText()
 
 #	Code to set the debug flag
 
     def SetDebugFlag(self):
-        global dbgvar
-        global debug
-        if dbgvar.get() == 0:
-            debug = False
-        elif dbgvar.get() == 1:
-            debug = True
+        global DebugEnabledFlag
+        global DebugFlag
+        if DebugEnabledFlag.get() == 0:
+            DebugFlag = False
+        elif DebugEnabledFlag.get() == 1:
+            DebugFlag = True
         else:
-            debug = False
+            DebugFlag = False
 
 #	Code to change themes
 
     def ChangeAppTheme(self):
-        global themevar
-        global debug
-        if themevar.get() == 0:
+        global SwitchThemeFlag
+        global DebugFlag
+        if SwitchThemeFlag.get() == 0:
             THEME = "DARK"
-        elif themevar.get() == 1:
+        elif SwitchThemeFlag.get() == 1:
             THEME = "LIGHT"
         else:
             THEME = "DARK"
         customtkinter.set_appearance_mode(THEME)  # Modes: system (default), light, dark
 
-#	Code to copy output to clipboard
+#	Code to copy TitlecardOutput to clipboard
 
     def CopyToClipboard(self):
         root.clipboard_clear()
-        root.clipboard_append(output.get(1.0, END))
+        root.clipboard_append(TitlecardOutput.get(1.0, END))
 
 #	Code to open the titlecard letters popup
 
     def TitlecardLetters_Popup(self):
         global text
-        titleletters = re.sub(r"[^a-zA-Z,' ']", "", text).upper()
+        TitlecardLettersToLoad = sub(r"[^a-zA-Z,' ']", "", text).upper()
         top= customtkinter.CTkToplevel()
         top.geometry("600x400")
         top.resizable(False,False)
@@ -518,7 +518,7 @@ class App(tk.Frame):
         text= f'If you are using the 2007 Xenowhirl disasm, read Xenowhirl_Setup.txt\nUse the letter macros, and skip Z, O, N, & E\n'
         ).pack()
         pep.delete(1.0, END)
-        pep.insert(END, f'titleLetters	"{titleletters}"',)
+        pep.insert(END, f'titleLetters	"{TitlecardLettersToLoad}"',)
         pep.configure(state = 'disabled')
         customtkinter.CTkLabel(
         top,
@@ -529,7 +529,7 @@ class App(tk.Frame):
 
     def MappingLocations_Popup(self):
         global text
-        titleletters = re.sub(r"[^a-zA-Z,' ']", "", text).upper()
+        TitlecardLettersToLoad = sub(r"[^a-zA-Z,' ']", "", text).upper()
         top= customtkinter.CTkToplevel()
         top.geometry("550x250")
         top.resizable(False,False)
@@ -552,7 +552,7 @@ class App(tk.Frame):
         )
 
     def ExitProgram(self):
-        sys.exit(0)
+        exit(0)
 
 # create the application
 title = "Sonic 2 Titlecard Code Generator"
