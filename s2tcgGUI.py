@@ -180,24 +180,24 @@ def GenerateMappings():
             else:
                 if CharacterOfTitleCard != 'z' and CharacterOfTitleCard != 'o' and CharacterOfTitleCard != 'n' and CharacterOfTitleCard != 'e' and CharacterOfTitleCard != ' ' and CharacterOfTitleCard.isalpha():  
                     CurrentCharacter += 1 
-                    result = int(Current_Index)+int(Index_Increment)
+                    FinalIndex_Dec = int(Current_Index)+int(Index_Increment)
                     if LetterIsAfterI == True:
-                        result -= 2
-                    result2 = hex(result)
-                    INDEX = result2.replace("0x", "").upper()
-                    twopresult = int(Current_2PIndex)+int(Index_Increment_2P)
-                    twopres2 = hex(twopresult) 
-                    INDEX2P = twopres2.replace("0x", "").upper()
+                        FinalIndex_Dec -= 2
+                    Index2Hex = hex(FinalIndex_Dec)
+                    INDEX = Index2Hex.replace("0x", "").upper()
+                    2PlayerFinalIndex = int(Current_2PIndex)+int(Index_Increment_2P)
+                    2PlayerFinalIndex_REGEX_STEP = hex(2PlayerFinalIndex) 
+                    INDEX2P = 2PlayerFinalIndex_REGEX_STEP.replace("0x", "").upper()
                     CodeForSavedIndexes = (f'\tdc.w $00{CharacterWidth}, $8{INDEX}, $8{INDEX2P}')
                     if LetterIsAfterI == True:
-                        result += 2 
+                        FinalIndex_Dec += 2 
                         if CharacterOfTitleCard == "m":
-                            result += 2  
+                            FinalIndex_Dec += 2  
                     SavedIndexes.append(CodeForSavedIndexes)
                     TitlecardOutput.insert(END,f'\tdc.w $00{CharacterWidth}, $8{INDEX}, $8{INDEX2P}, ${XPOS} ; {CharacterOfTitleCard.upper()} \n')
                     CharactersList.append(CharacterOfTitleCard)
-                    Current_Index = result
-                    Current_2PIndex = twopresult
+                    Current_Index = FinalIndex_Dec
+                    Current_2PIndex = 2PlayerFinalIndex
                     if CharacterOfTitleCard == 'i':
                        LetterIsAfterI = True 
                        LetterIsAfterIcount = 3
