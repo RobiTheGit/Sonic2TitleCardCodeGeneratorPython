@@ -188,14 +188,13 @@ def GenerateMappings():
                     twopresult = int(Current_2PIndex)+int(Index_Increment_2P)
                     twopres2 = hex(twopresult) 
                     INDEX2P = twopres2.replace("0x", "").upper()
-                    CodeToOutput = (f'\tdc.w $00{CharacterWidth}, $8{INDEX}, $8{INDEX2P}, ${XPOS} ; {CharacterOfTitleCard.upper()}')
                     CodeForSavedIndexes = (f'\tdc.w $00{CharacterWidth}, $8{INDEX}, $8{INDEX2P}')
                     if LetterIsAfterI == True:
                         result += 2 
                         if CharacterOfTitleCard == "m":
                             result += 2  
                     SavedIndexes.append(CodeForSavedIndexes)
-                    TitlecardOutput.insert(END,f'{CodeToOutput} \n')
+                    TitlecardOutput.insert(END,f'\tdc.w $00{CharacterWidth}, $8{INDEX}, $8{INDEX2P}, ${XPOS} ; {CharacterOfTitleCard.upper()} \n')
                     CharactersList.append(CharacterOfTitleCard)
                     Current_Index = result
                     Current_2PIndex = twopresult
@@ -210,7 +209,7 @@ def GenerateMappings():
                 elif CharacterOfTitleCard == 'z':
                     INDEX = '58C'
                     INDEX2P = '2C6'
-                    TitlecardOutput.insert(END,f'\tdc.w $00{CharacterWidth}, $8{INDEX}, $8{INDEX2P}, ${XPOS} ; {CharacterOfTitleCard.upper()} \n' ) 
+                    TitlecardOutput.insert(END,f'\tdc.w $00{CharacterWidth}, $8{INDEX}, $8{INDEX2P}, ${XPOS} ; {CharacterOfTitleCard.upper()} \n') 
                     if LetterIsAfterI == True:
                        LetterIsAfterIcount += 1
                     if LetterIsAfterM == True:
@@ -218,7 +217,7 @@ def GenerateMappings():
                 elif CharacterOfTitleCard == 'o':
                     INDEX = '588'
                     INDEX2P = '2C4'
-                    TitlecardOutput.insert(END,f'\tdc.w $00{CharacterWidth}, $8{INDEX}, $8{INDEX2P}, ${XPOS} ; {CharacterOfTitleCard.upper()} \n' ) 
+                    TitlecardOutput.insert(END,f'\tdc.w $00{CharacterWidth}, $8{INDEX}, $8{INDEX2P}, ${XPOS} ; {CharacterOfTitleCard.upper()} \n') 
                     if LetterIsAfterI == True:
                        LetterIsAfterIcount += 1
                     if LetterIsAfterM == True:
@@ -226,7 +225,7 @@ def GenerateMappings():
                 elif CharacterOfTitleCard == 'n':
                     INDEX = '584'
                     INDEX2P = '2C2'
-                    TitlecardOutput.insert(END,f'\tdc.w $00{CharacterWidth}, $8{INDEX}, $8{INDEX2P}, ${XPOS} ; {CharacterOfTitleCard.upper()} \n' )
+                    TitlecardOutput.insert(END,f'\tdc.w $00{CharacterWidth}, $8{INDEX}, $8{INDEX2P}, ${XPOS} ; {CharacterOfTitleCard.upper()} \n')
                     if LetterIsAfterI == True:
                        LetterIsAfterIcount += 1
                     if LetterIsAfterM == True:
@@ -234,7 +233,7 @@ def GenerateMappings():
                 elif CharacterOfTitleCard == 'e':
                     INDEX = '580'
                     INDEX2P = '2C0'
-                    TitlecardOutput.insert(END,f'\tdc.w $00{CharacterWidth}, $8{INDEX}, $8{INDEX2P}, ${XPOS} ; {CharacterOfTitleCard.upper()} \n' )
+                    TitlecardOutput.insert(END,f'\tdc.w $00{CharacterWidth}, $8{INDEX}, $8{INDEX2P}, ${XPOS} ; {CharacterOfTitleCard.upper()} \n')
                     if LetterIsAfterI == True:
                        LetterIsAfterIcount += 1
                     if LetterIsAfterM == True:
