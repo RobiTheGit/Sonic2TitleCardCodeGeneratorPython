@@ -155,7 +155,7 @@ def GenerateTitlecardFromText():
                 CharacterWidth = '01'
             else:
                 CharacterWidth = '05'
-           if CharacterOfTitleCard in CharactersList:
+            if CharacterOfTitleCard in CharactersList:
                 x = CharactersList.index(CharacterOfTitleCard) 
                 output.insert(END,f'{SavedIndexes[x]}, ${XPOS} ; {CharacterOfTitleCard.upper()} \n')
                 if CharacterOfTitleCard == 'i':
@@ -178,9 +178,9 @@ def GenerateTitlecardFromText():
                         FinalIndex_Dec -= 2                 
                     Index2Hex = hex(FinalIndex_Dec)
                     INDEX = Index2Hex.replace("0x", "").upper()
-                    2PlayerFinalIndex = int(Current_2PIndex)+int(Index_Increment_2P)
-                    2PlayerFinalIndex_REGEX_STEP = hex(2PlayerFinalIndex) 
-                    INDEX2P = 2PlayerFinalIndex_REGEX_STEP.replace("0x", "").upper()
+                    TwoPlayerFinalIndex = int(Current_2PIndex)+int(Index_Increment_2P)
+                    TwoPlayerFinalIndex_REGEX_STEP = hex(TwoPlayerFinalIndex) 
+                    INDEX2P = TwoPlayerFinalIndex_REGEX_STEP.replace("0x", "").upper()
                     CodeToOutput = (f'\tdc.w $00{CharacterWidth}, $8{INDEX}, $8{INDEX2P}, ${XPOS} ; {CharacterOfTitleCard.upper()}')
                     CodeForSavedIndexes = (f'\tdc.w $00{CharacterWidth}, $8{INDEX}, $8{INDEX2P},')
                     if LetterIsAfterI == True:
@@ -194,7 +194,7 @@ def GenerateTitlecardFromText():
                     print(CodeToOutput)
                     CharactersList.append(CharacterOfTitleCard)
                     Current_Index = FinalIndex_Dec
-                    Current_2PIndex = 2PlayerFinalIndex
+                    Current_2PIndex = TwoPlayerFinalIndex
                     if CharacterOfTitleCard == 'i':
                        LetterIsAfterI = True 
                        LetterIsAfterIcount = 3

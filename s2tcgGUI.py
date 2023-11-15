@@ -74,7 +74,7 @@ def GenerateMappings():
         TitlecardOutput.insert(END,f'{proper} \n')
     pos = -(len(AllOfTheCharacters))
 #getting the indexes
-   if len(CharacterOfTitleCard) <= 15:
+    if len(CharacterOfTitleCard) <= 15:
         for CharacterOfTitleCard in AllOfTheCharacters:
             if CurrentCharacter >= 1:
                 Index_Increment = 4 #the first letter is 2 and not 4
@@ -185,9 +185,9 @@ def GenerateMappings():
                         FinalIndex_Dec -= 2
                     Index2Hex = hex(FinalIndex_Dec)
                     INDEX = Index2Hex.replace("0x", "").upper()
-                    2PlayerFinalIndex = int(Current_2PIndex)+int(Index_Increment_2P)
-                    2PlayerFinalIndex_REGEX_STEP = hex(2PlayerFinalIndex) 
-                    INDEX2P = 2PlayerFinalIndex_REGEX_STEP.replace("0x", "").upper()
+                    TwoPlayerFinalIndex = int(Current_2PIndex)+int(Index_Increment_2P)
+                    TwoPlayerFinalIndex_REGEX_STEP = hex(TwoPlayerFinalIndex) 
+                    INDEX2P = TwoPlayerFinalIndex_REGEX_STEP.replace("0x", "").upper()
                     CodeForSavedIndexes = (f'\tdc.w $00{CharacterWidth}, $8{INDEX}, $8{INDEX2P}')
                     if LetterIsAfterI == True:
                         FinalIndex_Dec += 2 
@@ -197,7 +197,7 @@ def GenerateMappings():
                     TitlecardOutput.insert(END,f'\tdc.w $00{CharacterWidth}, $8{INDEX}, $8{INDEX2P}, ${XPOS} ; {CharacterOfTitleCard.upper()} \n')
                     CharactersList.append(CharacterOfTitleCard)
                     Current_Index = FinalIndex_Dec
-                    Current_2PIndex = 2PlayerFinalIndex
+                    Current_2PIndex = TwoPlayerFinalIndex
                     if CharacterOfTitleCard == 'i':
                        LetterIsAfterI = True 
                        LetterIsAfterIcount = 3
