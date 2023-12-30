@@ -5,6 +5,7 @@ from tkinter import messagebox
 from re import sub
 from sys import exit
 import customtkinter
+from tkinter.filedialog import asksaveasfile
 THEME = "DARK"
 customtkinter.set_appearance_mode(THEME)  # Modes: system (default), light, dark
 customtkinter.set_default_color_theme("dark-blue")  # Themes: blue (default), dark-blue, green
@@ -301,8 +302,11 @@ class App(tk.Frame):
         )
         bottomframe.pack(side = TOP, fill=BOTH, pady = 5)
 #	Load icon for app
-        photo = PhotoImage(file ="icon.png")
-        root.iconphoto(False, photo)
+        try:
+            photo = PhotoImage(file ="icon.png")
+            root.iconphoto(False, photo)
+        except:
+            pass
 #	Draw title
         Title = customtkinter.CTkLabel(
         topframe,
@@ -445,7 +449,8 @@ class App(tk.Frame):
         if text == '':
             pass
         else:
-            f = open(f'{text.upper()}.txt', 'a')
+            filename = asksaveasfile()
+            f = open(str(filename), 'a')
             TitlecardLettersToLoad = sub(r"[^a-zA-Z,' ']", "", text).upper()
             f.write(TitlecardOutput.get(1.0, END))
             f.write(f'titleLetters	"{TitlecardLettersToLoad}"')
