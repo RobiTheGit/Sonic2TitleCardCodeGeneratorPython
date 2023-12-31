@@ -2,7 +2,7 @@
 ; 
 ; This file is NOT needed for the Hg disassembly and only intended to be
 ; used with Xenowhirl's 2007 disassembly!
-; Tahnks to Selbi's Sonic 2 Text Code Generator Source for this
+; Thanks to Selbi's Sonic 2 Text Code Generator Source for this
 ; -------------------------------------------------------------------------
 ; ==========================================================================
 
