@@ -82,6 +82,8 @@ def GenerateMappings():
             
         TitlecardOutput.insert(END,f';In Obj34_MapUnc_147BA Put\n')
         TitlecardOutput.insert(END,f'{proper} \n')
+        
+
     pos = -(len(AllOfTheCharacters))
 #getting the indexes
     if len(CharacterOfTitleCard) <= 15:
@@ -283,6 +285,13 @@ def GenerateTitlecardFromText():
 class App(tk.Frame):
     global f
     def __init__(self, master):
+        global BTNCLR, TXTCLR
+        if THEME == "DARK":
+           BTNCLR = "#272829"
+           TXTCLR = "white"
+        else:
+           BTNCLR = "white"
+           TXTCLR = "#272829"  
         global text
         global TitlecardOutput
         global DebugFlag
@@ -291,6 +300,7 @@ class App(tk.Frame):
         global zone
         global ZoneMenu
         global DisasmLabel
+        global leftframe, topframe, bottomframe
         DebugEnabledFlag = tk.IntVar()
         zone = tk.IntVar()
         DisasmLabel = tk.IntVar()
@@ -338,8 +348,10 @@ class App(tk.Frame):
         self.LevelName["textvariable"] = self.contents 
         self.LevelName.bind('<Key-Return>', self.RunFromEnterKey)
         self.LevelName.pack(side = TOP, anchor = NE,)
+        
 #	Add button to generate the titlecard code
         Generate = customtkinter.CTkButton(leftframe, 
+        fg_color=BTNCLR, text_color=TXTCLR,
         text = '  Generate Code', 
         command = self.RunGeneration, 
         font = ('gaslight', 30),
@@ -348,7 +360,8 @@ class App(tk.Frame):
         )
         Generate.pack(side = TOP, anchor = E)
 #	Add button to open the titlecard letters popup
-        TitlecardLetters = customtkinter.CTkButton(leftframe,
+        TitlecardLetters = customtkinter.CTkButton(leftframe, 
+        fg_color=BTNCLR, text_color=TXTCLR,
         text = 'Titlecard Letters', 
         command = self.TitlecardLetters_Popup, 
         font = ('gaslight', 30),
@@ -357,7 +370,8 @@ class App(tk.Frame):
         )
         TitlecardLetters.pack(side = TOP, anchor = E)
 #	Add button to open the about screen
-        About = customtkinter.CTkButton(leftframe,
+        About = customtkinter.CTkButton(leftframe, 
+        fg_color=BTNCLR, text_color=TXTCLR,
         text = '  About S2tcg.py',
         command = self.info,
         font = ('gaslight', 30),
@@ -366,7 +380,8 @@ class App(tk.Frame):
         )
         About.pack(side = TOP, anchor = SE)
 #	Add button to export the titlecard code
-        Export = customtkinter.CTkButton(leftframe,
+        Export = customtkinter.CTkButton(leftframe, 
+        fg_color=BTNCLR, text_color=TXTCLR,
         text = 'Export Titlecard',
         command = self.ExportTitlecard,
         font = ('gaslight', 30),
@@ -375,7 +390,8 @@ class App(tk.Frame):
         )
         Export.pack(side = TOP, anchor = SE)
 #	Add button to open the mapping locations for titlecards popup
-        MappingsLocations = customtkinter.CTkButton(leftframe,
+        MappingsLocations = customtkinter.CTkButton(leftframe, 
+        fg_color=BTNCLR, text_color=TXTCLR,
         text = 'Mapping Locations',
         command = self.MappingLocations_Popup,
         font = ('gaslight', 30),
@@ -385,7 +401,8 @@ class App(tk.Frame):
         MappingsLocations.pack(side = TOP, anchor = SE)
 #	Add the zone selector
         ZoneMenu = customtkinter.CTkOptionMenu(
-        leftframe,
+        leftframe, 
+        fg_color=BTNCLR, text_color=TXTCLR,
         variable = zone,
         values=[
         "EHZ",
@@ -406,7 +423,8 @@ class App(tk.Frame):
         ZoneMenu.set(ZoneMenu._values[0]) 
 #	Add the button to exit the program
         exitbutton = customtkinter.CTkButton(
-        leftframe,
+        leftframe, 
+        fg_color=BTNCLR, text_color=TXTCLR,
         text = '     Exit     ',
         command = self.ExitProgram, 
         font = ('gaslight', 30),
@@ -416,7 +434,8 @@ class App(tk.Frame):
         exitbutton.pack(side = TOP, anchor = SE)
 #	Add the copy to clipboard button
         copybutton = customtkinter.CTkButton(
-        topframe,
+        topframe, 
+        fg_color=BTNCLR, text_color=TXTCLR,
         text = 'Copy To Clipboard',
         command = self.CopyToClipboard, 
         font = ('gaslight', 30),
@@ -511,12 +530,26 @@ class App(tk.Frame):
 
     def ChangeAppTheme(self):
         global SwitchThemeFlag
+        global BTNCLR, TXTCLR
+        
         if SwitchThemeFlag.get() == 0:
             THEME = "DARK"
+            BTNCLR = "#272829"
+            TXTCLR = "white"
         elif SwitchThemeFlag.get() == 1:
             THEME = "LIGHT"
+            BTNCLR = "white"
+            TXTCLR = "#272829"
         else:
             THEME = "DARK"
+            BTNCLR = "#272829"
+            TXTCLR = "white"
+        for widget in leftframe.winfo_children():
+            widget.configure(fg_color=BTNCLR, text_color=TXTCLR,)
+        for widget in topframe.winfo_children():
+            widget.configure(fg_color=BTNCLR, text_color=TXTCLR,)
+        for widget in bottomframe.winfo_children():
+            widget.configure(fg_color=BTNCLR, text_color=TXTCLR,)
         customtkinter.set_appearance_mode(THEME)  # Modes: system (default), light, dark
         
 #	Code to change themes
