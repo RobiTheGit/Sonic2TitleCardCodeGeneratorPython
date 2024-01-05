@@ -24,6 +24,10 @@ global text
 text = ''
 global DebugFlag
 DebugFlag = False
+global LabelFlag
+LabelFlag = False
+global DisasmLabel
+DisasmLabel = 0
 
 def GenerateMappings(): 
     global text
@@ -31,6 +35,7 @@ def GenerateMappings():
     global LetterIsAfterI
     global LetterIsAfterM
     global DebugFlag
+    global LabelFlag
     NegativeToPositive_Position = 65535 #position before setting position to $0
     SpaceBetweenLetter = 16 #$10, after M or W, 24/$18, after I, 8/$8
     Current_XPOS = 65428 #starts with the starting position
@@ -70,7 +75,11 @@ def GenerateMappings():
          options=None
          )
     else:
-        proper = hexi.replace("0X", f"TC_{ZoneNameForLabel}:    dc.w $")
+        if LabelFlag == False:
+            proper = hexi.replace("0X", f"TC_{ZoneNameForLabel}:    dc.w $")
+        else:
+            proper = hexi.replace("0X", f"{ZoneNameForLabel}:    dc.w $")
+            
         TitlecardOutput.insert(END,f';In Obj34_MapUnc_147BA Put\n')
         TitlecardOutput.insert(END,f'{proper} \n')
     pos = -(len(AllOfTheCharacters))
@@ -281,8 +290,10 @@ class App(tk.Frame):
         global SwitchThemeFlag
         global zone
         global ZoneMenu
+        global DisasmLabel
         DebugEnabledFlag = tk.IntVar()
         zone = tk.IntVar()
+        DisasmLabel = tk.IntVar()
         SwitchThemeFlag = tk.IntVar()
         super().__init__(master)
         self.pack()
@@ -433,6 +444,18 @@ class App(tk.Frame):
         command=self.ChangeAppTheme
         )
         ThemeCheck.pack(side = BOTTOM)
+        
+#       Add the checkbox that makes the generator use the stock disasm labels
+        DisasmLabelCheck = customtkinter.CTkCheckBox(
+        topframe,
+        text='Use Regular Disasm Labels',
+        variable=DisasmLabel,
+        onvalue=1,
+        offvalue=0, 
+        command=self.EnableNormalLabels
+        )
+        DisasmLabelCheck.pack(side = BOTTOM)
+        
 #	Add the TitlecardOutput box
         TitlecardOutput = customtkinter.CTkTextbox(
         bottomframe,
@@ -465,7 +488,11 @@ class App(tk.Frame):
         global text
         global ZoneNameForLabel
         text = self.LevelName.get()
-        ZoneNameForLabel = ZoneMenu.get()
+        OldLabl = ['word_147E8', 'word_14A1E', 'word_14A88', 'word_149C4', 'word_14894', 'word_14972', 'word_14930', 'word_14842', 'word_14AE2', 'word_14B24', 'word_14B86', 'word_148CE']
+        if LabelFlag == False:
+            ZoneNameForLabel = ZoneMenu.get()
+        else:
+            ZoneNameForLabel = OldLabl[ZoneMenu._values.index(ZoneMenu.get())]
         GenerateTitlecardFromText()
 
 #	Code to set the debug flag
@@ -484,7 +511,6 @@ class App(tk.Frame):
 
     def ChangeAppTheme(self):
         global SwitchThemeFlag
-        global DebugFlag
         if SwitchThemeFlag.get() == 0:
             THEME = "DARK"
         elif SwitchThemeFlag.get() == 1:
@@ -492,7 +518,19 @@ class App(tk.Frame):
         else:
             THEME = "DARK"
         customtkinter.set_appearance_mode(THEME)  # Modes: system (default), light, dark
+        
+#	Code to change themes
 
+    def EnableNormalLabels(self):
+        global DisasmLabel
+        global LabelFlag
+        if DisasmLabel.get() == 0:
+            LabelFlag = False
+        elif DisasmLabel.get() == 1:
+            LabelFlag = True
+        else:
+            LabelFlag = False
+        
 #	Code to copy TitlecardOutput to clipboard
 
     def CopyToClipboard(self):
