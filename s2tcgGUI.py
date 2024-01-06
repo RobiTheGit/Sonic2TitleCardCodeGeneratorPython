@@ -2,7 +2,7 @@
 import tkinter as tk
 from tkinter import *
 from tkinter import messagebox
-from re import sub, search
+from re import sub
 from sys import exit
 import customtkinter
 from tkinter.filedialog import asksaveasfile
@@ -11,7 +11,7 @@ customtkinter.set_appearance_mode(THEME)  # Modes: system (default), light, dark
 customtkinter.set_default_color_theme("dark-blue")  # Themes: blue (default), dark-blue, green
 '''
 Letter Format
-	dc.w        $VERTOFF+WIDTH, $PRI+INDEX, $PRI+INDEX2P, $XPOS ; LETTER
+	dc.w        $VERTOFF+WIDTH, $PRI+INDEX, $PRI+INDEX2P, $XPOS ;LETTER
 example: 
 	dc.w        $0005, $85DE, $82EF, $FFD0; FIRST LETTER INDEX WHEN NOT (Z, O, N, E)
 '''
@@ -81,7 +81,7 @@ def GenerateMappings():
             proper = hexi.replace("0X", f"{ZoneNameForLabel}:    dc.w $")
             
         TitlecardOutput.insert(END,f';In Obj34_MapUnc_147BA Put\n')
-        TitlecardOutput.insert(END,f'{proper} \n')
+        TitlecardOutput.insert(END,f'{proper}      \n')
         
 
     pos = -(len(AllOfTheCharacters))
@@ -172,11 +172,11 @@ def GenerateMappings():
                     XPOS =  PreFinal_XPOS.replace("0x", "000").upper()
 #width                    
             if CharacterOfTitleCard == 'm' or CharacterOfTitleCard == 'w':
-                CharacterWidth = '09'
+                CharacterWidth = '9'
             elif CharacterOfTitleCard == 'i':
-                CharacterWidth = '01'
+                CharacterWidth = '1'
             else:
-                CharacterWidth = '05'
+                CharacterWidth = '5'
 #making the lines of code
             if CharacterOfTitleCard in CharactersList:
                 x = CharactersList.index(CharacterOfTitleCard) 
@@ -200,13 +200,13 @@ def GenerateMappings():
                     TwoPlayerFinalIndex = int(Current_2PIndex)+int(Index_Increment_2P)
                     TwoPlayerFinalIndex_REGEX_STEP = hex(TwoPlayerFinalIndex) 
                     INDEX2P = TwoPlayerFinalIndex_REGEX_STEP.replace("0x", "").upper()
-                    CodeForSavedIndexes = (f'\tdc.w $00{CharacterWidth}, $8{INDEX}, $8{INDEX2P}')
+                    CodeForSavedIndexes = (f'\tdc.w {CharacterWidth}, $8{INDEX}, $8{INDEX2P}')
                     if LetterIsAfterI == True:
                         FinalIndex_Dec += 2 
                         if CharacterOfTitleCard == "m":
                             FinalIndex_Dec += 2  
                     SavedIndexes.append(CodeForSavedIndexes)
-                    TitlecardOutput.insert(END,f'\tdc.w $00{CharacterWidth}, $8{INDEX}, $8{INDEX2P}, ${XPOS} ;{CharacterOfTitleCard.upper()} \n')
+                    TitlecardOutput.insert(END,f'\tdc.w {CharacterWidth}, $8{INDEX}, $8{INDEX2P}, ${XPOS} ;{CharacterOfTitleCard.upper()} \n')
                     CharactersList.append(CharacterOfTitleCard)
                     Current_Index = FinalIndex_Dec
                     Current_2PIndex = TwoPlayerFinalIndex
@@ -221,7 +221,7 @@ def GenerateMappings():
                 elif CharacterOfTitleCard == 'z':
                     INDEX = '58C'
                     INDEX2P = '2C6'
-                    TitlecardOutput.insert(END,f'\tdc.w $00{CharacterWidth}, $8{INDEX}, $8{INDEX2P}, ${XPOS} ;{CharacterOfTitleCard.upper()} \n') 
+                    TitlecardOutput.insert(END,f'\tdc.w {CharacterWidth}, $8{INDEX}, $8{INDEX2P}, ${XPOS} ;{CharacterOfTitleCard.upper()} \n') 
                     if LetterIsAfterI == True:
                        LetterIsAfterIcount += 1
                     if LetterIsAfterM == True:
@@ -229,7 +229,7 @@ def GenerateMappings():
                 elif CharacterOfTitleCard == 'o':
                     INDEX = '588'
                     INDEX2P = '2C4'
-                    TitlecardOutput.insert(END,f'\tdc.w $00{CharacterWidth}, $8{INDEX}, $8{INDEX2P}, ${XPOS} ;{CharacterOfTitleCard.upper()} \n') 
+                    TitlecardOutput.insert(END,f'\tdc.w {CharacterWidth}, $8{INDEX}, $8{INDEX2P}, ${XPOS} ;{CharacterOfTitleCard.upper()} \n') 
                     if LetterIsAfterI == True:
                        LetterIsAfterIcount += 1
                     if LetterIsAfterM == True:
@@ -237,7 +237,7 @@ def GenerateMappings():
                 elif CharacterOfTitleCard == 'n':
                     INDEX = '584'
                     INDEX2P = '2C2'
-                    TitlecardOutput.insert(END,f'\tdc.w $00{CharacterWidth}, $8{INDEX}, $8{INDEX2P}, ${XPOS} ;{CharacterOfTitleCard.upper()} \n')
+                    TitlecardOutput.insert(END,f'\tdc.w {CharacterWidth}, $8{INDEX}, $8{INDEX2P}, ${XPOS} ;{CharacterOfTitleCard.upper()} \n')
                     if LetterIsAfterI == True:
                        LetterIsAfterIcount += 1
                     if LetterIsAfterM == True:
@@ -245,7 +245,7 @@ def GenerateMappings():
                 elif CharacterOfTitleCard == 'e':
                     INDEX = '580'
                     INDEX2P = '2C0'
-                    TitlecardOutput.insert(END,f'\tdc.w $00{CharacterWidth}, $8{INDEX}, $8{INDEX2P}, ${XPOS} ;{CharacterOfTitleCard.upper()} \n')
+                    TitlecardOutput.insert(END,f'\tdc.w {CharacterWidth}, $8{INDEX}, $8{INDEX2P}, ${XPOS} ;{CharacterOfTitleCard.upper()} \n')
                     if LetterIsAfterI == True:
                        LetterIsAfterIcount += 1
                     if LetterIsAfterM == True:
@@ -276,6 +276,10 @@ def GenerateMappings():
             TitlecardOutput.tag_delete(tag)
         red_highlight = ['word_147E8:', 'word_14A1E:', 'word_14A88:', 'word_149C4:', 'word_14894:', 'word_14972:', 'word_14930:', 'word_14842:', 'word_14AE2:', 'word_14B24:', 'word_14B86:', 'word_148CE:', "TC_EHZ:", "TC_CPZ:", "TC_ARZ:", "TC_CNZ:", "TC_HTZ:", "TC_MCZ:", "TC_OOZ:", "TC_MTZ:", "TC_SCZ:", "TC_WFZ:", "TC_DEZ:", "TC_HPZ:"]
         green_highlight = ['dc.w']
+        blue_highlight = [';In Obj34_MapUnc_147BA Put', '; Open "Mapping Locations" for locations of titlecards', '; Open Mappings.txt for a replacement for the original mappings', ';You can only have a maximum of $10 characters in sonic 2 title cards, this code will not work', ';You can only have $8 unique indexes excluding Z,O,N, and E, this code will not work']
+        blue_highlight2 = [';']
+        orange_highlight = [f'\$']
+        orange_highlight2 = ['1,', '5,', '9,']
             
         for word in red_highlight:  
             idx = "1.0"
@@ -299,6 +303,67 @@ def GenerateMappings():
                     idx2 = TitlecardOutput.index("%s+%dc" % (idx, length.get()))
                     TitlecardOutput.tag_add("green", idx, idx2)
                     TitlecardOutput.tag_config("green", foreground="#74b543")
+                    idx = idx2
+                else: 
+                    break
+        for word in blue_highlight:  
+            idx = "1.0"
+            while True:
+                length = IntVar()
+                idx = TitlecardOutput.search(f'{word}', idx, nocase=1, stopindex='end',count=length, regexp = True)
+                if idx:
+                    idx2 = TitlecardOutput.index("%s+%dc" % (idx, length.get()))
+                    TitlecardOutput.tag_add("blue", idx, idx2)
+                    TitlecardOutput.tag_config("blue", foreground="#0197f6")
+                    idx = idx2
+                else: 
+                    break
+        for word in blue_highlight:  
+            idx = "1.0"
+            while True:
+                length = IntVar()
+                idx = TitlecardOutput.search(f'{word}', idx, nocase=1, stopindex='end',count=length, regexp = True)
+                if idx:
+                    idx2 = TitlecardOutput.index("%s+%dc" % (idx, length.get()))
+                    TitlecardOutput.tag_add("blue", idx, idx2)
+                    TitlecardOutput.tag_config("blue", foreground="#0197f6")
+                    idx = idx2
+                else: 
+                    break
+        for word in blue_highlight2:  
+            idx = "1.0"
+            while True:
+                length = IntVar()
+                idx = TitlecardOutput.search(f'{word}', idx, nocase=1, stopindex='end',count=length, regexp = True)
+                if idx:
+                    idx2 = TitlecardOutput.index("%s+%dc" % (idx, 2))
+                    TitlecardOutput.tag_add("blue", idx, idx2)
+                    TitlecardOutput.tag_config("blue", foreground="#0197f6")
+                    idx = idx2
+                else: 
+                    break
+                
+        for word in orange_highlight:  
+            idx = "1.0"
+            while True:
+                length = IntVar()
+                idx = TitlecardOutput.search(word, idx, nocase=0, stopindex='end',count=length, regexp = True)
+                if idx:
+                    idx2 = TitlecardOutput.index("%s+%dc" % (idx, 6))
+                    TitlecardOutput.tag_add("orange", idx, idx2)
+                    TitlecardOutput.tag_config("orange", foreground="#ffb238")
+                    idx = idx2
+                else: 
+                    break
+        for word in orange_highlight2:  
+            idx = "1.0"
+            while True:
+                length = IntVar()
+                idx = TitlecardOutput.search(word, idx, nocase=0, stopindex='end',count=length, regexp = True)
+                if idx:
+                    idx2 = TitlecardOutput.index("%s+%dc" % (idx, length.get()))
+                    TitlecardOutput.tag_add("orange", idx, idx2)
+                    TitlecardOutput.tag_config("orange", foreground="#ffb238")
                     idx = idx2
                 else: 
                     break
