@@ -2,7 +2,7 @@
 import tkinter as tk
 from tkinter import *
 from tkinter import messagebox
-from re import sub
+from re import sub, search
 from sys import exit
 import customtkinter
 from tkinter.filedialog import asksaveasfile
@@ -180,7 +180,7 @@ def GenerateMappings():
 #making the lines of code
             if CharacterOfTitleCard in CharactersList:
                 x = CharactersList.index(CharacterOfTitleCard) 
-                TitlecardOutput.insert(END,f'{SavedIndexes[x]}, ${XPOS} ; {CharacterOfTitleCard.upper()} \n')
+                TitlecardOutput.insert(END,f'{SavedIndexes[x]}, ${XPOS} ;{CharacterOfTitleCard.upper()} \n')
                 if CharacterOfTitleCard == 'i':
                    LetterIsAfterI = True 
                    LetterIsAfterIcount = 3
@@ -206,7 +206,7 @@ def GenerateMappings():
                         if CharacterOfTitleCard == "m":
                             FinalIndex_Dec += 2  
                     SavedIndexes.append(CodeForSavedIndexes)
-                    TitlecardOutput.insert(END,f'\tdc.w $00{CharacterWidth}, $8{INDEX}, $8{INDEX2P}, ${XPOS} ; {CharacterOfTitleCard.upper()} \n')
+                    TitlecardOutput.insert(END,f'\tdc.w $00{CharacterWidth}, $8{INDEX}, $8{INDEX2P}, ${XPOS} ;{CharacterOfTitleCard.upper()} \n')
                     CharactersList.append(CharacterOfTitleCard)
                     Current_Index = FinalIndex_Dec
                     Current_2PIndex = TwoPlayerFinalIndex
@@ -221,7 +221,7 @@ def GenerateMappings():
                 elif CharacterOfTitleCard == 'z':
                     INDEX = '58C'
                     INDEX2P = '2C6'
-                    TitlecardOutput.insert(END,f'\tdc.w $00{CharacterWidth}, $8{INDEX}, $8{INDEX2P}, ${XPOS} ; {CharacterOfTitleCard.upper()} \n') 
+                    TitlecardOutput.insert(END,f'\tdc.w $00{CharacterWidth}, $8{INDEX}, $8{INDEX2P}, ${XPOS} ;{CharacterOfTitleCard.upper()} \n') 
                     if LetterIsAfterI == True:
                        LetterIsAfterIcount += 1
                     if LetterIsAfterM == True:
@@ -229,7 +229,7 @@ def GenerateMappings():
                 elif CharacterOfTitleCard == 'o':
                     INDEX = '588'
                     INDEX2P = '2C4'
-                    TitlecardOutput.insert(END,f'\tdc.w $00{CharacterWidth}, $8{INDEX}, $8{INDEX2P}, ${XPOS} ; {CharacterOfTitleCard.upper()} \n') 
+                    TitlecardOutput.insert(END,f'\tdc.w $00{CharacterWidth}, $8{INDEX}, $8{INDEX2P}, ${XPOS} ;{CharacterOfTitleCard.upper()} \n') 
                     if LetterIsAfterI == True:
                        LetterIsAfterIcount += 1
                     if LetterIsAfterM == True:
@@ -237,7 +237,7 @@ def GenerateMappings():
                 elif CharacterOfTitleCard == 'n':
                     INDEX = '584'
                     INDEX2P = '2C2'
-                    TitlecardOutput.insert(END,f'\tdc.w $00{CharacterWidth}, $8{INDEX}, $8{INDEX2P}, ${XPOS} ; {CharacterOfTitleCard.upper()} \n')
+                    TitlecardOutput.insert(END,f'\tdc.w $00{CharacterWidth}, $8{INDEX}, $8{INDEX2P}, ${XPOS} ;{CharacterOfTitleCard.upper()} \n')
                     if LetterIsAfterI == True:
                        LetterIsAfterIcount += 1
                     if LetterIsAfterM == True:
@@ -245,7 +245,7 @@ def GenerateMappings():
                 elif CharacterOfTitleCard == 'e':
                     INDEX = '580'
                     INDEX2P = '2C0'
-                    TitlecardOutput.insert(END,f'\tdc.w $00{CharacterWidth}, $8{INDEX}, $8{INDEX2P}, ${XPOS} ; {CharacterOfTitleCard.upper()} \n')
+                    TitlecardOutput.insert(END,f'\tdc.w $00{CharacterWidth}, $8{INDEX}, $8{INDEX2P}, ${XPOS} ;{CharacterOfTitleCard.upper()} \n')
                     if LetterIsAfterI == True:
                        LetterIsAfterIcount += 1
                     if LetterIsAfterM == True:
@@ -256,6 +256,7 @@ def GenerateMappings():
 
                 else:
                      pass
+
         if len(AllOfTheCharacters) == 0:
             pass
         else:
@@ -270,6 +271,37 @@ def GenerateMappings():
                 tk.messagebox.showerror(title='Error!', message='Position Out Of bounds', options=None)
             if DebugFlag == True:
                 TitlecardOutput.insert(END, f'\n;Indexes: {CharactersList} {len(CharactersList)}\n;Code for above indexes:{SavedIndexes}\n;\tBut you can\'t stick n move')
+
+        for tag in TitlecardOutput.tag_names():
+            TitlecardOutput.tag_delete(tag)
+        red_highlight = ['word_147E8:', 'word_14A1E:', 'word_14A88:', 'word_149C4:', 'word_14894:', 'word_14972:', 'word_14930:', 'word_14842:', 'word_14AE2:', 'word_14B24:', 'word_14B86:', 'word_148CE:', "TC_EHZ:", "TC_CPZ:", "TC_ARZ:", "TC_CNZ:", "TC_HTZ:", "TC_MCZ:", "TC_OOZ:", "TC_MTZ:", "TC_SCZ:", "TC_WFZ:", "TC_DEZ:", "TC_HPZ:"]
+        green_highlight = ['dc.w']
+            
+        for word in red_highlight:  
+            idx = "1.0"
+            while True:
+                length = IntVar()
+                idx = TitlecardOutput.search(r'(?:^|\s)' + word + r'(?:\s|$)', idx, nocase=1, stopindex='end',count=length, regexp = True)
+                if idx:
+                    idx2 = TitlecardOutput.index("%s+%dc" % (idx, length.get()))
+                    TitlecardOutput.tag_add("red", idx, idx2)
+                    TitlecardOutput.tag_config("red", foreground="#ff2b2b")
+                    idx = idx2
+                else: 
+                    break
+            
+        for word in green_highlight:  
+            idx = "1.0"
+            while True:
+                length = IntVar()
+                idx = TitlecardOutput.search(r'(?:^|\s)' + word + r'(?:\s|$)', idx, nocase=1, stopindex='end',count=length, regexp = True)
+                if idx:
+                    idx2 = TitlecardOutput.index("%s+%dc" % (idx, length.get()))
+                    TitlecardOutput.tag_add("green", idx, idx2)
+                    TitlecardOutput.tag_config("green", foreground="#74b543")
+                    idx = idx2
+                else: 
+                    break
 """
 Tkinter Code
 """
@@ -628,7 +660,6 @@ class App(tk.Frame):
 
     def ExitProgram(self):
         exit(0)
-
 # create the application
 title = "Sonic 2 Titlecard Code Generator"
 root = customtkinter.CTk(className="S2TCG")
