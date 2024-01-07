@@ -267,7 +267,7 @@ def GenerateMappings():
             if len(SavedIndexes) > 8:     
                 TitlecardOutput.insert(END,'\n;You can only have $8 unique indexes excluding Z,O,N, and E, this code will not work')
                 tk.messagebox.showerror(title='Error!', message='You can only have $8 unique indexes excluding Z,O,N, and E, this code will not work', options=None)
-            if PositionsIsAfter0 == True and Current_XPOS >= 112:
+            if PositionsIsAfter0 == True and Current_XPOS > 128:
                 tk.messagebox.showerror(title='Error!', message='Position Out Of bounds', options=None)
             if DebugFlag == True:
                 TitlecardOutput.insert(END, f'\n;Indexes: {CharactersList} {len(CharactersList)}\n;Code for above indexes:{SavedIndexes}\n;\tBut you can\'t stick n move')
@@ -470,7 +470,7 @@ class App(tk.Frame):
         About = customtkinter.CTkButton(leftframe, 
         fg_color=BTNCLR, text_color=TXTCLR,
         text = '  About S2tcg.py',
-        command = self.info,
+        command = self.OpenAbout,
         font = ('gaslight', 30),
         height=3, 
         width=8
@@ -718,7 +718,7 @@ class App(tk.Frame):
 
 
     def OpenAbout(self):
-        tk.messagebox.showOpenAbout(
+        tk.messagebox.showinfo(
         title='About',
         message="Sonic 2 Titlecard Code Generator in Python aka. S2TCG.py, created by RobiWanKenobi in \nPython 3.10.", options=None
         )
