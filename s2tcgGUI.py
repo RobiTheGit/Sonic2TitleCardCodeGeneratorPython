@@ -274,12 +274,10 @@ def GenerateMappings():
 
         for tag in TitlecardOutput.tag_names():
             TitlecardOutput.tag_delete(tag)
-        red_highlight = ['word_147E8:', 'word_14A1E:', 'word_14A88:', 'word_149C4:', 'word_14894:', 'word_14972:', 'word_14930:', 'word_14842:', 'word_14AE2:', 'word_14B24:', 'word_14B86:', 'word_148CE:', "TC_EHZ:", "TC_CPZ:", "TC_ARZ:", "TC_CNZ:", "TC_HTZ:", "TC_MCZ:", "TC_OOZ:", "TC_MTZ:", "TC_SCZ:", "TC_WFZ:", "TC_DEZ:", "TC_HPZ:"]
+        red_highlight = ['.*?:']
         green_highlight = ['dc.w']
-        blue_highlight = [';In Obj34_MapUnc_147BA Put', '; Open "Mapping Locations" for locations of titlecards', '; Open Mappings.txt for a replacement for the original mappings', ';You can only have a maximum of $10 characters in sonic 2 title cards, this code will not work', ';You can only have $8 unique indexes excluding Z,O,N, and E, this code will not work']
-        blue_highlight2 = [';']
-        orange_highlight = [f'\$']
-        orange_highlight2 = ['1,', '5,', '9,']
+        blue_highlight = [';.*?$']
+        orange_highlight = [f'\$.*?,', '.*?,', '\$.*? ',]
             
         for word in red_highlight:  
             idx = "1.0"
@@ -306,42 +304,6 @@ def GenerateMappings():
                     idx = idx2
                 else: 
                     break
-        for word in blue_highlight:  
-            idx = "1.0"
-            while True:
-                length = IntVar()
-                idx = TitlecardOutput.search(f'{word}', idx, nocase=1, stopindex='end',count=length, regexp = True)
-                if idx:
-                    idx2 = TitlecardOutput.index("%s+%dc" % (idx, length.get()))
-                    TitlecardOutput.tag_add("blue", idx, idx2)
-                    TitlecardOutput.tag_config("blue", foreground="#0197f6")
-                    idx = idx2
-                else: 
-                    break
-        for word in blue_highlight:  
-            idx = "1.0"
-            while True:
-                length = IntVar()
-                idx = TitlecardOutput.search(f'{word}', idx, nocase=1, stopindex='end',count=length, regexp = True)
-                if idx:
-                    idx2 = TitlecardOutput.index("%s+%dc" % (idx, length.get()))
-                    TitlecardOutput.tag_add("blue", idx, idx2)
-                    TitlecardOutput.tag_config("blue", foreground="#0197f6")
-                    idx = idx2
-                else: 
-                    break
-        for word in blue_highlight2:  
-            idx = "1.0"
-            while True:
-                length = IntVar()
-                idx = TitlecardOutput.search(f'{word}', idx, nocase=1, stopindex='end',count=length, regexp = True)
-                if idx:
-                    idx2 = TitlecardOutput.index("%s+%dc" % (idx, 2))
-                    TitlecardOutput.tag_add("blue", idx, idx2)
-                    TitlecardOutput.tag_config("blue", foreground="#0197f6")
-                    idx = idx2
-                else: 
-                    break
                 
         for word in orange_highlight:  
             idx = "1.0"
@@ -349,27 +311,41 @@ def GenerateMappings():
                 length = IntVar()
                 idx = TitlecardOutput.search(word, idx, nocase=0, stopindex='end',count=length, regexp = True)
                 if idx:
-                    idx2 = TitlecardOutput.index("%s+%dc" % (idx, 6))
-                    TitlecardOutput.tag_add("orange", idx, idx2)
-                    TitlecardOutput.tag_config("orange", foreground="#ffb238")
-                    idx = idx2
-                else: 
-                    break
-        for word in orange_highlight2:  
-            idx = "1.0"
-            while True:
-                length = IntVar()
-                idx = TitlecardOutput.search(word, idx, nocase=0, stopindex='end',count=length, regexp = True)
-                if idx:
                     idx2 = TitlecardOutput.index("%s+%dc" % (idx, length.get()))
                     TitlecardOutput.tag_add("orange", idx, idx2)
                     TitlecardOutput.tag_config("orange", foreground="#ffb238")
                     idx = idx2
                 else: 
                     break
+
+        for word in blue_highlight:  
+            idx = "1.0"
+            while True:
+                length = IntVar()
+                idx = TitlecardOutput.search(f'{word}', idx, nocase=1, stopindex='end',count=length, regexp = True)
+                if idx:
+                    idx2 = TitlecardOutput.index("%s+%dc" % (idx, length.get()))
+                    TitlecardOutput.tag_add("blue", idx, idx2)
+                    TitlecardOutput.tag_config("blue", foreground="#0197f6")
+                    idx = idx2
+                else: 
+                    break
 """
 Tkinter Code
 """
+def search_re(pattern, text, groupid=0):
+    matches = []
+
+    text = text.splitlines()
+    for i, line in enumerate(text):
+        for match in re.finditer(pattern, line):
+
+            matches.append(
+                (f"{i + 1}.{match.start()}", f"{i + 1}.{match.end()}")
+            )
+
+    return matches
+
 def GenerateTitlecardFromText():
     global text
     global TitlecardOutput
@@ -687,7 +663,7 @@ class App(tk.Frame):
         pep.pack(fill = BOTH)
         customtkinter.CTkLabel(
         top,
-        text= f'If you are using the 2007 Xenowhirl disasm, read Xenowhirl_Setup.txt\nUse the letter macros, and skip Z, O, N, & E\n'
+        text= f'If you are using the 2007 Xenowhirl disasm, read Xenowhirl_Setup.txt\nUse the letter macros, and skip Z, O, N, & E\n' #Why you'd be using this disasm still, I have no clue
         ).pack()
         pep.delete(1.0, END)
         pep.insert(END, f'titleLetters	"{TitlecardLettersToLoad}"',)
