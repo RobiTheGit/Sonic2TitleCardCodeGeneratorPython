@@ -258,22 +258,27 @@ def GenerateMappings():
                      pass
 
         if len(AllOfTheCharacters) == 0:
+            highlight(TitlecardOutput)
             pass
         else:
             TitlecardOutput.insert(END, f'\n; Open "Mapping Locations" for locations of titlecards\n; Open Mappings.txt for a replacement for the original mappings')
+            highlight(TitlecardOutput)
             if len(LENGTH_STEP) > 16:
                 TitlecardOutput.insert(END,'\n;You can only have a maximum of $10 characters in sonic 2 title cards, this code will not work')
+                highlight(TitlecardOutput)
                 tk.messagebox.showerror(title='Error!', message='You can only have a maximum of $10 characters in sonic 2 title cards, this code will not work', options=None) 
             if len(SavedIndexes) > 8:     
                 TitlecardOutput.insert(END,'\n;You can only have $8 unique indexes excluding Z,O,N, and E, this code will not work')
+                highlight(TitlecardOutput)
                 tk.messagebox.showerror(title='Error!', message='You can only have $8 unique indexes excluding Z,O,N, and E, this code will not work', options=None)
             if PositionsIsAfter0 == True and Current_XPOS > 128:
                 tk.messagebox.showerror(title='Error!', message='Position Out Of bounds', options=None)
             if DebugFlag == True:
                 TitlecardOutput.insert(END, f'\n;Indexes: {CharactersList} {len(CharactersList)}\n;Code for above indexes:{SavedIndexes}\n;\tBut you can\'t stick n move')
-
-        for tag in TitlecardOutput.tag_names():
-            TitlecardOutput.tag_delete(tag)
+                highlight(TitlecardOutput)
+def highlight(text_to_highlight):
+        for tag in text_to_highlight.tag_names():
+            text_to_highlight.tag_delete(tag)
         red_highlight = ['.*?:']
         green_highlight = ['dc.w']
         blue_highlight = [';.*?$']
@@ -283,11 +288,11 @@ def GenerateMappings():
             idx = "1.0"
             while True:
                 length = IntVar()
-                idx = TitlecardOutput.search(r'(?:^|\s)' + word + r'(?:\s|$)', idx, nocase=1, stopindex='end',count=length, regexp = True)
+                idx = text_to_highlight.search(r'(?:^|\s)' + word + r'(?:\s|$)', idx, nocase=1, stopindex='end',count=length, regexp = True)
                 if idx:
-                    idx2 = TitlecardOutput.index("%s+%dc" % (idx, length.get()))
-                    TitlecardOutput.tag_add("red", idx, idx2)
-                    TitlecardOutput.tag_config("red", foreground="#ff2b2b")
+                    idx2 = text_to_highlight.index("%s+%dc" % (idx, length.get()))
+                    text_to_highlight.tag_add("red", idx, idx2)
+                    text_to_highlight.tag_config("red", foreground="#ff2b2b")
                     idx = idx2
                 else: 
                     break
@@ -297,11 +302,11 @@ def GenerateMappings():
             idx = "1.0"
             while True:
                 length = IntVar()
-                idx = TitlecardOutput.search(word, idx, nocase=0, stopindex='end',count=length, regexp = True)
+                idx = text_to_highlight.search(word, idx, nocase=0, stopindex='end',count=length, regexp = True)
                 if idx:
-                    idx2 = TitlecardOutput.index("%s+%dc" % (idx, length.get()))
-                    TitlecardOutput.tag_add("orange", idx, idx2)
-                    TitlecardOutput.tag_config("orange", foreground="#ffb238")
+                    idx2 = text_to_highlight.index("%s+%dc" % (idx, length.get()))
+                    text_to_highlight.tag_add("orange", idx, idx2)
+                    text_to_highlight.tag_config("orange", foreground="#ffb238")
                     idx = idx2
                 else: 
                     break
@@ -310,11 +315,11 @@ def GenerateMappings():
             idx = "1.0"
             while True:
                 length = IntVar()
-                idx = TitlecardOutput.search(r'(?:^|\s)' + word + r'(?:\s|$)', idx, nocase=1, stopindex='end',count=length, regexp = True)
+                idx = text_to_highlight.search(r'(?:^|\s)' + word + r'(?:\s|$)', idx, nocase=1, stopindex='end',count=length, regexp = True)
                 if idx:
-                    idx2 = TitlecardOutput.index("%s+%dc" % (idx, length.get()))
-                    TitlecardOutput.tag_add("green", idx, idx2)
-                    TitlecardOutput.tag_config("green", foreground="#74b543")
+                    idx2 = text_to_highlight.index("%s+%dc" % (idx, length.get()))
+                    text_to_highlight.tag_add("green", idx, idx2)
+                    text_to_highlight.tag_config("green", foreground="#74b543")
                     idx = idx2
                 else: 
                     break
@@ -322,11 +327,11 @@ def GenerateMappings():
             idx = "1.0"
             while True:
                 length = IntVar()
-                idx = TitlecardOutput.search(f'{word}', idx, nocase=1, stopindex='end',count=length, regexp = True)
+                idx = text_to_highlight.search(f'{word}', idx, nocase=1, stopindex='end',count=length, regexp = True)
                 if idx:
-                    idx2 = TitlecardOutput.index("%s+%dc" % (idx, length.get()))
-                    TitlecardOutput.tag_add("blue", idx, idx2)
-                    TitlecardOutput.tag_config("blue", foreground="#0197f6")
+                    idx2 = text_to_highlight.index("%s+%dc" % (idx, length.get()))
+                    text_to_highlight.tag_add("blue", idx, idx2)
+                    text_to_highlight.tag_config("blue", foreground="#0197f6")
                     idx = idx2
                 else: 
                     break
