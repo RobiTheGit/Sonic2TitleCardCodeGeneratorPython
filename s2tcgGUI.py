@@ -277,7 +277,7 @@ def GenerateMappings():
         red_highlight = ['.*?:']
         green_highlight = ['dc.w']
         blue_highlight = [';.*?$']
-        orange_highlight = [f'\$.*?,', '.*?,', '\$.*? ',]
+        orange_highlight = [f'\$.*?,', '.*?,', '\$.*? ', '".*?"']
             
         for word in red_highlight:  
             idx = "1.0"
@@ -292,18 +292,6 @@ def GenerateMappings():
                 else: 
                     break
             
-        for word in green_highlight:  
-            idx = "1.0"
-            while True:
-                length = IntVar()
-                idx = TitlecardOutput.search(r'(?:^|\s)' + word + r'(?:\s|$)', idx, nocase=1, stopindex='end',count=length, regexp = True)
-                if idx:
-                    idx2 = TitlecardOutput.index("%s+%dc" % (idx, length.get()))
-                    TitlecardOutput.tag_add("green", idx, idx2)
-                    TitlecardOutput.tag_config("green", foreground="#74b543")
-                    idx = idx2
-                else: 
-                    break
                 
         for word in orange_highlight:  
             idx = "1.0"
@@ -318,6 +306,18 @@ def GenerateMappings():
                 else: 
                     break
 
+        for word in green_highlight:  
+            idx = "1.0"
+            while True:
+                length = IntVar()
+                idx = TitlecardOutput.search(r'(?:^|\s)' + word + r'(?:\s|$)', idx, nocase=1, stopindex='end',count=length, regexp = True)
+                if idx:
+                    idx2 = TitlecardOutput.index("%s+%dc" % (idx, length.get()))
+                    TitlecardOutput.tag_add("green", idx, idx2)
+                    TitlecardOutput.tag_config("green", foreground="#74b543")
+                    idx = idx2
+                else: 
+                    break
         for word in blue_highlight:  
             idx = "1.0"
             while True:
