@@ -333,18 +333,6 @@ def GenerateMappings():
 """
 Tkinter Code
 """
-def search_re(pattern, text, groupid=0):
-    matches = []
-
-    text = text.splitlines()
-    for i, line in enumerate(text):
-        for match in re.finditer(pattern, line):
-
-            matches.append(
-                (f"{i + 1}.{match.start()}", f"{i + 1}.{match.end()}")
-            )
-
-    return matches
 
 def GenerateTitlecardFromText():
     global text
