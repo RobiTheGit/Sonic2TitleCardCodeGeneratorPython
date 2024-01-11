@@ -9,33 +9,21 @@ from tkinter.filedialog import asksaveasfile
 THEME = "DARK"
 customtkinter.set_appearance_mode(THEME)  # Modes: system (default), light, dark
 customtkinter.set_default_color_theme("dark-blue")  # Themes: blue (default), dark-blue, green
-'''
-Letter Format
-	dc.w        $VERTOFF+WIDTH, $PRI+INDEX, $PRI+INDEX2P, $XPOS ;LETTER
-example: 
-	dc.w        $0005, $85DE, $82EF, $FFD0; FIRST LETTER INDEX WHEN NOT (Z, O, N, E)
-'''
-
 """
 Generation Code
 """
 
-global text
-text = ''
-global DebugFlag
-DebugFlag = False
-global LabelFlag
-LabelFlag = False
-global DisasmLabel
+global text, DebugFlag, LabelFlag, DisasmLabel
+text = '' 
+DebugFlag = False 
+LabelFlag = False 
 DisasmLabel = 0
 
 def GenerateMappings(): 
-    global text
-    global CharacterOfTitleCard
-    global LetterIsAfterI
-    global LetterIsAfterM
-    global DebugFlag
-    global LabelFlag
+#========================================================
+#   Variable Setup
+#========================================================
+    global text, CharacterOfTitleCard, LetterIsAfterI, LetterIsAfterM, DebugFlag, LabelFlag
     NegativeToPositive_Position = 65535 #position before setting position to $0
     SpaceBetweenLetter = 16 #$10, after M or W, 24/$18, after I, 8/$8
     Current_XPOS = 65428 #starts with the starting position
@@ -48,7 +36,9 @@ def GenerateMappings():
     REGEX_STEP = sub(r"[^a-zA-Z ]", "", text)
     LENGTH_STEP = REGEX_STEP.replace(" ", "")
     hexi = hex(len(LENGTH_STEP)).upper()
-#   start position setting position
+#========================================================
+#   Start position setting code
+#========================================================
     if len(REGEX_STEP) >= 10: 
         Current_XPOS = 65428
     elif len(REGEX_STEP) <= 9 and len(REGEX_STEP) > 6:
@@ -67,7 +57,9 @@ def GenerateMappings():
     LetterIsAfterM = False
     for CharacterOfTitleCard in REGEX_STEP:
         AllOfTheCharacters.append(CharacterOfTitleCard.lower())
-        
+#========================================================
+#   Setup Code
+#========================================================
     if len(AllOfTheCharacters) == 0:
          tk.messagebox.showerror(
          title='No Titlecard To Make!',
@@ -85,7 +77,9 @@ def GenerateMappings():
         
 
     pos = -(len(AllOfTheCharacters))
-#getting the indexes
+#========================================================
+#   Character Index Code
+#========================================================
     if len(CharacterOfTitleCard) <= 15:
         for CharacterOfTitleCard in AllOfTheCharacters:
             if CurrentCharacter >= 1:
@@ -135,8 +129,10 @@ def GenerateMappings():
                 else:
                     Index_Increment = 4  #restore the default values
                     Index_Increment_2P = 2 
-                    SpaceBetweenLetter = 16     
-#position
+                    SpaceBetweenLetter = 16 
+#========================================================
+#   Position Calculation Code
+#========================================================
             Current_XPOS += SpaceBetweenLetter #Index_Increment position by the position Index_Incrementer, there is a reason this is defined after the LetterIsAfterM and LetterIsAfterI stuff
             if Current_XPOS <= NegativeToPositive_Position:
                 CharacterOfTitleCard = CharacterOfTitleCard.lower()
@@ -170,14 +166,18 @@ def GenerateMappings():
                     XPOS =  PreFinal_XPOS.replace("0x", "000").upper()
                 else:    
                     XPOS =  PreFinal_XPOS.replace("0x", "000").upper()
-#width                    
+#========================================================
+#   Character Width Setting Code
+#========================================================
             if CharacterOfTitleCard == 'm' or CharacterOfTitleCard == 'w':
                 CharacterWidth = '9'
             elif CharacterOfTitleCard == 'i':
                 CharacterWidth = '1'
             else:
                 CharacterWidth = '5'
-#making the lines of code
+#========================================================
+#   Generation of Each Line code
+#========================================================
             if CharacterOfTitleCard in CharactersList:
                 x = CharactersList.index(CharacterOfTitleCard) 
                 TitlecardOutput.insert(END,f'{SavedIndexes[x]}, ${XPOS} ;{CharacterOfTitleCard.upper()} \n')
@@ -189,6 +189,9 @@ def GenerateMappings():
                    LetterIsAfterM = True 
                    LetterIsAfterMcount = 3
                    LetterIsAfterMposcount = 1
+#====================================================================
+#   Generate Lines For Characters We Don't Already Have The Index Of
+#====================================================================
             else:
                 if CharacterOfTitleCard != 'z' and CharacterOfTitleCard != 'o' and CharacterOfTitleCard != 'n' and CharacterOfTitleCard != 'e' and CharacterOfTitleCard != ' ' and CharacterOfTitleCard.isalpha():  
                     CurrentCharacter += 1 
@@ -218,6 +221,9 @@ def GenerateMappings():
                        LetterIsAfterM = True 
                        LetterIsAfterMcount = 3 
                        LetterIsAfterMposcount = 1
+#========================================================
+#   Z, O, N, & E line creation
+#========================================================
                 elif CharacterOfTitleCard == 'z':
                     INDEX = '58C'
                     INDEX2P = '2C6'
@@ -250,6 +256,9 @@ def GenerateMappings():
                        LetterIsAfterIcount += 1
                     if LetterIsAfterM == True:
                        LetterIsAfterMcount += 1 
+#========================================================
+#   Code For Spaces
+#========================================================
                 elif CharacterOfTitleCard == ' ':
                     Current_XPOS += 2
                     TitlecardOutput.insert(END,'\n')
@@ -263,6 +272,9 @@ def GenerateMappings():
         else:
             TitlecardOutput.insert(END, f'\n; Open "Mapping Locations" for locations of titlecards\n; Open Mappings.txt for a replacement for the original mappings')
             highlight(TitlecardOutput)
+#========================================================
+#   Error Handling Code
+#========================================================
             if len(LENGTH_STEP) > 16:
                 TitlecardOutput.insert(END,'\n;You can only have a maximum of $10 characters in sonic 2 title cards, this code will not work')
                 highlight(TitlecardOutput)
@@ -276,6 +288,9 @@ def GenerateMappings():
             if DebugFlag == True:
                 TitlecardOutput.insert(END, f'\n;Indexes: {CharactersList} {len(CharactersList)}\n;Code for above indexes:{SavedIndexes}\n;\tBut you can\'t stick n move')
                 highlight(TitlecardOutput)
+#========================================================
+#   Syntax Highlighting Code
+#========================================================
 def highlight(text_to_highlight):
         for tag in text_to_highlight.tag_names():
             text_to_highlight.tag_delete(tag)
@@ -283,7 +298,9 @@ def highlight(text_to_highlight):
         green_highlight = ['dc.w']
         blue_highlight = [';.*?$']
         orange_highlight = [f'\$.*?,', '.*?,', '\$.*? ', '".*?"']
-            
+#========================================================
+#   Text In Red
+#========================================================
         for word in red_highlight:  
             idx = "1.0"
             while True:
@@ -296,8 +313,9 @@ def highlight(text_to_highlight):
                     idx = idx2
                 else: 
                     break
-            
-                
+#========================================================
+#   Text In Orange
+#========================================================
         for word in orange_highlight:  
             idx = "1.0"
             while True:
@@ -310,7 +328,9 @@ def highlight(text_to_highlight):
                     idx = idx2
                 else: 
                     break
-
+#========================================================
+#   Text In Green
+#========================================================
         for word in green_highlight:  
             idx = "1.0"
             while True:
@@ -323,6 +343,9 @@ def highlight(text_to_highlight):
                     idx = idx2
                 else: 
                     break
+#========================================================
+#   Text In Blue
+#========================================================
         for word in blue_highlight:  
             idx = "1.0"
             while True:
@@ -335,223 +358,144 @@ def highlight(text_to_highlight):
                     idx = idx2
                 else: 
                     break
-"""
-Tkinter Code
-"""
-
+#========================================================
+#   Generation Init Code
+#========================================================
 def GenerateTitlecardFromText():
-    global text
-    global TitlecardOutput
-    global DebugFlag
+    global text, TitlecardOutput, DebugFlag
     TitlecardOutput.configure(state='normal')
     TitlecardOutput.delete(1.0, END)
     GenerateMappings()
     TitlecardOutput.configure(state='disabled')
 
+"""
+Tkinter Code
+"""
+
 class App(tk.Frame):
     global f
     def __init__(self, master):
-        global BTNCLR, TXTCLR
+        global BTNCLR, TXTCLR, text, TitlecardOutput, DebugFlag, DebugEnabledFlag, SwitchThemeFlag, zone, ZoneMenu, DisasmLabel, leftframe, topframe, bottomframe
         if THEME == "DARK":
            BTNCLR = "#272829"
            TXTCLR = "white"
         else:
            BTNCLR = "white"
-           TXTCLR = "#272829"  
-        global text
-        global TitlecardOutput
-        global DebugFlag
-        global DebugEnabledFlag
-        global SwitchThemeFlag
-        global zone
-        global ZoneMenu
-        global DisasmLabel
-        global leftframe, topframe, bottomframe
+           TXTCLR = "#272829"   
         DebugEnabledFlag = tk.IntVar()
         zone = tk.IntVar()
         DisasmLabel = tk.IntVar()
         SwitchThemeFlag = tk.IntVar()
         super().__init__(master)
         self.pack()
+#========================================================================
 #	Initilize left frame
-        leftframe = customtkinter.CTkFrame(
-        root
-        )        
+#========================================================================
+        leftframe = customtkinter.CTkFrame(root)
         leftframe.pack(side = LEFT, fill=BOTH, anchor = NE, padx = 5)
+#========================================================================
  #	Initilize top frame
-        topframe = customtkinter.CTkFrame(
-        root 
-        )
+ #========================================================================
+        topframe = customtkinter.CTkFrame(root)
         topframe.pack(side = TOP, fill=BOTH)
+#========================================================================
 #	Initilize bottom frame
-        bottomframe = customtkinter.CTkFrame(
-        root 
-        )
+#========================================================================
+        bottomframe = customtkinter.CTkFrame(root)
         bottomframe.pack(side = TOP, fill=BOTH, pady = 5)
+#========================================================================
 #	Load icon for app
+#========================================================================
         try:
             photo = PhotoImage(file ="icon.png")
             root.iconphoto(False, photo)
         except:
             pass
-#	Draw title
-        Title = customtkinter.CTkLabel(
-        topframe,
-        text="SONIC 2 TITLECARD CODE GENERATOR PYTHON \nBy: RobiWanKenobi", 
-        font = ('gaslight', 25)
-        )        
+#========================================================================
+#   Draw title
+#========================================================================
+        Title = customtkinter.CTkLabel(topframe, text="SONIC 2 TITLECARD CODE GENERATOR PYTHON \nBy: RobiWanKenobi", font = ('gaslight', 25))        
         Title.pack(side = TOP, fill=BOTH)
-#	Add label to tell peopel where inout goes
-        inlbl = customtkinter.CTkLabel(
-        leftframe, 
-        text='Input Title Card Name Here'
-        )
+#========================================================================
+#   Add label to tell people where input goes
+#========================================================================
+        inlbl = customtkinter.CTkLabel(leftframe, text='Input Title Card Name Here')
         inlbl.pack(side = TOP, anchor = NE)
-#	Add level name input
+#========================================================================
+#   Add level name input
+#========================================================================
         self.LevelName = customtkinter.CTkEntry(leftframe, placeholder_text="type level name")
         self.contents = tk.StringVar()
         self.contents.set("")
         self.LevelName["textvariable"] = self.contents 
         self.LevelName.bind('<Key-Return>', self.RunFromEnterKey)
         self.LevelName.pack(side = TOP, anchor = NE,)
-        
-#	Add button to generate the titlecard code
-        Generate = customtkinter.CTkButton(leftframe, 
-        fg_color=BTNCLR, text_color=TXTCLR,
-        text = '  Generate Code', 
-        command = self.RunGeneration, 
-        font = ('gaslight', 30),
-        height=3, 
-        width=9
-        )
+#========================================================================
+#   Add button to generate the titlecard code
+#========================================================================
+        Generate = customtkinter.CTkButton(leftframe, fg_color=BTNCLR, text_color=TXTCLR, text = '  Generate Code', command = self.RunGeneration, font = ('gaslight', 30), height=3, width=9)
         Generate.pack(side = TOP, anchor = E)
-#	Add button to open the titlecard letters popup
-        TitlecardLetters = customtkinter.CTkButton(leftframe, 
-        fg_color=BTNCLR, text_color=TXTCLR,
-        text = 'Titlecard Letters', 
-        command = self.TitlecardLetters_Popup, 
-        font = ('gaslight', 30),
-        height=3, 
-        width=8
-        )
+#========================================================================
+#   Add button to open the titlecard letters popup
+#========================================================================
+        TitlecardLetters = customtkinter.CTkButton(leftframe, fg_color=BTNCLR, text_color=TXTCLR, text = 'Titlecard Letters', command = self.TitlecardLetters_Popup, font = ('gaslight', 30), height=3, width=8)
         TitlecardLetters.pack(side = TOP, anchor = E)
-#	Add button to open the about screen
-        About = customtkinter.CTkButton(leftframe, 
-        fg_color=BTNCLR, text_color=TXTCLR,
-        text = '  About S2tcg.py',
-        command = self.OpenAbout,
-        font = ('gaslight', 30),
-        height=3, 
-        width=8
-        )
+#========================================================================
+#   Add button to open the about screen
+#========================================================================
+        About = customtkinter.CTkButton(leftframe, fg_color=BTNCLR, text_color=TXTCLR, text = '  About S2tcg.py', command = self.OpenAbout, font = ('gaslight', 30), height=3, width=8)
         About.pack(side = TOP, anchor = SE)
-#	Add button to export the titlecard code
-        Export = customtkinter.CTkButton(leftframe, 
-        fg_color=BTNCLR, text_color=TXTCLR,
-        text = 'Export Titlecard',
-        command = self.ExportTitlecard,
-        font = ('gaslight', 30),
-        height=3, 
-        width=8
-        )
+#========================================================================
+#   Add button to export the titlecard code
+#========================================================================
+        Export = customtkinter.CTkButton(leftframe, fg_color=BTNCLR, text_color=TXTCLR, text = 'Export Titlecard', command = self.ExportTitlecard, font = ('gaslight', 30), height=3, width=8)
         Export.pack(side = TOP, anchor = SE)
-#	Add button to open the mapping locations for titlecards popup
-        MappingsLocations = customtkinter.CTkButton(leftframe, 
-        fg_color=BTNCLR, text_color=TXTCLR,
-        text = 'Mapping Locations',
-        command = self.MappingLocations_Popup,
-        font = ('gaslight', 30),
-        height=3, 
-        width=8
-        )
+#========================================================================
+#   Add button to open the mapping locations for titlecards popup
+#========================================================================
+        MappingsLocations = customtkinter.CTkButton(leftframe, fg_color=BTNCLR, text_color=TXTCLR, text = 'Mapping Locations', command = self.MappingLocations_Popup, font = ('gaslight', 30) ,height=3, width=8)
         MappingsLocations.pack(side = TOP, anchor = SE)
-#	Add the zone selector
-        ZoneMenu = customtkinter.CTkOptionMenu(
-        leftframe, 
-        fg_color=BTNCLR, text_color=TXTCLR,
-        variable = zone,
-        values=[
-        "EHZ",
-        "CPZ",
-        "ARZ",
-        "CNZ",
-        "HTZ",
-        "MCZ",
-        "OOZ",
-        "MTZ",
-        "SCZ",
-        "WFZ",
-        "DEZ",
-        "HPZ"
-        ]
-        )
+#========================================================================
+#   Add the zone selector
+#========================================================================
+        ZoneMenu = customtkinter.CTkOptionMenu(leftframe, fg_color=BTNCLR, text_color=TXTCLR,variable = zone,values=["EHZ","CPZ","ARZ","CNZ","HTZ","MCZ","OOZ","MTZ","SCZ","WFZ","DEZ","HPZ"])
         ZoneMenu.pack(side = BOTTOM) 
         ZoneMenu.set(ZoneMenu._values[0]) 
-#	Add the button to exit the program
+#========================================================================
+#   Add the button to exit the program
+#========================================================================
         exitbutton = customtkinter.CTkButton(
         leftframe, 
-        fg_color=BTNCLR, text_color=TXTCLR,
-        text = '     Exit     ',
-        command = self.ExitProgram, 
-        font = ('gaslight', 30),
-        height=3,
-        width=8
-        )
+        fg_color=BTNCLR, text_color=TXTCLR, text = '     Exit     ', command = self.ExitProgram, font = ('gaslight', 30), height=3, width=8)
         exitbutton.pack(side = TOP, anchor = SE)
-#	Add the copy to clipboard button
-        copybutton = customtkinter.CTkButton(
-        topframe, 
-        fg_color=BTNCLR, text_color=TXTCLR,
-        text = 'Copy To Clipboard',
-        command = self.CopyToClipboard, 
-        font = ('gaslight', 30),
-        height=3,
-        width=8
-        )
+#========================================================================
+#   Add the copy to clipboard button
+#========================================================================
+        copybutton = customtkinter.CTkButton(topframe, fg_color=BTNCLR, text_color=TXTCLR, text = 'Copy To Clipboard', command = self.CopyToClipboard, font = ('gaslight', 30), height=3, width=8)
         copybutton.pack(side = BOTTOM)
-#	Add the debug flag checkbox
-        DebugCheck = customtkinter.CTkCheckBox(
-        topframe,
-        text='See Debug Info',
-        variable=DebugEnabledFlag,
-        onvalue=1,
-        offvalue=0, 
-        command=self.SetDebugFlag
-        )
+#========================================================================
+#   Add the debug flag checkbox
+#========================================================================
+        DebugCheck = customtkinter.CTkCheckBox(topframe, text='See Debug Info', variable=DebugEnabledFlag, onvalue=1, offvalue=0, command=self.SetDebugFlag)
         DebugCheck.pack(side = BOTTOM)
-#	Add the Light/Dark mode checkbox
-        ThemeCheck = customtkinter.CTkCheckBox(
-        topframe,
-        text='Light Mode',
-        variable=SwitchThemeFlag,
-        onvalue=1,
-        offvalue=0, 
-        command=self.ChangeAppTheme
-        )
+#========================================================================
+#   Add the Light/Dark mode checkbox
+#========================================================================
+        ThemeCheck = customtkinter.CTkCheckBox(topframe, text='Light Mode', variable=SwitchThemeFlag, onvalue=1, offvalue=0, command=self.ChangeAppTheme)
         ThemeCheck.pack(side = BOTTOM)
-        
-#       Add the checkbox that makes the generator use the stock disasm labels
-        DisasmLabelCheck = customtkinter.CTkCheckBox(
-        topframe,
-        text='Use Regular Disasm Labels',
-        variable=DisasmLabel,
-        onvalue=1,
-        offvalue=0, 
-        command=self.EnableNormalLabels
-        )
+#========================================================================
+#   Add the checkbox that makes the generator use the stock disasm labels
+#========================================================================
+        DisasmLabelCheck = customtkinter.CTkCheckBox(topframe, text='Use Regular Disasm Labels', variable=DisasmLabel, onvalue=1, offvalue=0, command=self.EnableNormalLabels)
         DisasmLabelCheck.pack(side = BOTTOM)
-        
-#	Add the TitlecardOutput box
-        TitlecardOutput = customtkinter.CTkTextbox(
-        bottomframe,
-        state='disabled',
-        height = 400,
-        font = ("courier", 16)
-        )
+#========================================================================
+#   Add the TitlecardOutput box
+#========================================================================
+        TitlecardOutput = customtkinter.CTkTextbox(bottomframe, state='disabled', height = 400, font = ("courier", 16))
         TitlecardOutput.pack(fill = BOTH)
-
-#	Code To Export Titlecard Into a File
-
+#========================================================================
+#   Code To Export Titlecard Into a File
+#========================================================================
     def ExportTitlecard(self):
         global text
         if text == '':
@@ -563,15 +507,13 @@ class App(tk.Frame):
             f.write(TitlecardOutput.get(1.0, END))
             f.write(f'titleLetters	"{TitlecardLettersToLoad}"')
             f.close()
-
-#	Code to run the generator
-
+#========================================================
+#   Code to run the generator
+#========================================================
     def RunFromEnterKey(self, event):
         self.RunGeneration()
-
     def RunGeneration(self):
-        global text
-        global ZoneNameForLabel
+        global text, ZoneNameForLabel
         text = self.LevelName.get()
         OldLabl = ['word_147E8', 'word_14A1E', 'word_14A88', 'word_149C4', 'word_14894', 'word_14972', 'word_14930', 'word_14842', 'word_14AE2', 'word_14B24', 'word_14B86', 'word_148CE']
         if LabelFlag == False:
@@ -579,24 +521,22 @@ class App(tk.Frame):
         else:
             ZoneNameForLabel = OldLabl[ZoneMenu._values.index(ZoneMenu.get())]
         GenerateTitlecardFromText()
-
-#	Code to set the debug flag
-
+#========================================================
+#   Code to set the debug flag
+#========================================================
     def SetDebugFlag(self):
-        global DebugEnabledFlag
-        global DebugFlag
+        global DebugEnabledFlag, DebugFlag
         if DebugEnabledFlag.get() == 0:
             DebugFlag = False
         elif DebugEnabledFlag.get() == 1:
             DebugFlag = True
         else:
             DebugFlag = False
-
-#	Code to change themes
-
+#========================================================
+#   Code to change themes
+#========================================================
     def ChangeAppTheme(self):
-        global SwitchThemeFlag
-        global BTNCLR, TXTCLR
+        global BTNCLR, TXTCLR, SwitchThemeFlag
         
         if SwitchThemeFlag.get() == 0:
             THEME = "DARK"
@@ -617,27 +557,26 @@ class App(tk.Frame):
         for widget in bottomframe.winfo_children():
             widget.configure(fg_color=BTNCLR, text_color=TXTCLR,)
         customtkinter.set_appearance_mode(THEME)  # Modes: system (default), light, dark
-        
-#	Code to change themes
-
+#========================================================        
+#   Code to use the disasmebly labels
+#========================================================
     def EnableNormalLabels(self):
-        global DisasmLabel
-        global LabelFlag
+        global DisasmLabel, LabelFlag
         if DisasmLabel.get() == 0:
             LabelFlag = False
         elif DisasmLabel.get() == 1:
             LabelFlag = True
         else:
             LabelFlag = False
-        
-#	Code to copy TitlecardOutput to clipboard
-
+#========================================================       
+#   Code to copy TitlecardOutput to clipboard
+#========================================================
     def CopyToClipboard(self):
         root.clipboard_clear()
         root.clipboard_append(TitlecardOutput.get(1.0, END))
-
-#	Code to open the titlecard letters popup
-
+#========================================================
+#   Code to open the titlecard letters popup
+#========================================================
     def TitlecardLetters_Popup(self):
         global text
         TitlecardLettersToLoad = sub(r"[^a-zA-Z,' ']", "", text).upper()
@@ -665,9 +604,9 @@ class App(tk.Frame):
         top,
         text= f'The order for title card letters is the same as the order for the mappings code'
         ).pack()
-
-#	Code to open the titlecard mapping locations popup
-
+#========================================================
+#   Code to open the titlecard mapping locations popup
+#========================================================
     def MappingLocations_Popup(self):
         global text
         TitlecardLettersToLoad = sub(r"[^a-zA-Z,' ']", "", text).upper()
@@ -684,17 +623,22 @@ class App(tk.Frame):
         pep2.delete(1.0, END)
         pep2.insert(END, LocFile.read(),)
         pep2.configure(state = 'disabled')
-
-
+#========================================================
+#   Code To Open The About Popup
+#========================================================
     def OpenAbout(self):
         tk.messagebox.showinfo(
         title='About',
         message="Sonic 2 Titlecard Code Generator in Python aka. S2TCG.py, created by RobiWanKenobi in \nPython 3.10.", options=None
         )
-
+#========================================================
+#   Code To Exit The Program
+#========================================================
     def ExitProgram(self):
         exit(0)
-# create the application
+#========================================================
+#   Create The Application
+#========================================================
 title = "Sonic 2 Titlecard Code Generator"
 root = customtkinter.CTk(className="S2TCG")
 root.geometry("900x500")
