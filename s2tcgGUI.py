@@ -40,16 +40,11 @@ def GenerateMappings():
 #========================================================
 #   Start position setting code
 #========================================================
-    if len(REGEX_STEP) >= 10: 
-        Current_XPOS = 65428
-    elif len(REGEX_STEP) <= 9 and len(REGEX_STEP) > 6:
-        Current_XPOS = 65446
-    elif len(REGEX_STEP) <= 6 and len(REGEX_STEP) > 2:
-        Current_XPOS = 0
+    StartLoc = [0x0070,0x0060,0x0050,0x0040,0x0030, 0x0020, 0x0010, 0x0000, 0xFFF0, 0xFFE0, 0xFFD0, 0xFFC0, 0xFFB0, 0xFFA0, 0xFF90] #Don't exceed FF90,
+    Current_XPOS = StartLoc[len(REGEX_STEP)]
+    if len(REGEX_STEP) <= 8:
         PositionsIsAfter0 = True
-    else:
-        Current_XPOS = 64 
-        PositionsIsAfter0 = True
+
     CharacterOfTitleCard = ''
     AllOfTheCharacters = []
     CharactersList = []
@@ -82,7 +77,7 @@ def GenerateMappings():
             if CurrentCharacter >= 1:
                 Index_Increment = 4 #the first letter is 2 and not 4
                 if LetterIsAfterI == True:
-                    SpaceBetweenLetter = 4 #incrememnt the position less
+                    SpaceBetweenLetter = 8 #incrememnt the position less
                     if LetterIsAfterIcount == 0:
                         if LetterIsAfterM == False:
                             Index_Increment = 4  #restore the default values
@@ -94,13 +89,14 @@ def GenerateMappings():
                             Index_Increment_2P = 3 
                             SpaceBetweenLetter = 16
                         else:
+                            Current_XPOS += 3
                             Index_Increment = 6  #restore the default values
                             Index_Increment_2P = 3                   
-                            Current_XPOS += 8
+                            Current_XPOS -= 8
                             LetterIsAfterIposcount = 0
 
                 if LetterIsAfterM == True:
-                    SpaceBetweenLetter = 24 
+                    SpaceBetweenLetter = 21
                     if LetterIsAfterI == False: 
                         Index_Increment_2P = 3 
                         Index_Increment = 6  #restore the default values
@@ -118,21 +114,31 @@ def GenerateMappings():
                     else:
                         LetterIsAfterMcount -= 1 
                         if LetterIsAfterMposcount == 0:
+                            Current_XPOS -= 3
                             SpaceBetweenLetter = 16
+
                             LetterIsAfterM = False
+
                         else:
+                            Current_XPOS += 3
+                            SpaceBetweenLetter = 21
                             LetterIsAfterMposcount = 0
 
                 else:
                     Index_Increment = 4  #restore the default values
                     Index_Increment_2P = 2 
                     SpaceBetweenLetter = 16 
+
 #========================================================
 #   Position Calculation Code
 #========================================================
             Current_XPOS += SpaceBetweenLetter #Index_Increment position by the position Index_Incrementer, there is a reason this is defined after the LetterIsAfterM and LetterIsAfterI stuff
             if Current_XPOS <= NegativeToPositive_Position:
                 CharacterOfTitleCard = CharacterOfTitleCard.lower()
+                if CharacterOfTitleCard == 'm' or CharacterOfTitleCard == 'w':
+                    Current_XPOS -= 3
+
+
                 PreFinal_XPOS = hex(Current_XPOS)
                 if PositionsIsAfter0 == False:
                     XPOS = PreFinal_XPOS.replace("0x", "").upper()
@@ -168,6 +174,7 @@ def GenerateMappings():
 #========================================================
             if CharacterOfTitleCard == 'm' or CharacterOfTitleCard == 'w':
                 CharacterWidth = '9'
+
             elif CharacterOfTitleCard == 'i':
                 CharacterWidth = '1'
             else:
@@ -183,6 +190,7 @@ def GenerateMappings():
                    LetterIsAfterIcount = 3
                    LetterIsAfterIposcount = 1
                 if CharacterOfTitleCard == 'm' or CharacterOfTitleCard == 'w':
+
                    LetterIsAfterM = True 
                    LetterIsAfterMcount = 3
                    LetterIsAfterMposcount = 1
@@ -229,6 +237,7 @@ def GenerateMappings():
                        LetterIsAfterIcount += 1
                     if LetterIsAfterM == True:
                        LetterIsAfterMcount += 1
+                       Current_XPOS += 3
                 elif CharacterOfTitleCard == 'o':
                     INDEX = '588'
                     INDEX2P = '2C4'
@@ -237,6 +246,7 @@ def GenerateMappings():
                        LetterIsAfterIcount += 1
                     if LetterIsAfterM == True:
                        LetterIsAfterMcount += 1 
+                       Current_XPOS += 3
                 elif CharacterOfTitleCard == 'n':
                     INDEX = '584'
                     INDEX2P = '2C2'
@@ -244,7 +254,8 @@ def GenerateMappings():
                     if LetterIsAfterI == True:
                        LetterIsAfterIcount += 1
                     if LetterIsAfterM == True:
-                       LetterIsAfterMcount += 1 
+                       LetterIsAfterMcount += 1
+                       Current_XPOS += 3
                 elif CharacterOfTitleCard == 'e':
                     INDEX = '580'
                     INDEX2P = '2C0'
@@ -252,12 +263,12 @@ def GenerateMappings():
                     if LetterIsAfterI == True:
                        LetterIsAfterIcount += 1
                     if LetterIsAfterM == True:
-                       LetterIsAfterMcount += 1 
+                       LetterIsAfterMcount += 1
+                       Current_XPOS += 3
 #========================================================
 #   Code For Spaces
 #========================================================
                 elif CharacterOfTitleCard == ' ':
-                    Current_XPOS += 2
                     TitlecardOutput.insert(END,'\n')
 
                 else:
@@ -272,10 +283,10 @@ def GenerateMappings():
 #========================================================
 #   Error Handling Code
 #========================================================
-            if len(LENGTH_STEP) > 16:
-                TitlecardOutput.insert(END,'\n;You can only have a maximum of $10 characters in sonic 2 title cards, this code will not work')
+            if len(LENGTH_STEP) > 14:
+                TitlecardOutput.insert(END,'\n;You can only have a maximum of $D characters in sonic 2 title cards, this code will not work')
                 highlight(TitlecardOutput)
-                showerror(title='Error!', message='You can only have a maximum of $10 characters in sonic 2 title cards, this code will not work', options=None) 
+                showerror(title='Error!', message='You can only have a maximum of $D characters in sonic 2 title cards, this code will not work', options=None)
             if len(SavedIndexes) > 8:     
                 TitlecardOutput.insert(END,'\n;You can only have $8 unique indexes excluding Z,O,N, and E, this code will not work')
                 highlight(TitlecardOutput)
