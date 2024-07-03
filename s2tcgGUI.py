@@ -89,7 +89,6 @@ def GenerateMappings():
                             Index_Increment_2P = 3 
                             SpaceBetweenLetter = 16
                         else:
-                            Current_XPOS += 3
                             Index_Increment = 6  #restore the default values
                             Index_Increment_2P = 3                   
                             Current_XPOS -= 8
