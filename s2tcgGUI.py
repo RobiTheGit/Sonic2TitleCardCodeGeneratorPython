@@ -654,7 +654,7 @@ root.geometry("900x500")
 root.resizable(True,True)
 myapp = App(root)
 myapp.master.title(title)
-myapp.mainloop()
+root.mainloop()
 #========================================================================
 #   END OF CODE
 #========================================================================
