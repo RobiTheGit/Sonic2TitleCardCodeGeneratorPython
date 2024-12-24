@@ -287,13 +287,13 @@ def GenerateMappings():
                 highlight(TitlecardOutput)
                 showerror(title='Error!', message='You can only have a maximum of $D characters in sonic 2 title cards, this code will not work', options=None)
             if len(SavedIndexes) > 8:     
-                TitlecardOutput.insert(END,'\n;You can only have $8 unique indexes excluding Z,O,N, and E, this code will not work')
+                TitlecardOutput.insert(END,'\n;You can only have $8 unique indexes excluding Z,O,N, and E, this code will probably not work')
                 highlight(TitlecardOutput)
-                showerror(title='Error!', message='You can only have $8 unique indexes excluding Z,O,N, and E, this code will not work', options=None)
+                showerror(title='Error!', message='You can only have $8 unique indexes excluding Z,O,N, and E, this code will probably not work', options=None)
             if PositionsIsAfter0 == True and Current_XPOS > 128:
                 showerror(title='Error!', message='Position Out Of bounds', options=None)
             if DebugFlag == True:
-                TitlecardOutput.insert(END, f'\n;Indexes: {CharactersList} {len(CharactersList)}\n;Code for above indexes:{SavedIndexes}\n;\tBut you can\'t stick n move')
+                TitlecardOutput.insert(END, f'\n;Indexes: {CharactersList} {len(CharactersList)}\n;Code for above indexes:{SavedIndexes}\n;\tmost errors apply to those who don\'t manually edit either the VRAM or titlecard code for their thing to work\n ;format: $width, $[pal][vram addr], $[pal][2p vram], $[position]')
                 highlight(TitlecardOutput)
 #========================================================
 #   Syntax Highlighting Code
