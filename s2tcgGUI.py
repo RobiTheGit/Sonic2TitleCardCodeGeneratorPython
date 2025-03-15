@@ -136,38 +136,18 @@ def GenerateMappings():
                 CharacterOfTitleCard = CharacterOfTitleCard.lower()
                 if CharacterOfTitleCard == 'm' or CharacterOfTitleCard == 'w':
                     Current_XPOS -= 3
-
-
                 PreFinal_XPOS = hex(Current_XPOS)
-                if PositionsIsAfter0 == False:
-                    XPOS = PreFinal_XPOS.replace("0x", "").upper()
-                else:
-                    if Current_XPOS >= 16:
-                        XPOS = PreFinal_XPOS.replace("0x", "00").upper()
-                    elif Current_XPOS <= 16:
-                        XPOS =  PreFinal_XPOS.replace("0x", "000").upper()
-                    else:    
-                        XPOS =  PreFinal_XPOS.replace("0x", "000").upper()
+                XPOS = PreFinal_XPOS.replace("0x", "").upper()
             elif Current_XPOS >= NegativeToPositive_Position:
                 Current_XPOS -= 65536
                 PreFinal_XPOS = hex(abs(Current_XPOS))
-                if Current_XPOS >= 16:
-                    XPOS = PreFinal_XPOS.replace("0x", "00").upper()
-                elif Current_XPOS <= 16:
-                    XPOS =  PreFinal_XPOS.replace("0x", "000").upper()
-                else:    
-                    XPOS =  PreFinal_XPOS.replace("0x", "000").upper()
+                XPOS = PreFinal_XPOS.replace("0x", "").upper()
                 PositionsIsAfter0 = True
             else:
                 PositionsIsAfter0 = True
                 Current_XPOS -= 65536
                 PreFinal_XPOS = hex(abs(Current_XPOS))
-                if Current_XPOS >= 16:
-                    XPOS = PreFinal_XPOS.replace("0x", "00").upper()
-                if Current_XPOS <= 16:
-                    XPOS =  PreFinal_XPOS.replace("0x", "000").upper()
-                else:    
-                    XPOS =  PreFinal_XPOS.replace("0x", "000").upper()
+                XPOS = PreFinal_XPOS.replace("0x", "").upper()
 #========================================================
 #   Character Width Setting Code
 #========================================================
@@ -588,6 +568,7 @@ class App(Frame):
 #========================================================
     def TitlecardLetters_Popup(self):
         global text
+        ZoneNameForLabel = ZoneMenu.get()
         TitlecardLettersToLoad = sub(r"[^a-zA-Z,' ']", "", text).upper()
         top= CTkToplevel()
         top.geometry("600x400")
@@ -595,7 +576,7 @@ class App(Frame):
         top.title("Off_TitleCardLetters")
         CTkLabel(
         top,
-        text= f'In Off_TitleCardLetters, for the zone title card you want to modify, where it says \ntitleLetters    "EMERALD HILL" or whatever zone you are replacing, \n you type in the zone\'s name, currently your titleLetters would have\n'
+        text= f'In Off_TitleCardLetters\n for the zone title card you want to modify, type in the zone\'s name.'
         ).pack()
         pep = CTkTextbox(top,
         state = 'normal',
@@ -607,7 +588,7 @@ class App(Frame):
         text= f'If you are using the 2007 Xenowhirl disasm, read Xenowhirl_Setup.txt\nUse the letter macros, and skip Z, O, N, & E\n' #Why you'd be using this disasm still, I have no clue
         ).pack()
         pep.delete(1.0, END)
-        pep.insert(END, f'titleLetters	"{TitlecardLettersToLoad}"',)
+        pep.insert(END, f'TitleCardLetters_{ZoneNameForLabel}:\n\ttitleLetters	"{TitlecardLettersToLoad}"',)
         pep.configure(state = 'disabled')
         CTkLabel(
         top,
