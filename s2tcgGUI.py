@@ -138,16 +138,12 @@ def GenerateMappings():
                     Current_XPOS -= 3
                 PreFinal_XPOS = hex(Current_XPOS)
                 XPOS = PreFinal_XPOS.replace("0x", "").upper()
-            elif Current_XPOS >= NegativeToPositive_Position:
-                Current_XPOS -= 65536
-                PreFinal_XPOS = hex(abs(Current_XPOS))
-                XPOS = PreFinal_XPOS.replace("0x", "").upper()
-                PositionsIsAfter0 = True
             else:
-                PositionsIsAfter0 = True
                 Current_XPOS -= 65536
                 PreFinal_XPOS = hex(abs(Current_XPOS))
                 XPOS = PreFinal_XPOS.replace("0x", "").upper()
+                PositionsIsAfter0 = True
+
 #========================================================
 #   Character Width Setting Code
 #========================================================
